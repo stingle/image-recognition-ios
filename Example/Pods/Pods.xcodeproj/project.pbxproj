@@ -534,38 +534,6 @@
 			};
 			name = Release;
 		};
-		6DF8D1B62657F5E37D6C10E8C8FD19D6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1856B6C560C0803DDBC17F4BB848BB9D /* ImageRecognition.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/ImageRecognition/ImageRecognition-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/ImageRecognition/ImageRecognition-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/ImageRecognition/ImageRecognition.modulemap";
-				PRODUCT_MODULE_NAME = ImageRecognition;
-				PRODUCT_NAME = ImageRecognition;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		9C7A200E49A8A15485F28BE790D23C9D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B1180767A2AED71FB9B76064F3FEBA8B /* Pods-ImageRecognition_Example.debug.xcconfig */;
@@ -634,6 +602,39 @@
 			};
 			name = Debug;
 		};
+		AF97EF4C3DBDB48072AA278717A56E22 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1856B6C560C0803DDBC17F4BB848BB9D /* ImageRecognition.release.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/ImageRecognition/ImageRecognition-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/ImageRecognition/ImageRecognition-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/ImageRecognition/ImageRecognition.modulemap";
+				PRODUCT_MODULE_NAME = ImageRecognition;
+				PRODUCT_NAME = ImageRecognition;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		B8E6E7DCB416F4A20057295D72E02522 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 695725B5AEB27014D1CD98AEDF91D6EA /* Pods-ImageRecognition_Tests.release.xcconfig */;
@@ -668,37 +669,6 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
-		};
-		BF58494A8B4C794087B06DCC98565C69 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 01E645565AB064D7B39467B0B5BD788C /* ImageRecognition.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/ImageRecognition/ImageRecognition-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/ImageRecognition/ImageRecognition-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/ImageRecognition/ImageRecognition.modulemap";
-				PRODUCT_MODULE_NAME = ImageRecognition;
-				PRODUCT_NAME = ImageRecognition;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
 		};
 		CB9D91943B3075DF95388303FC742FB6 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -735,6 +705,38 @@
 			};
 			name = Release;
 		};
+		D98F311C07CD35377B32C46272B2F1F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 01E645565AB064D7B39467B0B5BD788C /* ImageRecognition.debug.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/ImageRecognition/ImageRecognition-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/ImageRecognition/ImageRecognition-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/ImageRecognition/ImageRecognition.modulemap";
+				PRODUCT_MODULE_NAME = ImageRecognition;
+				PRODUCT_NAME = ImageRecognition;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -768,8 +770,8 @@
 		F249D3577F1E274A2B4D11EFF6E02A10 /* Build configuration list for PBXNativeTarget "ImageRecognition" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BF58494A8B4C794087B06DCC98565C69 /* Debug */,
-				6DF8D1B62657F5E37D6C10E8C8FD19D6 /* Release */,
+				D98F311C07CD35377B32C46272B2F1F3 /* Debug */,
+				AF97EF4C3DBDB48072AA278717A56E22 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

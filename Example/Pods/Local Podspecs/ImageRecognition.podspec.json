@@ -1,22 +1,22 @@
 {
   "name": "ImageRecognition",
   "version": "0.1.0",
-  "summary": "A short description of ImageRecognition.",
-  "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/stingle/ImageRecognition",
+  "summary": "Image Recognition.",
+  "description": "ImageRecognition is an object and face detection library.",
+  "homepage": "https://github.com/stingle/image-recognition-ios",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
   },
-  "authors": {
-    "stingle": "shahen@advancedtech.am"
-  },
+  "authors": "Stingle",
   "source": {
-    "git": "https://github.com/stingle/ImageRecognition.git",
+    "git": "https://github.com/stingle/image-recognition-ios.git",
     "tag": "0.1.0"
   },
   "platforms": {
-    "ios": "9.0"
+    "ios": "12.0",
+    "osx": "10.15"
   },
+  "cocoapods_version": ">= 1.4.0",
   "source_files": "ImageRecognition/Classes/**/*"
 }
