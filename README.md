@@ -22,7 +22,7 @@ pod 'ImageRecognition'
 
 ## Author
 
-stingle, shahen@advancedtech.am
+Stingle
 
 ## License
 
