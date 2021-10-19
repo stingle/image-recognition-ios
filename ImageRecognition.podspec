@@ -10,11 +10,7 @@ Pod::Spec.new do |s|
   s.name             = 'ImageRecognition'
   s.version          = '0.1.0'
   s.summary          = 'Image Recognition.'
-
-  s.description      = <<-DESC
-  ImageRecognition is an object and face detection library.
-                       DESC
-
+  s.description      = 'ImageRecognition is an object and face detection library.'
   s.homepage         = 'https://github.com/stingle/image-recognition-ios'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = 'Stingle'
