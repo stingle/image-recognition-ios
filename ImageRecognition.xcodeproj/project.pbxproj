@@ -14,8 +14,10 @@
 		28DE1D6427181D3A000A9A62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28DE1D6327181D3A000A9A62 /* Assets.xcassets */; };
 		28DE1D6727181D3A000A9A62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28DE1D6527181D3A000A9A62 /* LaunchScreen.storyboard */; };
 		28DE1D792719ACDD000A9A62 /* Resnet50.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D782719ACDD000A9A62 /* Resnet50.mlmodel */; };
-		28DE1D7D2719CE16000A9A62 /* MobileNet.mlkitmodel in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D7C2719CE16000A9A62 /* MobileNet.mlkitmodel */; };
-		28DE1D812719F50E000A9A62 /* BlackAndWhite.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D802719F50E000A9A62 /* BlackAndWhite.mlmodel */; };
+		28DE1D89271DF6A6000A9A62 /* ViewController+PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D88271DF6A6000A9A62 /* ViewController+PhotoPicker.swift */; };
+		28DE1D8B271DF722000A9A62 /* ImagePredictor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D8A271DF722000A9A62 /* ImagePredictor.swift */; };
+		28DE1D8D271DF7A6000A9A62 /* VNClassificationObservation+confidenceString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D8C271DF7A6000A9A62 /* VNClassificationObservation+confidenceString.swift */; };
+		28DE1D8F271DF7C8000A9A62 /* CGImagePropertyOrientation+UIImageOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D8E271DF7C8000A9A62 /* CGImagePropertyOrientation+UIImageOrientation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,8 +30,10 @@
 		28DE1D6627181D3A000A9A62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		28DE1D6827181D3A000A9A62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		28DE1D782719ACDD000A9A62 /* Resnet50.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Resnet50.mlmodel; sourceTree = "<group>"; };
-		28DE1D7C2719CE16000A9A62 /* MobileNet.mlkitmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MobileNet.mlkitmodel; sourceTree = "<group>"; };
-		28DE1D802719F50E000A9A62 /* BlackAndWhite.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = BlackAndWhite.mlmodel; sourceTree = "<group>"; };
+		28DE1D88271DF6A6000A9A62 /* ViewController+PhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+PhotoPicker.swift"; sourceTree = "<group>"; };
+		28DE1D8A271DF722000A9A62 /* ImagePredictor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePredictor.swift; sourceTree = "<group>"; };
+		28DE1D8C271DF7A6000A9A62 /* VNClassificationObservation+confidenceString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VNClassificationObservation+confidenceString.swift"; sourceTree = "<group>"; };
+		28DE1D8E271DF7C8000A9A62 /* CGImagePropertyOrientation+UIImageOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGImagePropertyOrientation+UIImageOrientation.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,9 +69,11 @@
 				28DE1D5A27181D39000A9A62 /* AppDelegate.swift */,
 				28DE1D5C27181D39000A9A62 /* SceneDelegate.swift */,
 				28DE1D5E27181D39000A9A62 /* ViewController.swift */,
-				28DE1D802719F50E000A9A62 /* BlackAndWhite.mlmodel */,
+				28DE1D88271DF6A6000A9A62 /* ViewController+PhotoPicker.swift */,
+				28DE1D8A271DF722000A9A62 /* ImagePredictor.swift */,
+				28DE1D8C271DF7A6000A9A62 /* VNClassificationObservation+confidenceString.swift */,
+				28DE1D8E271DF7C8000A9A62 /* CGImagePropertyOrientation+UIImageOrientation.swift */,
 				28DE1D782719ACDD000A9A62 /* Resnet50.mlmodel */,
-				28DE1D7C2719CE16000A9A62 /* MobileNet.mlkitmodel */,
 				28DE1D6027181D39000A9A62 /* Main.storyboard */,
 				28DE1D6327181D3A000A9A62 /* Assets.xcassets */,
 				28DE1D6527181D3A000A9A62 /* LaunchScreen.storyboard */,
@@ -147,11 +153,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28DE1D7D2719CE16000A9A62 /* MobileNet.mlkitmodel in Sources */,
 				28DE1D5F27181D39000A9A62 /* ViewController.swift in Sources */,
+				28DE1D8D271DF7A6000A9A62 /* VNClassificationObservation+confidenceString.swift in Sources */,
+				28DE1D89271DF6A6000A9A62 /* ViewController+PhotoPicker.swift in Sources */,
+				28DE1D8F271DF7C8000A9A62 /* CGImagePropertyOrientation+UIImageOrientation.swift in Sources */,
 				28DE1D5B27181D39000A9A62 /* AppDelegate.swift in Sources */,
 				28DE1D792719ACDD000A9A62 /* Resnet50.mlmodel in Sources */,
-				28DE1D812719F50E000A9A62 /* BlackAndWhite.mlmodel in Sources */,
+				28DE1D8B271DF722000A9A62 /* ImagePredictor.swift in Sources */,
 				28DE1D5D27181D39000A9A62 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -309,7 +317,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -338,7 +346,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
