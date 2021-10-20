@@ -13,7 +13,7 @@ class ViewController: UIViewController {
 
     let imagePredictor: ImagePredictor = {
         let defaultConfig = MLModelConfiguration()
-        let imageClassifierWrapper = try? Resnet50(configuration: defaultConfig)
+        let imageClassifierWrapper = try? MobileNet(configuration: defaultConfig)
         guard let imageClassifier = imageClassifierWrapper else {
             fatalError("App failed to create an image classifier model instance.")
         }
