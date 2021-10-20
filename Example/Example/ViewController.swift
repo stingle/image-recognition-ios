@@ -6,10 +6,20 @@
 //
 
 import UIKit
+import Vision
+import ImageRecognition
 
 class ViewController: UIViewController {
 
-    let imagePredictor = ImagePredictor()
+    let imagePredictor: ImagePredictor = {
+        let defaultConfig = MLModelConfiguration()
+        let imageClassifierWrapper = try? Resnet50(configuration: defaultConfig)
+        guard let imageClassifier = imageClassifierWrapper else {
+            fatalError("App failed to create an image classifier model instance.")
+        }
+        let predictor = ImagePredictor(model: imageClassifier.model)
+        return predictor
+    }()
 
     let predictionsToShow = 2
 

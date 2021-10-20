@@ -1,0 +1,16 @@
+PODS:
+  - ImageRecognition (0.1.0)
+
+DEPENDENCIES:
+  - ImageRecognition (from `../`)
+
+EXTERNAL SOURCES:
+  ImageRecognition:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  ImageRecognition: 853c4745b162406592e589fc01f1072d5f74681a
+
+PODFILE CHECKSUM: 03ef87628f67f4ac052d36770867b4faa4d9b545
+
+COCOAPODS: 1.11.2

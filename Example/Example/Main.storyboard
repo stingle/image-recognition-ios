@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="40D-Pj-o0r">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="846-Aa-QgN">
+            <objects>
+                <viewController id="40D-Pj-o0r" customClass="ViewController" customModule="ImageRecognition" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gk1-Xa-j1y">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bTt-3L-lnS">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="b2J-KS-6kx" appends="YES" id="BWL-zV-0pQ"/>
+                                </connections>
+                            </imageView>
+                            <view contentMode="scaleToFill" semanticContentAttribute="playback" translatesAutoresizingMaskIntoConstraints="NO" id="cRm-XZ-KBb" userLabel="Prediction View">
+                                <rect key="frame" x="20" y="566.5" width="217" height="60.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Tap for image selection" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2hA-FN-jSh" userLabel="Prediction Label">
+                                        <rect key="frame" x="20" y="20" width="177" height="20.5"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="2hA-FN-jSh" secondAttribute="bottom" constant="20" symbolic="YES" id="0bB-K2-FZP"/>
+                                    <constraint firstAttribute="trailing" secondItem="2hA-FN-jSh" secondAttribute="trailing" constant="20" symbolic="YES" id="3py-a1-ZDR"/>
+                                    <constraint firstItem="2hA-FN-jSh" firstAttribute="leading" secondItem="cRm-XZ-KBb" secondAttribute="leading" constant="20" symbolic="YES" id="Z0x-NR-PtG"/>
+                                    <constraint firstItem="2hA-FN-jSh" firstAttribute="top" secondItem="cRm-XZ-KBb" secondAttribute="top" constant="20" symbolic="YES" id="qrM-u2-Sdb"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="37Q-yF-tU4"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="bTt-3L-lnS" firstAttribute="centerY" secondItem="gk1-Xa-j1y" secondAttribute="centerY" id="AXz-Ys-uN8"/>
+                            <constraint firstItem="bTt-3L-lnS" firstAttribute="top" secondItem="gk1-Xa-j1y" secondAttribute="top" id="LBg-gc-20S"/>
+                            <constraint firstItem="bTt-3L-lnS" firstAttribute="leading" secondItem="gk1-Xa-j1y" secondAttribute="leading" id="V6z-Eh-Zvg"/>
+                            <constraint firstItem="bTt-3L-lnS" firstAttribute="trailing" secondItem="gk1-Xa-j1y" secondAttribute="trailing" id="VfD-zT-0cz"/>
+                            <constraint firstItem="cRm-XZ-KBb" firstAttribute="bottom" secondItem="bTt-3L-lnS" secondAttribute="bottom" constant="-40" id="acF-9r-GHI"/>
+                            <constraint firstItem="cRm-XZ-KBb" firstAttribute="leading" secondItem="gk1-Xa-j1y" secondAttribute="leading" constant="20" id="lVn-cZ-yte"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="bTt-3L-lnS" id="Nq8-fI-Gtg"/>
+                        <outlet property="predictionLabel" destination="2hA-FN-jSh" id="iBE-UF-B3n"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xir-Yb-GCT" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="b2J-KS-6kx" userLabel="Single-Tap Recognizer">
+                    <connections>
+                        <action selector="singleTap" destination="40D-Pj-o0r" id="pJb-Y6-JmL"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="-402" y="17"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="secondarySystemBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

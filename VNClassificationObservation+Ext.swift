@@ -1,8 +1,8 @@
 //
-//  VNClassificationObservation+confidenceString.swift
+//  File.swift
 //  ImageRecognition
 //
-//  Created by Arthur Poghosyan on 18.10.21.
+//  Created by Shahen Antonyan on 10/20/21.
 //
 
 import Vision
@@ -25,4 +25,5 @@ extension VNClassificationObservation {
                 return String(format: "%2.1f", percentage)
         }
     }
+
 }
