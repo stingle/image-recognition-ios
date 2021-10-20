@@ -17,6 +17,12 @@
     "ios": "12.0",
     "osx": "10.15"
   },
+  "ios": {
+    "frameworks": [
+      "Vision",
+      "UIKit"
+    ]
+  },
   "cocoapods_version": ">= 1.4.0",
   "source_files": "ImageRecognition/Classes/**/*"
 }
