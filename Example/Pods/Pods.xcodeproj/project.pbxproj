@@ -14,8 +14,8 @@
 		3C7A4BAD0DE53D331BA95EF67D20AF62 /* ImageRecognition-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDC77CC3026CA59872B7A8D1FA83A45 /* ImageRecognition-dummy.m */; };
 		5575551B409A39F66959AA042AC6DC7C /* Pods-Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 7825A90E082A1582EB16256B0E722B3F /* Pods-Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		82EF20E289868BFC77964C17554FB1C3 /* ImagePredictor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B01A92A798757AE78B7F9B80F5614C4 /* ImagePredictor.swift */; };
-		B3C0B9C427201C9200CD7647 /* VNClassificationObservation+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C0B9C327201C9200CD7647 /* VNClassificationObservation+Ext.swift */; };
-		B3C0B9C827201DB800CD7647 /* CGImagePropertyOrientation+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C0B9C727201DB800CD7647 /* CGImagePropertyOrientation+Ext.swift */; };
+		B3D61EEC2721A5640082BC15 /* CGImagePropertyOrientation+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D61EEA2721A5640082BC15 /* CGImagePropertyOrientation+Ext.swift */; };
+		B3D61EED2721A5640082BC15 /* VNClassificationObservation+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D61EEB2721A5640082BC15 /* VNClassificationObservation+Ext.swift */; };
 		CA1331813B5A2353FE9E0183079ACFB9 /* Vision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABBE89177AC0AC74D49C7B5BFFCAC03E /* Vision.framework */; };
 		D1B25DE6E8C843D845113F9A9FA1EC4F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C4ECDC4E4D8B2DFE48090DC9AC2F64E /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -53,8 +53,8 @@
 		ABBE89177AC0AC74D49C7B5BFFCAC03E /* Vision.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Vision.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Vision.framework; sourceTree = DEVELOPER_DIR; };
 		AE5764D6CCCF97A7CFA01BE010F7E07A /* ImageRecognition.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ImageRecognition.release.xcconfig; sourceTree = "<group>"; };
 		AFECBC24E09D0D25F822C27BD944AFD4 /* Pods-Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Example-frameworks.sh"; sourceTree = "<group>"; };
-		B3C0B9C327201C9200CD7647 /* VNClassificationObservation+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VNClassificationObservation+Ext.swift"; sourceTree = "<group>"; };
-		B3C0B9C727201DB800CD7647 /* CGImagePropertyOrientation+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGImagePropertyOrientation+Ext.swift"; sourceTree = "<group>"; };
+		B3D61EEA2721A5640082BC15 /* CGImagePropertyOrientation+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CGImagePropertyOrientation+Ext.swift"; path = "ImageRecognition/Classes/CGImagePropertyOrientation+Ext.swift"; sourceTree = "<group>"; };
+		B3D61EEB2721A5640082BC15 /* VNClassificationObservation+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "VNClassificationObservation+Ext.swift"; path = "ImageRecognition/Classes/VNClassificationObservation+Ext.swift"; sourceTree = "<group>"; };
 		B45138496B85A072654D1D0F8EBBEDE5 /* Pods-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Example.debug.xcconfig"; sourceTree = "<group>"; };
 		D6D7C498FA339E02BD53ECB8916CEA8E /* Pods-Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Example-dummy.m"; sourceTree = "<group>"; };
 		DB7346BCC701B34A78CC7A07E6FF9527 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -94,8 +94,8 @@
 		1EB8A050EEF11218DB13F7B425702586 /* ImageRecognition */ = {
 			isa = PBXGroup;
 			children = (
-				B3C0B9C327201C9200CD7647 /* VNClassificationObservation+Ext.swift */,
-				B3C0B9C727201DB800CD7647 /* CGImagePropertyOrientation+Ext.swift */,
+				B3D61EEA2721A5640082BC15 /* CGImagePropertyOrientation+Ext.swift */,
+				B3D61EEB2721A5640082BC15 /* VNClassificationObservation+Ext.swift */,
 				6B01A92A798757AE78B7F9B80F5614C4 /* ImagePredictor.swift */,
 				21ACA9CA238CFCA320A059701242CFCB /* Pod */,
 				88EB0F4A1995438E89269B9EBFB89702 /* Support Files */,
@@ -309,10 +309,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3D61EED2721A5640082BC15 /* VNClassificationObservation+Ext.swift in Sources */,
 				82EF20E289868BFC77964C17554FB1C3 /* ImagePredictor.swift in Sources */,
-				B3C0B9C427201C9200CD7647 /* VNClassificationObservation+Ext.swift in Sources */,
-				B3C0B9C827201DB800CD7647 /* CGImagePropertyOrientation+Ext.swift in Sources */,
 				3C7A4BAD0DE53D331BA95EF67D20AF62 /* ImageRecognition-dummy.m in Sources */,
+				B3D61EEC2721A5640082BC15 /* CGImagePropertyOrientation+Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
