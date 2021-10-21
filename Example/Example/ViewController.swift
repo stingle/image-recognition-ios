@@ -9,7 +9,7 @@ import UIKit
 import Vision
 import ImageRecognition
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UINavigationControllerDelegate {
 
     let imagePredictor: ImagePredictor = {
         let defaultConfig = MLModelConfiguration()
@@ -21,7 +21,7 @@ class ViewController: UIViewController {
         return predictor
     }()
 
-    let predictionsToShow = 2
+    let predictionsToShow = 3
 
     // MARK: Main storyboard outlets
     @IBOutlet weak var imageView: UIImageView!
@@ -29,7 +29,7 @@ class ViewController: UIViewController {
     
     // MARK: Main storyboard actions
     @IBAction func singleTap() {
-        present(photoPicker, animated: false)
+        presentPhotoPicker()
     }
     
     // MARK: Main storyboard updates
