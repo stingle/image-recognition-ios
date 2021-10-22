@@ -1,0 +1,9 @@
+{
+  "MLModelCreatorDefinedKey" : {
+    "com.apple.createml.version" : "11.6.0",
+    "com.apple.createml.app.tag" : "78.5",
+    "com.apple.coreml.model.preview.type" : "imageClassifier",
+    "com.apple.createml.app.version" : "3.0"
+  },
+  "MLModelAuthorKey" : "Shahen Antonyan"
+}

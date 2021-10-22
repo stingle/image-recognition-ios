@@ -14,7 +14,7 @@
 		28F645B427206E2E00D818AD /* MobileNet.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 28F645B327206E2E00D818AD /* MobileNet.mlmodel */; };
 		B32276B72722A8EA005C2C51 /* FeaturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32276B62722A8EA005C2C51 /* FeaturesViewController.swift */; };
 		B32276B92722AA93005C2C51 /* FaceDetectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32276B82722AA93005C2C51 /* FaceDetectionViewController.swift */; };
-		B32276BB2722C0FE005C2C51 /* People.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B32276BA2722C0FE005C2C51 /* People.mlmodel */; };
+		B32276BD2723070B005C2C51 /* People.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = B32276BC2723070B005C2C51 /* People.mlpackage */; };
 		B3C0B9BF2720137200CD7647 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3C0B9BE2720137200CD7647 /* Assets.xcassets */; };
 		B3C0B9C12720139700CD7647 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3C0B9C02720139700CD7647 /* LaunchScreen.storyboard */; };
 		B3C0B9CA27201FBA00CD7647 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3C0B9C927201FBA00CD7647 /* Main.storyboard */; };
@@ -35,7 +35,7 @@
 		A3C1346DFD442E7C99521E0A /* Pods-ImageRecognition_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageRecognition_Example.release.xcconfig"; path = "Target Support Files/Pods-ImageRecognition_Example/Pods-ImageRecognition_Example.release.xcconfig"; sourceTree = "<group>"; };
 		B32276B62722A8EA005C2C51 /* FeaturesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturesViewController.swift; sourceTree = "<group>"; };
 		B32276B82722AA93005C2C51 /* FaceDetectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceDetectionViewController.swift; sourceTree = "<group>"; };
-		B32276BA2722C0FE005C2C51 /* People.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = People.mlmodel; sourceTree = "<group>"; };
+		B32276BC2723070B005C2C51 /* People.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = People.mlpackage; sourceTree = "<group>"; };
 		B3C0B9BE2720137200CD7647 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B3C0B9C02720139700CD7647 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B3C0B9C927201FBA00CD7647 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -82,7 +82,7 @@
 				28DE1D88271DF6A6000A9A62 /* UIViewController+PhotoPicker.swift */,
 				B32276B82722AA93005C2C51 /* FaceDetectionViewController.swift */,
 				28F645B327206E2E00D818AD /* MobileNet.mlmodel */,
-				B32276BA2722C0FE005C2C51 /* People.mlmodel */,
+				B32276BC2723070B005C2C51 /* People.mlpackage */,
 				28DE1D6827181D3A000A9A62 /* Info.plist */,
 				B3C0B9BE2720137200CD7647 /* Assets.xcassets */,
 				B3C0B9C02720139700CD7647 /* LaunchScreen.storyboard */,
@@ -228,9 +228,9 @@
 				28DE1D5F27181D39000A9A62 /* ObjectDetectionViewController.swift in Sources */,
 				28DE1D89271DF6A6000A9A62 /* UIViewController+PhotoPicker.swift in Sources */,
 				28DE1D5B27181D39000A9A62 /* AppDelegate.swift in Sources */,
-				B32276BB2722C0FE005C2C51 /* People.mlmodel in Sources */,
 				B32276B72722A8EA005C2C51 /* FeaturesViewController.swift in Sources */,
 				B32276B92722AA93005C2C51 /* FaceDetectionViewController.swift in Sources */,
+				B32276BD2723070B005C2C51 /* People.mlpackage in Sources */,
 				28F645B427206E2E00D818AD /* MobileNet.mlmodel in Sources */,
 				28DE1D5D27181D39000A9A62 /* SceneDelegate.swift in Sources */,
 			);
