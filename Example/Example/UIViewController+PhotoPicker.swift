@@ -1,5 +1,5 @@
 //
-//  ViewController+PhotoPicker.swift
+//  UIViewController+PhotoPicker.swift
 //  ImageRecognition
 //
 //  Created by Arthur Poghosyan on 18.10.21.
@@ -7,7 +7,7 @@
 
 import PhotosUI
 
-extension ViewController: UIImagePickerControllerDelegate {
+class ImagePickerViewController: UIViewController {
 
      func presentPhotoPicker() {
         let imagePickerController = UIImagePickerController()
@@ -16,15 +16,21 @@ extension ViewController: UIImagePickerControllerDelegate {
         imagePickerController.delegate = self
         present(imagePickerController, animated: true, completion: nil)
     }
+
+    func didSelectImage(image: UIImage) {}
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+}
+
+extension ImagePickerViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let tempImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-        imageView.image  = tempImage
-        self.userSelectedPhoto(imageView.image!)
-        self.dismiss(animated: true, completion: nil)
+        self.didSelectImage(image: tempImage)
+        self.dismiss(animated: true)
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true)
     }
+
 }

@@ -9,10 +9,12 @@
 /* Begin PBXBuildFile section */
 		28DE1D5B27181D39000A9A62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D5A27181D39000A9A62 /* AppDelegate.swift */; };
 		28DE1D5D27181D39000A9A62 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D5C27181D39000A9A62 /* SceneDelegate.swift */; };
-		28DE1D5F27181D39000A9A62 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D5E27181D39000A9A62 /* ViewController.swift */; };
-		28DE1D89271DF6A6000A9A62 /* ViewController+PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D88271DF6A6000A9A62 /* ViewController+PhotoPicker.swift */; };
-		28DE1D8F271DF7C8000A9A62 /* CGImagePropertyOrientation+UIImageOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D8E271DF7C8000A9A62 /* CGImagePropertyOrientation+UIImageOrientation.swift */; };
+		28DE1D5F27181D39000A9A62 /* ObjectDetectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D5E27181D39000A9A62 /* ObjectDetectionViewController.swift */; };
+		28DE1D89271DF6A6000A9A62 /* UIViewController+PhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D88271DF6A6000A9A62 /* UIViewController+PhotoPicker.swift */; };
 		28F645B427206E2E00D818AD /* MobileNet.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 28F645B327206E2E00D818AD /* MobileNet.mlmodel */; };
+		B32276B72722A8EA005C2C51 /* FeaturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32276B62722A8EA005C2C51 /* FeaturesViewController.swift */; };
+		B32276B92722AA93005C2C51 /* FaceDetectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32276B82722AA93005C2C51 /* FaceDetectionViewController.swift */; };
+		B32276BB2722C0FE005C2C51 /* People.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B32276BA2722C0FE005C2C51 /* People.mlmodel */; };
 		B3C0B9BF2720137200CD7647 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3C0B9BE2720137200CD7647 /* Assets.xcassets */; };
 		B3C0B9C12720139700CD7647 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3C0B9C02720139700CD7647 /* LaunchScreen.storyboard */; };
 		B3C0B9CA27201FBA00CD7647 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3C0B9C927201FBA00CD7647 /* Main.storyboard */; };
@@ -24,14 +26,16 @@
 		28DE1D5727181D39000A9A62 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28DE1D5A27181D39000A9A62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		28DE1D5C27181D39000A9A62 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		28DE1D5E27181D39000A9A62 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		28DE1D5E27181D39000A9A62 /* ObjectDetectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectDetectionViewController.swift; sourceTree = "<group>"; };
 		28DE1D6827181D3A000A9A62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		28DE1D88271DF6A6000A9A62 /* ViewController+PhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+PhotoPicker.swift"; sourceTree = "<group>"; };
-		28DE1D8E271DF7C8000A9A62 /* CGImagePropertyOrientation+UIImageOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGImagePropertyOrientation+UIImageOrientation.swift"; sourceTree = "<group>"; };
+		28DE1D88271DF6A6000A9A62 /* UIViewController+PhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+PhotoPicker.swift"; sourceTree = "<group>"; };
 		28F645B327206E2E00D818AD /* MobileNet.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MobileNet.mlmodel; sourceTree = "<group>"; };
 		3CA3C4DBED4CB110EFB665E7 /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
 		4A3004AC07865F16362A8B9F /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3C1346DFD442E7C99521E0A /* Pods-ImageRecognition_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageRecognition_Example.release.xcconfig"; path = "Target Support Files/Pods-ImageRecognition_Example/Pods-ImageRecognition_Example.release.xcconfig"; sourceTree = "<group>"; };
+		B32276B62722A8EA005C2C51 /* FeaturesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturesViewController.swift; sourceTree = "<group>"; };
+		B32276B82722AA93005C2C51 /* FaceDetectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceDetectionViewController.swift; sourceTree = "<group>"; };
+		B32276BA2722C0FE005C2C51 /* People.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = People.mlmodel; sourceTree = "<group>"; };
 		B3C0B9BE2720137200CD7647 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B3C0B9C02720139700CD7647 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B3C0B9C927201FBA00CD7647 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -73,10 +77,12 @@
 			children = (
 				28DE1D5A27181D39000A9A62 /* AppDelegate.swift */,
 				28DE1D5C27181D39000A9A62 /* SceneDelegate.swift */,
-				28DE1D5E27181D39000A9A62 /* ViewController.swift */,
-				28DE1D88271DF6A6000A9A62 /* ViewController+PhotoPicker.swift */,
-				28DE1D8E271DF7C8000A9A62 /* CGImagePropertyOrientation+UIImageOrientation.swift */,
+				B32276B62722A8EA005C2C51 /* FeaturesViewController.swift */,
+				28DE1D5E27181D39000A9A62 /* ObjectDetectionViewController.swift */,
+				28DE1D88271DF6A6000A9A62 /* UIViewController+PhotoPicker.swift */,
+				B32276B82722AA93005C2C51 /* FaceDetectionViewController.swift */,
 				28F645B327206E2E00D818AD /* MobileNet.mlmodel */,
+				B32276BA2722C0FE005C2C51 /* People.mlmodel */,
 				28DE1D6827181D3A000A9A62 /* Info.plist */,
 				B3C0B9BE2720137200CD7647 /* Assets.xcassets */,
 				B3C0B9C02720139700CD7647 /* LaunchScreen.storyboard */,
@@ -219,10 +225,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28DE1D5F27181D39000A9A62 /* ViewController.swift in Sources */,
-				28DE1D89271DF6A6000A9A62 /* ViewController+PhotoPicker.swift in Sources */,
-				28DE1D8F271DF7C8000A9A62 /* CGImagePropertyOrientation+UIImageOrientation.swift in Sources */,
+				28DE1D5F27181D39000A9A62 /* ObjectDetectionViewController.swift in Sources */,
+				28DE1D89271DF6A6000A9A62 /* UIViewController+PhotoPicker.swift in Sources */,
 				28DE1D5B27181D39000A9A62 /* AppDelegate.swift in Sources */,
+				B32276BB2722C0FE005C2C51 /* People.mlmodel in Sources */,
+				B32276B72722A8EA005C2C51 /* FeaturesViewController.swift in Sources */,
+				B32276B92722AA93005C2C51 /* FaceDetectionViewController.swift in Sources */,
 				28F645B427206E2E00D818AD /* MobileNet.mlmodel in Sources */,
 				28DE1D5D27181D39000A9A62 /* SceneDelegate.swift in Sources */,
 			);
@@ -355,7 +363,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 75XL269LGD;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Example/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "To detect objects";
@@ -386,7 +394,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 75XL269LGD;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Example/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "To detect objects";

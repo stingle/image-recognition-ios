@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ObjectDetectionViewController.swift
 //  ImageRecognition
 //
 //  Created by Arthur Poghosyan on 14.10.21.
@@ -9,7 +9,12 @@ import UIKit
 import Vision
 import ImageRecognition
 
-class ViewController: UIViewController, UINavigationControllerDelegate {
+class ObjectDetectionViewController: ImagePickerViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = "Object Detection"
+    }
 
     let imagePredictor: ImagePredictor = {
         let defaultConfig = MLModelConfiguration()
@@ -52,6 +57,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate {
         DispatchQueue.global(qos: .userInitiated).async {
             self.classifyImage(photo)
         }
+    }
+
+    override func didSelectImage(image: UIImage) {
+        self.userSelectedPhoto(image)
     }
     
     // MARK: Image prediction methods
