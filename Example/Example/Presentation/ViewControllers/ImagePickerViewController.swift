@@ -10,12 +10,12 @@ import MobileCoreServices
 
 class ImagePickerViewController: UIViewController {
 
-     func presentPhotoPicker() {
+    func presentPhotoPicker() {
         let imagePickerController = UIImagePickerController()
-        imagePickerController.allowsEditing = false 
+        imagePickerController.allowsEditing = false
         imagePickerController.sourceType = .photoLibrary
         imagePickerController.delegate = self
-        present(imagePickerController, animated: true, completion: nil)
+        self.present(imagePickerController, animated: true, completion: nil)
     }
 
     func didSelectImage(image: UIImage) {}

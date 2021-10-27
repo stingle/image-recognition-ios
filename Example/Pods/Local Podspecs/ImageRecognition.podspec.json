@@ -1,28 +1,27 @@
 {
   "name": "ImageRecognition",
   "version": "0.1.0",
-  "summary": "Image Recognition.",
-  "description": "ImageRecognition is an object and face detection library.",
+  "summary": "A library to recognize objects and faces from image",
   "homepage": "https://github.com/stingle/image-recognition-ios",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
   },
   "authors": "Stingle",
+  "platforms": {
+    "ios": "13.0"
+  },
+  "swift_versions": "5.0",
   "source": {
     "git": "https://github.com/stingle/image-recognition-ios.git",
     "tag": "0.1.0"
   },
-  "platforms": {
-    "ios": "12.0",
-    "osx": "10.15"
-  },
+  "source_files": "ImageRecognition/Classes/**/*.swift",
   "ios": {
     "frameworks": [
       "Vision",
       "UIKit"
     ]
   },
-  "cocoapods_version": ">= 1.4.0",
-  "source_files": "ImageRecognition/Classes/**/*"
+  "swift_version": "5.0"
 }
