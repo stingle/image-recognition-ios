@@ -45,7 +45,8 @@ class FaceDetectionViewController: ImagePickerViewController {
     }
 
     private func collecteFaces(from image: UIImage) {
-        self.faceDetector.detectFace(from: image) { result in
+        self.faceDetector.detectFace(from: image) {[ weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let newFaces):
                 var existingFaces = self.faces

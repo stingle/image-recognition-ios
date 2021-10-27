@@ -17,13 +17,13 @@ public class FaceDetector {
             completion(.failure(.badImage))
             return
         }
-        let request = VNDetectFaceRectanglesRequest { request, error in
+        let request = VNDetectFaceRectanglesRequest { [weak self] request, error in
             guard let faces = request.results as? [VNFaceObservation] else { return }
             var detectedFaces = [Face]()
             for face in faces {
                 let bounds = VNImageRectForNormalizedRect(face.boundingBox, Int(image.size.width), Int(image.size.height))
                 let croppedImage = ciImage.cropped(to: bounds)
-                guard let featurePrint = self.featurePrintObservationForImage(ciImage: croppedImage) else {
+                guard let featurePrint = self?.featurePrintObservationForImage(ciImage: croppedImage) else {
                     continue
                 }
                 guard let newImage = croppedImage.toUIImage() else {
