@@ -13,10 +13,10 @@ enum Feature: Int, CaseIterable {
 
     var title: String {
         switch self {
-            case .objectDetection:
-                return "Object Detection"
-            case .faceDetection:
-                return "Face Detection"
+        case .objectDetection:
+            return "Object Detection"
+        case .faceDetection:
+            return "Face Detection"
         }
     }
 }
@@ -35,7 +35,7 @@ class FeaturesViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Feature.allCases.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         cell.accessoryType = .disclosureIndicator
@@ -47,10 +47,10 @@ class FeaturesViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let feature = Feature(rawValue: indexPath.row)!
         switch feature {
-            case .objectDetection:
-                self.performSegue(withIdentifier: "showObjectDetection", sender: self)
-            case .faceDetection:
-                self.performSegue(withIdentifier: "showFaceDetection", sender: self)
+        case .objectDetection:
+            self.performSegue(withIdentifier: "showObjectDetection", sender: self)
+        case .faceDetection:
+            self.performSegue(withIdentifier: "showFaceDetection", sender: self)
         }
     }
 

@@ -69,7 +69,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
     private func classifyImage(_ image: UIImage) {
         do {
             try self.imagePredictor.makePredictions(for: image,
-                                                    completionHandler: imagePredictionHandler)
+                                                       completionHandler: imagePredictionHandler)
         } catch {
             print("Vision was unable to make a prediction...\n\n\(error.localizedDescription)")
         }

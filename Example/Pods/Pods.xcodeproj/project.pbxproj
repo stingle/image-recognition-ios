@@ -8,20 +8,26 @@
 
 /* Begin PBXBuildFile section */
 		00BF4E688402AC31B29E5C7FA142EEBE /* Pods-Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D6D7C498FA339E02BD53ECB8916CEA8E /* Pods-Example-dummy.m */; };
-		0255FDCCCB57DDCC0EC3AE88EBFFF76B /* ImageRecognition-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 897A6917947147F2D1C3173A8696EC36 /* ImageRecognition-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		143CB77F7C66738EFE1C2BCC93FCEA8A /* ImagePredictor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264A6203885682D7E9B3E186BB55D6A0 /* ImagePredictor.swift */; };
 		2BEEA78292CC3C0917133D5A254B7D6B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C4ECDC4E4D8B2DFE48090DC9AC2F64E /* Foundation.framework */; };
-		3423E4AD84AE912282A65826AC5DD782 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0786329C940816CBA86FEF081621818A /* UIKit.framework */; };
-		3C7A4BAD0DE53D331BA95EF67D20AF62 /* ImageRecognition-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDC77CC3026CA59872B7A8D1FA83A45 /* ImageRecognition-dummy.m */; };
+		2D455DAC25DF2AC30D279D3198B6018F /* ImageRecognition-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F57491D8F1AE9E87C4BBF65D0E1A6678 /* ImageRecognition-dummy.m */; };
+		3CA37038CA4B7ED42825FAEE8A2B10C7 /* ImageRecognition-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D2D0C0EFD42865615D9F2A6EEADE4A3 /* ImageRecognition-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4C281E79E015215ED0FD2FD95B3F9A63 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C4ECDC4E4D8B2DFE48090DC9AC2F64E /* Foundation.framework */; };
 		5575551B409A39F66959AA042AC6DC7C /* Pods-Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 7825A90E082A1582EB16256B0E722B3F /* Pods-Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		82EF20E289868BFC77964C17554FB1C3 /* ImagePredictor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B01A92A798757AE78B7F9B80F5614C4 /* ImagePredictor.swift */; };
-		B3D61EEC2721A5640082BC15 /* CGImagePropertyOrientation+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D61EEA2721A5640082BC15 /* CGImagePropertyOrientation+Ext.swift */; };
-		B3D61EED2721A5640082BC15 /* VNClassificationObservation+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D61EEB2721A5640082BC15 /* VNClassificationObservation+Ext.swift */; };
-		CA1331813B5A2353FE9E0183079ACFB9 /* Vision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABBE89177AC0AC74D49C7B5BFFCAC03E /* Vision.framework */; };
-		D1B25DE6E8C843D845113F9A9FA1EC4F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C4ECDC4E4D8B2DFE48090DC9AC2F64E /* Foundation.framework */; };
+		7FB8963581F865E153A476B3D4D57398 /* VNClassificationObservation+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283D5744A57CD50A9A3750433FD418C1 /* VNClassificationObservation+Ext.swift */; };
+		89A62029B31B14FD02295A9D0F00FF57 /* FaceDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8FF9FB50C390DA6BB3F28C02F361FCB /* FaceDetector.swift */; };
+		8DF0594557A9AC40E9C520E20B6118D3 /* CGImagePropertyOrientation+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65E33DFAD5278B47E739E78225C258A /* CGImagePropertyOrientation+Ext.swift */; };
+		B31D0F07272926DC00BE7CC9 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31D0F06272926DC00BE7CC9 /* Face.swift */; };
+		B31D0F0F27294A8800BE7CC9 /* FaceFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31D0F0E27294A8800BE7CC9 /* FaceFeatures.swift */; };
+		B31D0F13272993F600BE7CC9 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31D0F12272993F600BE7CC9 /* UIImage+Ext.swift */; };
+		B31D0F152729940A00BE7CC9 /* CIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31D0F142729940A00BE7CC9 /* CIImage+Ext.swift */; };
+		D3318BE45CEF5861F9205D3620270696 /* FaceDetectorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F79C7BE3C373EDB079009220582775 /* FaceDetectorError.swift */; };
+		E94BAFD3C0F86C9C40BC4B6692A6F6FA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0786329C940816CBA86FEF081621818A /* UIKit.framework */; };
+		FDF7BBEC92D7652F599CFE7AF9EAD183 /* Vision.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABBE89177AC0AC74D49C7B5BFFCAC03E /* Vision.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		A5AEFD09A1BFDA6FCFB9FCD2A3A74A17 /* PBXContainerItemProxy */ = {
+		EE2D72CF3799965B239EEE334DC5FDBE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
@@ -31,34 +37,40 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		013F25AE6E09EF5FC2F0EC74BE26CF0D /* ImageRecognition-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ImageRecognition-Info.plist"; sourceTree = "<group>"; };
 		0786329C940816CBA86FEF081621818A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		1A8BE119258E9FD52663CFE5262D7BDF /* ImageRecognition-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ImageRecognition-prefix.pch"; sourceTree = "<group>"; };
 		1F667CC0E19EAF34E5A4119E2121F585 /* Pods-Example */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-Example"; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		243410B9535472556EA4BB6DBC133A0D /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
+		264A6203885682D7E9B3E186BB55D6A0 /* ImagePredictor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImagePredictor.swift; path = ImageRecognition/Classes/ImagePredictor.swift; sourceTree = "<group>"; };
+		283D5744A57CD50A9A3750433FD418C1 /* VNClassificationObservation+Ext.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "VNClassificationObservation+Ext.swift"; sourceTree = "<group>"; };
 		2C4ECDC4E4D8B2DFE48090DC9AC2F64E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		31C1D37707DFAA5E6A164BCC07834264 /* Pods-Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Example-Info.plist"; sourceTree = "<group>"; };
+		3479DC8FEC7CF1306EE1CD06E15244EF /* ImageRecognition-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ImageRecognition-prefix.pch"; sourceTree = "<group>"; };
+		34C6BD8E93BE8C7DEE85A7B36C24184C /* ImageRecognition.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ImageRecognition.release.xcconfig; sourceTree = "<group>"; };
 		35C305D3797C284E6F5BAA1D3E6F9BF8 /* Pods-Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Example.modulemap"; sourceTree = "<group>"; };
 		441854E35F81731E63E53DC7E4EEAD9D /* Pods-Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		4791632EDE541F6544B7EAC95BD500C3 /* ImageRecognition */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = ImageRecognition; path = ImageRecognition.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5A55F104F974E57078604D04C191F051 /* ImageRecognition.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = ImageRecognition.modulemap; sourceTree = "<group>"; };
-		5DDC77CC3026CA59872B7A8D1FA83A45 /* ImageRecognition-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ImageRecognition-dummy.m"; sourceTree = "<group>"; };
-		66B94CA558870A0038A77B8A77088EDE /* ImageRecognition.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = ImageRecognition.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		6B01A92A798757AE78B7F9B80F5614C4 /* ImagePredictor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImagePredictor.swift; path = ImageRecognition/Classes/ImagePredictor.swift; sourceTree = "<group>"; };
+		6D2D0C0EFD42865615D9F2A6EEADE4A3 /* ImageRecognition-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ImageRecognition-umbrella.h"; sourceTree = "<group>"; };
 		7825A90E082A1582EB16256B0E722B3F /* Pods-Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Example-umbrella.h"; sourceTree = "<group>"; };
-		81AEB6BDFA8D3C99C3E45E6575D94A01 /* ImageRecognition.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ImageRecognition.debug.xcconfig; sourceTree = "<group>"; };
-		897A6917947147F2D1C3173A8696EC36 /* ImageRecognition-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ImageRecognition-umbrella.h"; sourceTree = "<group>"; };
-		98F7BB22F572AAE89D7A97EF1A1A076F /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		7D0C8C82F95675FD86F0BB211936D49D /* ImageRecognition.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = ImageRecognition.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		8E315AFFB5FDA79140A7938AF61A701B /* ImageRecognition.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = ImageRecognition.modulemap; sourceTree = "<group>"; };
+		92F79C7BE3C373EDB079009220582775 /* FaceDetectorError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FaceDetectorError.swift; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9F4C659AE802AB10603BEF6972046493 /* ImageRecognition-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ImageRecognition-Info.plist"; sourceTree = "<group>"; };
+		A1585D5E92EA2B8BB2CCCA75452F7015 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		ABBE89177AC0AC74D49C7B5BFFCAC03E /* Vision.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Vision.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Vision.framework; sourceTree = DEVELOPER_DIR; };
-		AE5764D6CCCF97A7CFA01BE010F7E07A /* ImageRecognition.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ImageRecognition.release.xcconfig; sourceTree = "<group>"; };
 		AFECBC24E09D0D25F822C27BD944AFD4 /* Pods-Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Example-frameworks.sh"; sourceTree = "<group>"; };
-		B3D61EEA2721A5640082BC15 /* CGImagePropertyOrientation+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CGImagePropertyOrientation+Ext.swift"; path = "ImageRecognition/Classes/CGImagePropertyOrientation+Ext.swift"; sourceTree = "<group>"; };
-		B3D61EEB2721A5640082BC15 /* VNClassificationObservation+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "VNClassificationObservation+Ext.swift"; path = "ImageRecognition/Classes/VNClassificationObservation+Ext.swift"; sourceTree = "<group>"; };
+		B160A8D7727F5CD08BD5D14C97779ACF /* ImageRecognition.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ImageRecognition.debug.xcconfig; sourceTree = "<group>"; };
+		B31D0F06272926DC00BE7CC9 /* Face.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
+		B31D0F0E27294A8800BE7CC9 /* FaceFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceFeatures.swift; sourceTree = "<group>"; };
+		B31D0F12272993F600BE7CC9 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
+		B31D0F142729940A00BE7CC9 /* CIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+Ext.swift"; sourceTree = "<group>"; };
 		B45138496B85A072654D1D0F8EBBEDE5 /* Pods-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Example.debug.xcconfig"; sourceTree = "<group>"; };
+		B65E33DFAD5278B47E739E78225C258A /* CGImagePropertyOrientation+Ext.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "CGImagePropertyOrientation+Ext.swift"; sourceTree = "<group>"; };
 		D6D7C498FA339E02BD53ECB8916CEA8E /* Pods-Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Example-dummy.m"; sourceTree = "<group>"; };
-		DB7346BCC701B34A78CC7A07E6FF9527 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E8FF9FB50C390DA6BB3F28C02F361FCB /* FaceDetector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FaceDetector.swift; path = ImageRecognition/Classes/FaceDetector.swift; sourceTree = "<group>"; };
 		EA21B344259B58996DB73382B1B1521F /* Pods-Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Example-acknowledgements.plist"; sourceTree = "<group>"; };
+		EE0758092A5BFFE1BF0EB0C0F5C54B21 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F57491D8F1AE9E87C4BBF65D0E1A6678 /* ImageRecognition-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ImageRecognition-dummy.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,13 +82,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F7B5971235B7C35D35D464CC1E607F3D /* Frameworks */ = {
+		92AC942C9C30154C6551FEC69785457A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1B25DE6E8C843D845113F9A9FA1EC4F /* Foundation.framework in Frameworks */,
-				3423E4AD84AE912282A65826AC5DD782 /* UIKit.framework in Frameworks */,
-				CA1331813B5A2353FE9E0183079ACFB9 /* Vision.framework in Frameworks */,
+				4C281E79E015215ED0FD2FD95B3F9A63 /* Foundation.framework in Frameworks */,
+				E94BAFD3C0F86C9C40BC4B6692A6F6FA /* UIKit.framework in Frameworks */,
+				FDF7BBEC92D7652F599CFE7AF9EAD183 /* Vision.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,35 +103,34 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		1EB8A050EEF11218DB13F7B425702586 /* ImageRecognition */ = {
+		1F267F9A5989233F81EFAC2B6492E9D9 /* ImageRecognition */ = {
 			isa = PBXGroup;
 			children = (
-				B3D61EEA2721A5640082BC15 /* CGImagePropertyOrientation+Ext.swift */,
-				B3D61EEB2721A5640082BC15 /* VNClassificationObservation+Ext.swift */,
-				6B01A92A798757AE78B7F9B80F5614C4 /* ImagePredictor.swift */,
-				21ACA9CA238CFCA320A059701242CFCB /* Pod */,
-				88EB0F4A1995438E89269B9EBFB89702 /* Support Files */,
+				E8FF9FB50C390DA6BB3F28C02F361FCB /* FaceDetector.swift */,
+				264A6203885682D7E9B3E186BB55D6A0 /* ImagePredictor.swift */,
+				B31D0F05272926DC00BE7CC9 /* Objects */,
+				9CFB713F8BD6009F898FE8195EAAC93E /* Errors */,
+				B92579CCC2DC8CB3B64E8388ACD66C9D /* Extensions */,
+				D930B6C1F659A17EC5E694F0793651A6 /* Pod */,
+				4E18E3651ED82A2CA30D4CE22AE54303 /* Support Files */,
 			);
 			name = ImageRecognition;
 			path = ../..;
 			sourceTree = "<group>";
 		};
-		21ACA9CA238CFCA320A059701242CFCB /* Pod */ = {
+		4E18E3651ED82A2CA30D4CE22AE54303 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				66B94CA558870A0038A77B8A77088EDE /* ImageRecognition.podspec */,
-				98F7BB22F572AAE89D7A97EF1A1A076F /* LICENSE */,
-				DB7346BCC701B34A78CC7A07E6FF9527 /* README.md */,
+				8E315AFFB5FDA79140A7938AF61A701B /* ImageRecognition.modulemap */,
+				F57491D8F1AE9E87C4BBF65D0E1A6678 /* ImageRecognition-dummy.m */,
+				013F25AE6E09EF5FC2F0EC74BE26CF0D /* ImageRecognition-Info.plist */,
+				3479DC8FEC7CF1306EE1CD06E15244EF /* ImageRecognition-prefix.pch */,
+				6D2D0C0EFD42865615D9F2A6EEADE4A3 /* ImageRecognition-umbrella.h */,
+				B160A8D7727F5CD08BD5D14C97779ACF /* ImageRecognition.debug.xcconfig */,
+				34C6BD8E93BE8C7DEE85A7B36C24184C /* ImageRecognition.release.xcconfig */,
 			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
-		740FA558AC358565079CE3CAC4E8C28D /* Development Pods */ = {
-			isa = PBXGroup;
-			children = (
-				1EB8A050EEF11218DB13F7B425702586 /* ImageRecognition */,
-			);
-			name = "Development Pods";
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/ImageRecognition";
 			sourceTree = "<group>";
 		};
 		74DFB2BB20096EBF853D23B55D56E7D8 /* iOS */ = {
@@ -132,19 +143,12 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		88EB0F4A1995438E89269B9EBFB89702 /* Support Files */ = {
+		7B1E2290428EB7376A0947C0725D1638 /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5A55F104F974E57078604D04C191F051 /* ImageRecognition.modulemap */,
-				5DDC77CC3026CA59872B7A8D1FA83A45 /* ImageRecognition-dummy.m */,
-				9F4C659AE802AB10603BEF6972046493 /* ImageRecognition-Info.plist */,
-				1A8BE119258E9FD52663CFE5262D7BDF /* ImageRecognition-prefix.pch */,
-				897A6917947147F2D1C3173A8696EC36 /* ImageRecognition-umbrella.h */,
-				81AEB6BDFA8D3C99C3E45E6575D94A01 /* ImageRecognition.debug.xcconfig */,
-				AE5764D6CCCF97A7CFA01BE010F7E07A /* ImageRecognition.release.xcconfig */,
+				1F267F9A5989233F81EFAC2B6492E9D9 /* ImageRecognition */,
 			);
-			name = "Support Files";
-			path = "Example/Pods/Target Support Files/ImageRecognition";
+			name = "Development Pods";
 			sourceTree = "<group>";
 		};
 		9BDBD95ED116334D1B2835202D8D3060 /* Pods-Example */ = {
@@ -162,6 +166,37 @@
 			);
 			name = "Pods-Example";
 			path = "Target Support Files/Pods-Example";
+			sourceTree = "<group>";
+		};
+		9CFB713F8BD6009F898FE8195EAAC93E /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				92F79C7BE3C373EDB079009220582775 /* FaceDetectorError.swift */,
+			);
+			name = Errors;
+			path = ImageRecognition/Classes/Errors;
+			sourceTree = "<group>";
+		};
+		B31D0F05272926DC00BE7CC9 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				B31D0F06272926DC00BE7CC9 /* Face.swift */,
+				B31D0F0E27294A8800BE7CC9 /* FaceFeatures.swift */,
+			);
+			name = Objects;
+			path = ImageRecognition/Classes/Objects;
+			sourceTree = "<group>";
+		};
+		B92579CCC2DC8CB3B64E8388ACD66C9D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B65E33DFAD5278B47E739E78225C258A /* CGImagePropertyOrientation+Ext.swift */,
+				283D5744A57CD50A9A3750433FD418C1 /* VNClassificationObservation+Ext.swift */,
+				B31D0F12272993F600BE7CC9 /* UIImage+Ext.swift */,
+				B31D0F142729940A00BE7CC9 /* CIImage+Ext.swift */,
+			);
+			name = Extensions;
+			path = ImageRecognition/Classes/Extensions;
 			sourceTree = "<group>";
 		};
 		C36208DE4CD026E192D29405B5049DAA /* Products */ = {
@@ -185,21 +220,31 @@
 			isa = PBXGroup;
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
-				740FA558AC358565079CE3CAC4E8C28D /* Development Pods */,
+				7B1E2290428EB7376A0947C0725D1638 /* Development Pods */,
 				03C5C200A0787E300053CFA8F53CA094 /* Frameworks */,
 				C36208DE4CD026E192D29405B5049DAA /* Products */,
 				CE2E825F08D3AD0FD76E6D78D7512ED0 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
+		D930B6C1F659A17EC5E694F0793651A6 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				7D0C8C82F95675FD86F0BB211936D49D /* ImageRecognition.podspec */,
+				A1585D5E92EA2B8BB2CCCA75452F7015 /* LICENSE */,
+				EE0758092A5BFFE1BF0EB0C0F5C54B21 /* README.md */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		13B891913FB5C4919DA7727448C8F251 /* Headers */ = {
+		6C4B3DE14ADE9A5C9A1B06DABFB16C9A /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0255FDCCCB57DDCC0EC3AE88EBFFF76B /* ImageRecognition-umbrella.h in Headers */,
+				3CA37038CA4B7ED42825FAEE8A2B10C7 /* ImageRecognition-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,7 +271,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				0BA92882BCB1285A73D84B7D2C7E0EF1 /* PBXTargetDependency */,
+				C84398C1A06175663CE96A913AB26F55 /* PBXTargetDependency */,
 			);
 			name = "Pods-Example";
 			productName = Pods_Example;
@@ -235,12 +280,12 @@
 		};
 		AD03B308A934885F841701048B39AA15 /* ImageRecognition */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6462EDF89DCE7238870D2B7A2BC8AEA3 /* Build configuration list for PBXNativeTarget "ImageRecognition" */;
+			buildConfigurationList = 0104A29A932AB1FDFDDC69B7405C7C2D /* Build configuration list for PBXNativeTarget "ImageRecognition" */;
 			buildPhases = (
-				13B891913FB5C4919DA7727448C8F251 /* Headers */,
-				A03A3E6ACDA39466637E44A761526DCA /* Sources */,
-				F7B5971235B7C35D35D464CC1E607F3D /* Frameworks */,
-				F378098852E7AA5FD1EDAEA06FFAAC80 /* Resources */,
+				6C4B3DE14ADE9A5C9A1B06DABFB16C9A /* Headers */,
+				B1DAA5B12EB1C0DE67A36A082AA9CFBE /* Sources */,
+				92AC942C9C30154C6551FEC69785457A /* Frameworks */,
+				EF6A41D2C46BFE59050944C91B8EB4DC /* Resources */,
 			);
 			buildRules = (
 			);
@@ -287,7 +332,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F378098852E7AA5FD1EDAEA06FFAAC80 /* Resources */ = {
+		EF6A41D2C46BFE59050944C91B8EB4DC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -305,65 +350,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A03A3E6ACDA39466637E44A761526DCA /* Sources */ = {
+		B1DAA5B12EB1C0DE67A36A082AA9CFBE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B3D61EED2721A5640082BC15 /* VNClassificationObservation+Ext.swift in Sources */,
-				82EF20E289868BFC77964C17554FB1C3 /* ImagePredictor.swift in Sources */,
-				3C7A4BAD0DE53D331BA95EF67D20AF62 /* ImageRecognition-dummy.m in Sources */,
-				B3D61EEC2721A5640082BC15 /* CGImagePropertyOrientation+Ext.swift in Sources */,
+				B31D0F07272926DC00BE7CC9 /* Face.swift in Sources */,
+				B31D0F0F27294A8800BE7CC9 /* FaceFeatures.swift in Sources */,
+				8DF0594557A9AC40E9C520E20B6118D3 /* CGImagePropertyOrientation+Ext.swift in Sources */,
+				89A62029B31B14FD02295A9D0F00FF57 /* FaceDetector.swift in Sources */,
+				D3318BE45CEF5861F9205D3620270696 /* FaceDetectorError.swift in Sources */,
+				143CB77F7C66738EFE1C2BCC93FCEA8A /* ImagePredictor.swift in Sources */,
+				B31D0F13272993F600BE7CC9 /* UIImage+Ext.swift in Sources */,
+				B31D0F152729940A00BE7CC9 /* CIImage+Ext.swift in Sources */,
+				2D455DAC25DF2AC30D279D3198B6018F /* ImageRecognition-dummy.m in Sources */,
+				7FB8963581F865E153A476B3D4D57398 /* VNClassificationObservation+Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		0BA92882BCB1285A73D84B7D2C7E0EF1 /* PBXTargetDependency */ = {
+		C84398C1A06175663CE96A913AB26F55 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = ImageRecognition;
 			target = AD03B308A934885F841701048B39AA15 /* ImageRecognition */;
-			targetProxy = A5AEFD09A1BFDA6FCFB9FCD2A3A74A17 /* PBXContainerItemProxy */;
+			targetProxy = EE2D72CF3799965B239EEE334DC5FDBE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		210145EA5D23A6C3D67489D33901BD80 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = AE5764D6CCCF97A7CFA01BE010F7E07A /* ImageRecognition.release.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/ImageRecognition/ImageRecognition-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/ImageRecognition/ImageRecognition-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MODULEMAP_FILE = "Target Support Files/ImageRecognition/ImageRecognition.modulemap";
-				PRODUCT_MODULE_NAME = ImageRecognition;
-				PRODUCT_NAME = ImageRecognition;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		2B9E26EAE2CD392AD762421F663075A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -492,9 +507,9 @@
 			};
 			name = Release;
 		};
-		950F1E91CBB9C8AA8829C5D8CD872164 /* Debug */ = {
+		6E47D97EFB80B2A7E7133FB3C1806E40 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 81AEB6BDFA8D3C99C3E45E6575D94A01 /* ImageRecognition.debug.xcconfig */;
+			baseConfigurationReference = 34C6BD8E93BE8C7DEE85A7B36C24184C /* ImageRecognition.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -508,7 +523,43 @@
 				GCC_PREFIX_HEADER = "Target Support Files/ImageRecognition/ImageRecognition-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/ImageRecognition/ImageRecognition-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/ImageRecognition/ImageRecognition.modulemap";
+				PRODUCT_MODULE_NAME = ImageRecognition;
+				PRODUCT_NAME = ImageRecognition;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		DEBCA16D1A3BA4E095D79C06268D4D4F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B160A8D7727F5CD08BD5D14C97779ACF /* ImageRecognition.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/ImageRecognition/ImageRecognition-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/ImageRecognition/ImageRecognition-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -605,20 +656,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0104A29A932AB1FDFDDC69B7405C7C2D /* Build configuration list for PBXNativeTarget "ImageRecognition" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DEBCA16D1A3BA4E095D79C06268D4D4F /* Debug */,
+				6E47D97EFB80B2A7E7133FB3C1806E40 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2B9E26EAE2CD392AD762421F663075A1 /* Debug */,
 				63FAF33E1C55B71A5F5A8B3CC8749F99 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		6462EDF89DCE7238870D2B7A2BC8AEA3 /* Build configuration list for PBXNativeTarget "ImageRecognition" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				950F1E91CBB9C8AA8829C5D8CD872164 /* Debug */,
-				210145EA5D23A6C3D67489D33901BD80 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
