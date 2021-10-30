@@ -57,7 +57,6 @@ extension ImagePickerViewController: UIImagePickerControllerDelegate, UINavigati
     }
     
     func getFramesFromVideo(url: URL) -> [UIImage?] {//todo и подкрутить ручками и по умолчанию динамически
-        //todo android model check
         let framesNumber = getNumberOfFrames(url: url)
         let asset = AVURLAsset(url: url)
         let durationInSeconds = asset.duration.seconds
@@ -66,9 +65,8 @@ extension ImagePickerViewController: UIImagePickerControllerDelegate, UINavigati
         let generator = AVAssetImageGenerator(asset: asset)
         generator.appliesPreferredTrackTransform = true
         var frames = [UIImage]()
-
         
-        for i in 0..<Int(framesNumber) {
+        for i in 0..<Int(durationInSeconds) {
             if let cgImage = try? generator.copyCGImage(at: CMTime(seconds: Double(i), preferredTimescale: CMTimeScale(1)), actualTime: nil) {
                 frames.append(UIImage(cgImage: cgImage))
             }
@@ -125,10 +123,14 @@ extension ImagePickerViewController: UIImagePickerControllerDelegate, UINavigati
     
     func videoSelected(info: [UIImagePickerController.InfoKey : Any]) {
         let videoURL = info[UIImagePickerController.InfoKey.mediaURL] as! URL
-        let frames = getFramesFromVideo(url: videoURL)
-        print("getFramesFromVideo = ", frames.count)//todo pdf
-        self.didSelectFrames(frames: frames)
-        self.dismiss(animated: true)
+        DispatchQueue.global(qos: .userInitiated).async {
+            let frames = self.getFramesFromVideo(url: videoURL)//todo slowest function on Earth
+            DispatchQueue.main.async {
+                self.didSelectFrames(frames: frames)
+                self.dismiss(animated: true)
+            }
+        }
+
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

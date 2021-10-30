@@ -26,12 +26,13 @@ class ObjectDetectionViewController: ImagePickerViewController {
         return predictor
     }()
 
-    let minimumConfidencePercentage : Float = 10
-    
+    let minimumConfidencePercentage : Float = 25
+    var topPredictions = [String:String]() as Dictionary
+
     // MARK: Main storyboard outlets
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var predictionLabel: UILabel!
-    
+
     // MARK: Main storyboard actions
     @IBAction func singleTap() {
         presentPhotoPicker()
@@ -64,6 +65,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
     }
     
     func userSelectedFrames(_ frames: [UIImage?]) {
+        topPredictions.removeAll()
         if frames.count > 0 {
             updateImage(frames[0]!)
             updatePredictionLabel("Making predictions for the video...")
@@ -103,6 +105,8 @@ class ObjectDetectionViewController: ImagePickerViewController {
     /// Sends a frame to the Image Predictor to get a prediction of its content.
     /// - Parameter frame: A photo.
     private func classifyFrame(_ frame: UIImage) {
+//        guard let model = try? VNCoreMLModel(for: MobileNet().model) else { return }
+
         do {
             try self.imagePredictor.makePredictions(for: frame,
                                                     completionHandler: framePredictionHandler)
@@ -135,16 +139,12 @@ class ObjectDetectionViewController: ImagePickerViewController {
             updatePredictionLabel("No predictions. (Check console log.)")
             return
         }
-        //todo continue from here
-        //collect new predictions, ignore ignore repetitive. Once all frames checked - update label
         let formattedPredictions = formatPredictions(predictions)
-
         let predictionString = formattedPredictions.keys.joined(separator: "\n")
-//        updatePredictionLabel(predictionString)
+        updatePredictionLabel(predictionString)
     }
 
     private func formatPredictions(_ predictions: [ImagePredictor.Prediction]) -> [String:String] {
-        var topPredictions = [String:String]() as Dictionary
         for prediction in predictions {
             if Float(prediction.confidencePercentage)! > minimumConfidencePercentage {
                 var name = prediction.classification
