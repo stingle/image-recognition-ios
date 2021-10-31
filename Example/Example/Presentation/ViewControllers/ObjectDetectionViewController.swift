@@ -56,6 +56,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
     }
 
     func userSelectedPhoto(_ photo: UIImage) {
+        topPredictions.removeAll()
         updateImage(photo)
         updatePredictionLabel("Making predictions for the photo...")
 
@@ -128,6 +129,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
         let formattedPredictions = formatPredictions(predictions)
 
         let predictionString = formattedPredictions.keys.joined(separator: "\n")
+        print(predictionString)
         updatePredictionLabel(predictionString)
     }
     
@@ -140,6 +142,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
             return
         }
         let formattedPredictions = formatPredictions(predictions)
+        
         let predictionString = formattedPredictions.keys.joined(separator: "\n")
         updatePredictionLabel(predictionString)
     }
@@ -154,13 +157,17 @@ class ObjectDetectionViewController: ImagePickerViewController {
                 if !topPredictions.keys.contains(prediction.classification) {
                     topPredictions[prediction.classification] = prediction.confidencePercentage
                 }
-            } else {
-                if topPredictions.count == 0 {
-                    topPredictions["no matches"] = "0"
-                }
-                return topPredictions
             }
         }
+        
+        if topPredictions.count == 0 {
+            topPredictions["no matches"] = "0"
+        }
+        
+        if (topPredictions.count > 1 && topPredictions["no matches"] != nil) {
+            topPredictions.removeValue(forKey: "no matches")
+        }
+        
         return topPredictions
     }
 

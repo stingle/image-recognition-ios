@@ -56,24 +56,35 @@ extension ImagePickerViewController: UIImagePickerControllerDelegate, UINavigati
         
     }
     
-    func getFramesFromVideo(url: URL) -> [UIImage?] {//todo и подкрутить ручками и по умолчанию динамически
-        let framesNumber = getNumberOfFrames(url: url)
+    func getFramesFromVideo(url: URL) -> [UIImage?] { //todo right now I'm getting frames from every second, you can check it in for loop and also in generateThumnail function (preferredTimescale = 600). Checking every frame is painfull and super-slow, I can't imagine that someone will need it. For future - need to add functionality of comparing frames only by key pixels
+//        let framesNumber = getNumberOfFrames(url: url) //for test
         let asset = AVURLAsset(url: url)
         let durationInSeconds = asset.duration.seconds
-        print("framesNumber = ", framesNumber)
-        print("videoLength = ", durationInSeconds)
         let generator = AVAssetImageGenerator(asset: asset)
         generator.appliesPreferredTrackTransform = true
         var frames = [UIImage]()
-        
         for i in 0..<Int(durationInSeconds) {
-            if let cgImage = try? generator.copyCGImage(at: CMTime(seconds: Double(i), preferredTimescale: CMTimeScale(1)), actualTime: nil) {
-                frames.append(UIImage(cgImage: cgImage))
+            let cgImage = generateThumnail(url: url, fromTime: Float64(i))
+            if cgImage != nil {
+                frames.append(cgImage!)
             }
         }
-        print("images.count = ", frames.count)
         
         return frames
+    }
+    
+    fileprivate func generateThumnail(url : URL, fromTime:Float64) -> UIImage? {
+        let asset :AVAsset = AVAsset(url: url)
+        let assetImgGenerate : AVAssetImageGenerator = AVAssetImageGenerator(asset: asset)
+        assetImgGenerate.appliesPreferredTrackTransform = true
+        assetImgGenerate.requestedTimeToleranceAfter = CMTime.zero;
+        assetImgGenerate.requestedTimeToleranceBefore = CMTime.zero;
+        let time : CMTime = CMTimeMakeWithSeconds(fromTime, preferredTimescale: 600)
+        if let img = try? assetImgGenerate.copyCGImage(at:time, actualTime: nil) {
+            return UIImage(cgImage: img)
+        } else {
+            return nil
+        }
     }
 
     
