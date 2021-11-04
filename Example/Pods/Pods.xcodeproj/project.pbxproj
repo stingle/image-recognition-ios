@@ -17,8 +17,8 @@
 		7FB8963581F865E153A476B3D4D57398 /* VNClassificationObservation+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283D5744A57CD50A9A3750433FD418C1 /* VNClassificationObservation+Ext.swift */; };
 		89A62029B31B14FD02295A9D0F00FF57 /* FaceDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8FF9FB50C390DA6BB3F28C02F361FCB /* FaceDetector.swift */; };
 		8DF0594557A9AC40E9C520E20B6118D3 /* CGImagePropertyOrientation+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65E33DFAD5278B47E739E78225C258A /* CGImagePropertyOrientation+Ext.swift */; };
+		B3101E3B2733E3980026BCED /* Facenet6.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B3101E3A2733E3980026BCED /* Facenet6.mlmodel */; };
 		B31D0F07272926DC00BE7CC9 /* Face.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31D0F06272926DC00BE7CC9 /* Face.swift */; };
-		B31D0F0F27294A8800BE7CC9 /* FaceFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31D0F0E27294A8800BE7CC9 /* FaceFeatures.swift */; };
 		B31D0F13272993F600BE7CC9 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31D0F12272993F600BE7CC9 /* UIImage+Ext.swift */; };
 		B31D0F152729940A00BE7CC9 /* CIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31D0F142729940A00BE7CC9 /* CIImage+Ext.swift */; };
 		D3318BE45CEF5861F9205D3620270696 /* FaceDetectorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F79C7BE3C373EDB079009220582775 /* FaceDetectorError.swift */; };
@@ -60,8 +60,8 @@
 		ABBE89177AC0AC74D49C7B5BFFCAC03E /* Vision.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Vision.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Vision.framework; sourceTree = DEVELOPER_DIR; };
 		AFECBC24E09D0D25F822C27BD944AFD4 /* Pods-Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Example-frameworks.sh"; sourceTree = "<group>"; };
 		B160A8D7727F5CD08BD5D14C97779ACF /* ImageRecognition.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ImageRecognition.debug.xcconfig; sourceTree = "<group>"; };
+		B3101E3A2733E3980026BCED /* Facenet6.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Facenet6.mlmodel; sourceTree = "<group>"; };
 		B31D0F06272926DC00BE7CC9 /* Face.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Face.swift; sourceTree = "<group>"; };
-		B31D0F0E27294A8800BE7CC9 /* FaceFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceFeatures.swift; sourceTree = "<group>"; };
 		B31D0F12272993F600BE7CC9 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		B31D0F142729940A00BE7CC9 /* CIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+Ext.swift"; sourceTree = "<group>"; };
 		B45138496B85A072654D1D0F8EBBEDE5 /* Pods-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -109,6 +109,7 @@
 				E8FF9FB50C390DA6BB3F28C02F361FCB /* FaceDetector.swift */,
 				264A6203885682D7E9B3E186BB55D6A0 /* ImagePredictor.swift */,
 				B31D0F05272926DC00BE7CC9 /* Objects */,
+				B3101E392733E3980026BCED /* Models */,
 				9CFB713F8BD6009F898FE8195EAAC93E /* Errors */,
 				B92579CCC2DC8CB3B64E8388ACD66C9D /* Extensions */,
 				D930B6C1F659A17EC5E694F0793651A6 /* Pod */,
@@ -177,11 +178,19 @@
 			path = ImageRecognition/Classes/Errors;
 			sourceTree = "<group>";
 		};
+		B3101E392733E3980026BCED /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B3101E3A2733E3980026BCED /* Facenet6.mlmodel */,
+			);
+			name = Models;
+			path = ImageRecognition/Classes/Models;
+			sourceTree = "<group>";
+		};
 		B31D0F05272926DC00BE7CC9 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
 				B31D0F06272926DC00BE7CC9 /* Face.swift */,
-				B31D0F0E27294A8800BE7CC9 /* FaceFeatures.swift */,
 			);
 			name = Objects;
 			path = ImageRecognition/Classes/Objects;
@@ -355,7 +364,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B31D0F07272926DC00BE7CC9 /* Face.swift in Sources */,
-				B31D0F0F27294A8800BE7CC9 /* FaceFeatures.swift in Sources */,
 				8DF0594557A9AC40E9C520E20B6118D3 /* CGImagePropertyOrientation+Ext.swift in Sources */,
 				89A62029B31B14FD02295A9D0F00FF57 /* FaceDetector.swift in Sources */,
 				D3318BE45CEF5861F9205D3620270696 /* FaceDetectorError.swift in Sources */,
@@ -364,6 +372,7 @@
 				B31D0F152729940A00BE7CC9 /* CIImage+Ext.swift in Sources */,
 				2D455DAC25DF2AC30D279D3198B6018F /* ImageRecognition-dummy.m in Sources */,
 				7FB8963581F865E153A476B3D4D57398 /* VNClassificationObservation+Ext.swift in Sources */,
+				B3101E3B2733E3980026BCED /* Facenet6.mlmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,16 +11,26 @@ import Vision
 public class Face {
     public let boundingBox: CGRect
     public let image: UIImage
-    public let features: FaceFeatures
+    public let pixelBuffer: [Float32]
 
-    internal init(boundingBox: CGRect, image: UIImage, features: FaceFeatures) {
+    internal init(boundingBox: CGRect, image: UIImage, pixelBuffer: [Float32]) {
         self.boundingBox = boundingBox
         self.image = image
-        self.features = features
+        self.pixelBuffer = pixelBuffer
     }
 
-    public static func ==(lhs: Face, rhs: Face) -> Bool {
-        return lhs.features == rhs.features
+}
+
+extension Face: Hashable {
+    public static func == (lhs: Face, rhs: Face) -> Bool {
+        return lhs.boundingBox == rhs.boundingBox && lhs.image == rhs.image
+    }
+
+
+    public func hash(into hasher: inout Hasher) {
+        let boundingBoxString = "\(self.boundingBox.origin.x):\(self.boundingBox.origin.y)-\(self.boundingBox.width):\(self.boundingBox.height)"
+        hasher.combine(boundingBoxString)
+        hasher.combine(self.image)
     }
 
 }

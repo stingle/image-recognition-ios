@@ -39,7 +39,6 @@ extension ImagePickerViewController: UIImagePickerControllerDelegate, UINavigati
         
         guard info[UIImagePickerController.InfoKey.mediaType] != nil else { return }
         let mediaType = info[UIImagePickerController.InfoKey.mediaType] as! CFString
-        print(mediaType)
         switch mediaType {
         case kUTTypeImage:
             imageSelected(info: info)
@@ -106,7 +105,7 @@ extension ImagePickerViewController: UIImagePickerControllerDelegate, UINavigati
             if sampleBuffer == nil {
                 break
             }
-            let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer!)
+//            let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer!)
             nFrames = nFrames+1
         }
 

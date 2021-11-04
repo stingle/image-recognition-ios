@@ -35,7 +35,7 @@ class FaceDetectionViewController: ImagePickerViewController {
             self.imagesCollectionView.reloadData()
             return
         }
-        self.filteredImages = self.images.filter({ $0.1.contains(where: { $0.features == selectedFace.features }) })
+        self.filteredImages = self.images.filter({ $0.1.contains(where: { self.faceDetector.computeSimilarity(face: selectedFace, with: $0) >= 0.6 }) })
         self.imagesCollectionView.reloadData()
     }
 
@@ -45,14 +45,14 @@ class FaceDetectionViewController: ImagePickerViewController {
     }
 
     private func collecteFaces(from image: UIImage) {
-        self.faceDetector.detectFace(from: image) {[ weak self] result in
+        self.faceDetector.detectFaces(from: image) {[ weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let newFaces):
                 var existingFaces = self.faces
                 DispatchQueue.global().async {
                     let filtered = newFaces.filter { face in
-                        return !existingFaces.contains(where: { $0 == face })
+                        return !existingFaces.contains(where: { self.faceDetector.computeSimilarity(face: face, with: $0) >= 0.6 })
                     }
                     existingFaces.append(contentsOf: filtered)
                     DispatchQueue.main.async {
@@ -127,7 +127,7 @@ extension FaceDetectionViewController: UICollectionViewDelegate {
             self.filterAndPresentImages()
             collectionView.deselectItem(at: indexPath, animated: true)
         } else {
-//            self.performSegue(withIdentifier: "presentImage", sender: nil)
+            self.performSegue(withIdentifier: "presentImage", sender: nil)
         }
     }
 
