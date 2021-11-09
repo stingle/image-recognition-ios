@@ -18,7 +18,7 @@ class FaceDetectionViewController: ImagePickerViewController {
 
     private let database = PreviewDatabase.shared
 
-    private var filteredImages: [(UIImage, [(face: Face, bounds: CGRect)])]?
+    private var filteredImages: [(UIImage, [FaceObject])]?
 
     private var selectedFace: Face?
 
@@ -27,6 +27,7 @@ class FaceDetectionViewController: ImagePickerViewController {
         self.facesCollectionView.allowsMultipleSelection = false
         self.imagesCollectionView.allowsMultipleSelection = false
         self.title = "Face Detection"
+        self.filterAndPresentImages()
     }
 
     private func filterAndPresentImages() {
@@ -49,21 +50,31 @@ class FaceDetectionViewController: ImagePickerViewController {
             switch result {
             case .success(let newFaces):
                 DispatchQueue.global().async {
+                    let newFaceObjecs = newFaces.map({ FaceObject(face: $0.0, bounds: $0.1) })
                     guard let self = self else { return }
-                    let filtered = newFaces.filter { face in
-                        if let _face = self.database.faces.first(where: { face.face.isSimilar(with: $0.face) }) {
-                            _face.face.blend(face: face.face)
-                            face.face.name = _face.face.name
-                            return false
-                        }
-                        return true
-                    }
                     DispatchQueue.main.async {
-                        self.database.addFaces(faces: filtered)
-                        self.database.addImages(images: [(image, newFaces)])
+                        self.database.addFaces(faces: newFaceObjecs)
+                        self.database.addImages(images: [(image, newFaceObjecs)])
                         self.filteredImages = self.database.images
-                        self.facesCollectionView.reloadData()
                         self.imagesCollectionView.reloadData()
+                        DispatchQueue.global().async {
+                            var uniqueFaces = [FaceObject]()
+                            for i in 0..<self.database.faces.count {
+                                let face1 = self.database.faces[i]
+                                uniqueFaces.append(face1)
+                                for j in (i + 1)..<self.database.faces.count {
+                                    let face2 = self.database.faces[j]
+                                    if face1.face.isSimilar(with: face2.face) {
+                                        uniqueFaces.removeLast()
+                                        break
+                                    }
+                                }
+                            }
+                            self.database.replaceFaces(faces: uniqueFaces)
+                            DispatchQueue.main.async {
+                                self.facesCollectionView.reloadData()
+                            }
+                        }
                     }
                 }
             case .failure(let error):

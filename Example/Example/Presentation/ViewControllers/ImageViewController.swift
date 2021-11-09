@@ -14,7 +14,7 @@ class ImageViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
 
     var image: UIImage!
-    var faces: [(Face, CGRect)]!
+    var faces: [FaceObject]!
 
     private let database = PreviewDatabase.shared
 
@@ -28,7 +28,7 @@ class ImageViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         for face in self.faces {
-            self.drawFaceboundingBox(face: face.0, boundingBox: face.1)
+            self.drawFaceboundingBox(face: face.face, boundingBox: face.bounds)
         }
     }
 
@@ -67,7 +67,7 @@ class ImageViewController: UIViewController {
     }
 
     @objc func nameButtonPressed(button: UIButton) {
-        let face = self.faces.first(where: { $0.0.identifier == button.restorationIdentifier })?.0
+        let face = self.faces.first(where: { $0.face.identifier == button.restorationIdentifier })?.face
         let name = face?.name
         let alert = UIAlertController(title: "Name", message: "Please enter the person name.", preferredStyle: .alert)
         alert.addTextField { textField in
