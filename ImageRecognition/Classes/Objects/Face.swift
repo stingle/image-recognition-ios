@@ -10,9 +10,13 @@ import Vision
 
 public class Face {
 
+    public let identifier: String = UUID().uuidString
     public let image: UIImage
+
     private(set) public var pixelBuffer: [Float32]
     private(set) public var iteration: Int = 1
+
+    public var name: String?
 
     internal init(image: UIImage, pixelBuffer: [Float32]) {
         self.image = image

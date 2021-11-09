@@ -99,8 +99,9 @@ public class FaceDetector {
         guard let newImage = croppedImage.toUIImage() else {
             throw FaceDetectorError.failed
         }
-        let pixelArray = try self.recognize(image: newImage.resized())
-        return Face(image: newImage.resized(), pixelBuffer: pixelArray)
+        let resized = newImage.resized()
+        let pixelArray = try self.recognize(image: resized)
+        return Face(image: resized, pixelBuffer: pixelArray)
     }
 
     private func visionDetectFace(from image: UIImage, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
@@ -112,17 +113,14 @@ public class FaceDetector {
             guard let faces = request.results as? [VNFaceObservation] else { return }
             var detectedFaces = [(Face, CGRect)]()
             for face in faces {
-                var bounds = VNImageRectForNormalizedRect(face.boundingBox, Int(image.size.width), Int(image.size.height))
-                if bounds.width > bounds.height {
-                    bounds.origin.y = bounds.height / bounds.width * bounds.origin.y
-                } else if bounds.height > bounds.width {
-                    bounds.origin.x = bounds.width / bounds.height * bounds.origin.x
-                }
+                let rect = VNImageRectForNormalizedRect(face.boundingBox, Int(image.size.width), Int(image.size.height))
                 do {
-                    guard let face = try self?.face(from: ciImage, bounds: bounds) else {
+                    guard let face = try self?.face(from: ciImage, bounds: rect) else {
                         return
                     }
-                    detectedFaces.append((face, bounds))
+                    var boundingBox = CGRect(x: rect.origin.x / image.size.width, y: rect.origin.y / image.size.height, width: rect.width / image.size.width, height: rect.height / image.size.height)
+                    boundingBox.origin.y = 1 - boundingBox.maxY
+                    detectedFaces.append((face, boundingBox))
                 } catch {
                     print(error.localizedDescription)
                     DispatchQueue.main.async {

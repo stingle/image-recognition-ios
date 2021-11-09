@@ -16,6 +16,7 @@
 		B31D0F172729950100BE7CC9 /* UIImageView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31D0F162729950100BE7CC9 /* UIImageView+Ext.swift */; };
 		B32276B72722A8EA005C2C51 /* FeaturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32276B62722A8EA005C2C51 /* FeaturesViewController.swift */; };
 		B32276B92722AA93005C2C51 /* FaceDetectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32276B82722AA93005C2C51 /* FaceDetectionViewController.swift */; };
+		B38B8979273A775500C2369A /* PreviewDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38B8978273A775500C2369A /* PreviewDatabase.swift */; };
 		B3C0B9BF2720137200CD7647 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3C0B9BE2720137200CD7647 /* Assets.xcassets */; };
 		B3C0B9C12720139700CD7647 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3C0B9C02720139700CD7647 /* LaunchScreen.storyboard */; };
 		B3C0B9CA27201FBA00CD7647 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3C0B9C927201FBA00CD7647 /* Main.storyboard */; };
@@ -27,7 +28,6 @@
 		28DE1D5727181D39000A9A62 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28DE1D5A27181D39000A9A62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		28DE1D5E27181D39000A9A62 /* ObjectDetectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectDetectionViewController.swift; sourceTree = "<group>"; };
-		28DE1D6827181D3A000A9A62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		28DE1D88271DF6A6000A9A62 /* ImagePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerViewController.swift; sourceTree = "<group>"; };
 		28F645B327206E2E00D818AD /* MobileNet.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MobileNet.mlmodel; sourceTree = "<group>"; };
 		3CA3C4DBED4CB110EFB665E7 /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -38,6 +38,7 @@
 		B31D0F162729950100BE7CC9 /* UIImageView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Ext.swift"; sourceTree = "<group>"; };
 		B32276B62722A8EA005C2C51 /* FeaturesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturesViewController.swift; sourceTree = "<group>"; };
 		B32276B82722AA93005C2C51 /* FaceDetectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceDetectionViewController.swift; sourceTree = "<group>"; };
+		B38B8978273A775500C2369A /* PreviewDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDatabase.swift; sourceTree = "<group>"; };
 		B3C0B9BE2720137200CD7647 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B3C0B9C02720139700CD7647 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B3C0B9C927201FBA00CD7647 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -77,11 +78,11 @@
 		28DE1D5927181D39000A9A62 /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				B38B8977273A774000C2369A /* Common */,
 				B31D0F0B272943E700BE7CC9 /* Extensions */,
 				B31D0F08272943A500BE7CC9 /* Presentation */,
 				28DE1D5A27181D39000A9A62 /* AppDelegate.swift */,
 				28F645B327206E2E00D818AD /* MobileNet.mlmodel */,
-				28DE1D6827181D3A000A9A62 /* Info.plist */,
 				B3C0B9BE2720137200CD7647 /* Assets.xcassets */,
 				B3C0B9C02720139700CD7647 /* LaunchScreen.storyboard */,
 				B3C0B9C927201FBA00CD7647 /* Main.storyboard */,
@@ -124,6 +125,14 @@
 				B31D0F162729950100BE7CC9 /* UIImageView+Ext.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B38B8977273A774000C2369A /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				B38B8978273A775500C2369A /* PreviewDatabase.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		B43F7DD4D7687F59FD2CB49F /* Pods */ = {
@@ -268,6 +277,7 @@
 				B32276B92722AA93005C2C51 /* FaceDetectionViewController.swift in Sources */,
 				B31D0F0D2729445800BE7CC9 /* ImageViewCell.swift in Sources */,
 				B31D0F11272961B800BE7CC9 /* ImageViewController.swift in Sources */,
+				B38B8979273A775500C2369A /* PreviewDatabase.swift in Sources */,
 				28F645B427206E2E00D818AD /* MobileNet.mlmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -401,14 +411,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 75XL269LGD;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Example/Info.plist;
+				INFOPLIST_FILE = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "To detect objects";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -433,14 +442,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 75XL269LGD;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Example/Info.plist;
+				INFOPLIST_FILE = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "To detect objects";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
