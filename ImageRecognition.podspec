@@ -88,7 +88,6 @@ Pod::Spec.new do |spec|
 
   # spec.public_header_files = "Classes/**/*.h"
 
-
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
   #  A list of resources included with the Pod. These are copied into the
@@ -99,9 +98,12 @@ Pod::Spec.new do |spec|
 
   # spec.resource  = "icon.png"
   # spec.resources = "Resources/*.png"
-
   # spec.preserve_paths = "FilesToSave", "MoreFilesToSave"
 
+  spec.subspec 'Models' do |ss|
+    ss.source_files = 'ImageRecognition/Classes/**/*.{mlmodel}'
+    ss.preserve_paths = 'ImageRecognition/Classes/Models/'
+  end
 
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #

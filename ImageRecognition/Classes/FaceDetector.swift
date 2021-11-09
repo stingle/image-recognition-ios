@@ -11,22 +11,19 @@ import Vision
 public class FaceDetector {
 
     private struct Constants {
-        static let embeddingsSize: Int = 512
         static let inputSizeHeight: Int = 160
         static let inputSizeWidth: Int = 160
     }
 
-    private let facenet: Facenet6
+    private let facenet: Facenet
     private var rgbValues: [Double]
     private var inputBuffer: MLMultiArray
-
 
     public init() {
         let config = MLModelConfiguration()
         config.computeUnits = .all
         do {
-            self.facenet = try Facenet6(configuration: config)
-            //models' buffers allocation
+            self.facenet = try Facenet(configuration: config)
             self.inputBuffer = try MLMultiArray(shape: [1, NSNumber(value: Constants.inputSizeHeight), NSNumber(value: Constants.inputSizeWidth), 3], dataType: MLMultiArrayDataType.float32)
             self.rgbValues = Array(repeating: 0.0, count: Constants.inputSizeWidth * Constants.inputSizeHeight * 3)
         } catch {
@@ -34,59 +31,43 @@ public class FaceDetector {
         }
     }
 
-    public func detectFaces(from image: UIImage, completion: @escaping (Result<[Face], FaceDetectorError>) -> Void) {
+    public func detectFaces(from image: UIImage, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
         self.visionDetectFace(from: image, completion: completion)
     }
 
-    public func computeSimilarity(face: Face, with otherFace: Face) -> Float32 {
-        let similarity = self.cosineSim(A: face.pixelBuffer, B: otherFace.pixelBuffer)
-        return similarity
-    }
-
-    public func computeSimilarity(face: Face, with faces: [Face]) -> [Face: Float32] {
-        var similarities = [Face: Float32]()
-        for face in faces {
-            let similarity = self.cosineSim(A: face.pixelBuffer, B: face.pixelBuffer)
-            similarities[face] = similarity
-        }
-        return similarities
-    }
-
-    public func compute(face: Face, image: UIImage, completion: @escaping (Result<(Face, Float32)?, FaceDetectorError>) -> Void) {
+    public func recognize(face: Face, image: UIImage, completion: @escaping (Result<(face: Face, bounds: CGRect)?, FaceDetectorError>) -> Void) {
         self.detectFaces(from: image) { result in
             switch result {
             case .success(let faces):
-                var results = [(face: Face, similarity: Float32)]()
+                var previousSimilarity = Float32.infinity
+                var closestFace: (Face, CGRect)?
                 for _face in faces {
-                    let similarity = self.cosineSim(A: face.pixelBuffer, B: _face.pixelBuffer)
-                    guard similarity >= 0.6 else { continue }
-                    results.append((_face, similarity))
+                    let similarity = face.computeSimilarity(with: _face.face)
+                    if similarity <= Face.Constant.similarityThreshold && similarity < previousSimilarity {
+                        closestFace = _face
+                        previousSimilarity = similarity
+                    }
                 }
-                guard !results.isEmpty else {
-                    completion(.success(nil))
-                    return
-                }
-                results.sort(by: { $0.1 > $1.1 })
-                completion(.success(results.first!))
+                completion(.success(closestFace))
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
 
-    public func compute(face: Face, images: [UIImage], progress: @escaping (Float) -> Void, completion: @escaping (Result<[(UIImage, Face, Float32)], FaceDetectorError>) -> Void) {
+    public func recognize(face: Face, images: [UIImage], progress: @escaping (Float) -> Void, completion: @escaping (Result<[(image: UIImage, face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
         guard !images.isEmpty else {
             completion(.success([]))
             return
         }
         var count = images.count
-        var results = [(UIImage, Face, Float32)]()
+        var results = [(UIImage, Face, CGRect)]()
         for image in images {
-            self.compute(face: face, image: image) { result in
+            self.recognize(face: face, image: image) { result in
                 switch result {
-                case .success(let computeResult):
-                    if let computeResult = computeResult {
-                        results.append((image, computeResult.0, computeResult.1))
+                case .success(let recognizedFace):
+                    if let recognizedFace = recognizedFace {
+                        results.append((image, recognizedFace.face, recognizedFace.bounds))
                     }
                     count -= 1
                 case .failure(_):
@@ -119,52 +100,17 @@ public class FaceDetector {
             throw FaceDetectorError.failed
         }
         let pixelArray = try self.recognize(image: newImage.resized())
-        return Face(boundingBox: bounds, image: newImage.resized(), pixelBuffer: pixelArray)
+        return Face(image: newImage.resized(), pixelBuffer: pixelArray)
     }
 
-    private func ciDetectFace(from image: UIImage, completion: @escaping (Result<[Face], FaceDetectorError>) -> Void) {
-        guard let image = image.fixOrientation(), let ciImage = CIImage(image: image) else {
-            completion(.failure(.badImage))
-            return
-        }
-        let context = CIContext()
-        let options = [CIDetectorAccuracy: CIDetectorAccuracyHigh]
-        guard let detector = CIDetector(ofType: CIDetectorTypeFace, context: context, options: options) else {
-            completion(.failure(.failed))
-            return
-        }
-        var detectedFaces = [Face]()
-        let opts = [CIDetectorImageOrientation: String(CGImagePropertyOrientation(image.imageOrientation).rawValue)]
-        let features = detector.features(in: ciImage, options: opts)
-        for feature in features {
-            var bounds = feature.bounds
-            if bounds.width > bounds.height {
-                bounds.origin.y -= (bounds.width - bounds.height) / 2
-                bounds.size.height = bounds.width
-            } else if bounds.height > bounds.width {
-                bounds.origin.x -= (bounds.height - bounds.width) / 2
-                bounds.size.width = bounds.height
-            }
-            do {
-                let face = try self.face(from: ciImage, bounds: bounds)
-                detectedFaces.append(face)
-            } catch {
-                completion(.failure(.failed))
-            }
-        }
-        DispatchQueue.main.async {
-            completion(.success(detectedFaces))
-        }
-    }
-
-    private func visionDetectFace(from image: UIImage, completion: @escaping (Result<[Face], FaceDetectorError>) -> Void) {
+    private func visionDetectFace(from image: UIImage, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
         guard let image = image.fixOrientation(), let ciImage = CIImage(image: image) else {
             completion(.failure(.badImage))
             return
         }
         let request = VNDetectFaceRectanglesRequest { [weak self] request, error in
             guard let faces = request.results as? [VNFaceObservation] else { return }
-            var detectedFaces = [Face]()
+            var detectedFaces = [(Face, CGRect)]()
             for face in faces {
                 var bounds = VNImageRectForNormalizedRect(face.boundingBox, Int(image.size.width), Int(image.size.height))
                 if bounds.width > bounds.height {
@@ -176,8 +122,9 @@ public class FaceDetector {
                     guard let face = try self?.face(from: ciImage, bounds: bounds) else {
                         return
                     }
-                    detectedFaces.append(face)
+                    detectedFaces.append((face, bounds))
                 } catch {
+                    print(error.localizedDescription)
                     DispatchQueue.main.async {
                         completion(.failure(.failed))
                     }
@@ -194,26 +141,6 @@ public class FaceDetector {
                 completion(.failure(.failed))
             }
         }
-    }
-
-    private func dot(A: [Float32], B: [Float32]) -> Float32 {
-        var x: Float32 = 0
-        for i in 0...A.count-1 {
-            x += A[i] * B[i]
-        }
-        return x
-    }
-
-    private func magnitude(A: [Float32]) -> Float32 {
-        var x: Float32 = 0
-        for elt in A {
-            x += elt * elt
-        }
-        return sqrt(x)
-    }
-
-    private func cosineSim(A: [Float32], B: [Float32]) -> Float32 {
-        return self.dot(A: A, B: B) / (self.magnitude(A: A) * self.magnitude(A: B))
     }
 
 }

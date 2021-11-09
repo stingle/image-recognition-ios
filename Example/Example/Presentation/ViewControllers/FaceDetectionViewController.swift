@@ -16,9 +16,9 @@ class FaceDetectionViewController: ImagePickerViewController {
 
     private let faceDetector = FaceDetector()
 
-    private var faces = [Face]()
-    private var images = [(UIImage, [Face])]()
-    private var filteredImages: [(UIImage, [Face])]?
+    private var faces = [(face: Face, bounds: CGRect)]()
+    private var images = [(UIImage, [(face: Face, bounds: CGRect)])]()
+    private var filteredImages: [(UIImage, [(face: Face, bounds: CGRect)])]?
 
     private var selectedFace: Face?
 
@@ -35,7 +35,7 @@ class FaceDetectionViewController: ImagePickerViewController {
             self.imagesCollectionView.reloadData()
             return
         }
-        self.filteredImages = self.images.filter({ $0.1.contains(where: { self.faceDetector.computeSimilarity(face: selectedFace, with: $0) >= 0.6 }) })
+        self.filteredImages = self.images.filter({ $0.1.contains(where: { selectedFace.isSimilar(with: $0.face) }) })
         self.imagesCollectionView.reloadData()
     }
 
@@ -52,7 +52,11 @@ class FaceDetectionViewController: ImagePickerViewController {
                 var existingFaces = self.faces
                 DispatchQueue.global().async {
                     let filtered = newFaces.filter { face in
-                        return !existingFaces.contains(where: { self.faceDetector.computeSimilarity(face: face, with: $0) >= 0.6 })
+                        if let _face = existingFaces.first(where: { face.face.isSimilar(with: $0.face) }) {
+                            _face.face.blend(face: face.face)
+                            return false
+                        }
+                        return true
                     }
                     existingFaces.append(contentsOf: filtered)
                     DispatchQueue.main.async {
@@ -103,7 +107,7 @@ extension FaceDetectionViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageViewCell", for: indexPath) as! ImageViewCell
         if collectionView === self.facesCollectionView {
             let face = self.faces[indexPath.row]
-            cell.image = face.image
+            cell.image = face.face.image
             cell.circle = true
         } else {
             let image = self.filteredImages![indexPath.row]
@@ -120,9 +124,14 @@ extension FaceDetectionViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView === self.facesCollectionView {
             if self.selectedFace == nil {
-                self.selectedFace = self.faces[indexPath.row]
+                self.selectedFace = self.faces[indexPath.row].face
             } else {
-                self.selectedFace = nil
+                let face = self.faces[indexPath.row].face
+                if face.isSimilar(with: self.selectedFace!) {
+                    self.selectedFace = nil
+                } else {
+                    self.selectedFace = face
+                }
             }
             self.filterAndPresentImages()
             collectionView.deselectItem(at: indexPath, animated: true)

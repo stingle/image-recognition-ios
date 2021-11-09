@@ -23,5 +23,12 @@
       "UIKit"
     ]
   },
+  "subspecs": [
+    {
+      "name": "Models",
+      "source_files": "ImageRecognition/Classes/**/*.{mlmodel}",
+      "preserve_paths": "ImageRecognition/Classes/Models/"
+    }
+  ],
   "swift_version": "5.0"
 }

@@ -14,7 +14,7 @@ class ImageViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
 
     var image: UIImage!
-    var faces: [Face]!
+    var faces: [(Face, CGRect)]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,9 +25,9 @@ class ImageViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        for face in faces {
-            self.drawFaceboundingBox(boundingBox: face.boundingBox)
-        }
+//        for face in faces {
+//            self.drawFaceboundingBox(boundingBox: face.boundingBox)
+//        }
     }
 
     // MARK: - Private methods

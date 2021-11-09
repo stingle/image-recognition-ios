@@ -1,5 +1,7 @@
 PODS:
-  - ImageRecognition (0.1.0)
+  - ImageRecognition (0.1.0):
+    - ImageRecognition/Models (= 0.1.0)
+  - ImageRecognition/Models (0.1.0)
 
 DEPENDENCIES:
   - ImageRecognition (from `../`)
@@ -9,8 +11,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ImageRecognition: 5446de712635684425cc0974bf128485475299f1
+  ImageRecognition: a29972b3ecc6d26535cffa75f5b4f1cd5773272f
 
-PODFILE CHECKSUM: 03ef87628f67f4ac052d36770867b4faa4d9b545
+PODFILE CHECKSUM: b005280b58be8e7f66a5bbe7858d7f18aa0f1e12
 
 COCOAPODS: 1.11.2
