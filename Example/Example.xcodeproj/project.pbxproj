@@ -10,7 +10,6 @@
 		28DE1D5B27181D39000A9A62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D5A27181D39000A9A62 /* AppDelegate.swift */; };
 		28DE1D5F27181D39000A9A62 /* ObjectDetectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D5E27181D39000A9A62 /* ObjectDetectionViewController.swift */; };
 		28DE1D89271DF6A6000A9A62 /* ImagePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DE1D88271DF6A6000A9A62 /* ImagePickerViewController.swift */; };
-		28F645B427206E2E00D818AD /* MobileNet.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 28F645B327206E2E00D818AD /* MobileNet.mlmodel */; };
 		B31D0F0D2729445800BE7CC9 /* ImageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31D0F0C2729445800BE7CC9 /* ImageViewCell.swift */; };
 		B31D0F11272961B800BE7CC9 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31D0F10272961B800BE7CC9 /* ImageViewController.swift */; };
 		B31D0F172729950100BE7CC9 /* UIImageView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31D0F162729950100BE7CC9 /* UIImageView+Ext.swift */; };
@@ -30,7 +29,6 @@
 		28DE1D5A27181D39000A9A62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		28DE1D5E27181D39000A9A62 /* ObjectDetectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectDetectionViewController.swift; sourceTree = "<group>"; };
 		28DE1D88271DF6A6000A9A62 /* ImagePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerViewController.swift; sourceTree = "<group>"; };
-		28F645B327206E2E00D818AD /* MobileNet.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MobileNet.mlmodel; sourceTree = "<group>"; };
 		3CA3C4DBED4CB110EFB665E7 /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
 		4A3004AC07865F16362A8B9F /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3C1346DFD442E7C99521E0A /* Pods-ImageRecognition_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageRecognition_Example.release.xcconfig"; path = "Target Support Files/Pods-ImageRecognition_Example/Pods-ImageRecognition_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -84,7 +82,6 @@
 				B31D0F0B272943E700BE7CC9 /* Extensions */,
 				B31D0F08272943A500BE7CC9 /* Presentation */,
 				28DE1D5A27181D39000A9A62 /* AppDelegate.swift */,
-				28F645B327206E2E00D818AD /* MobileNet.mlmodel */,
 				B3C0B9BE2720137200CD7647 /* Assets.xcassets */,
 				B3C0B9C02720139700CD7647 /* LaunchScreen.storyboard */,
 				B3C0B9C927201FBA00CD7647 /* Main.storyboard */,
@@ -168,7 +165,7 @@
 				28DE1D5327181D39000A9A62 /* Sources */,
 				28DE1D5427181D39000A9A62 /* Frameworks */,
 				28DE1D5527181D39000A9A62 /* Resources */,
-				50B585DA126608F42D5B9C2A /* [CP] Embed Pods Frameworks */,
+				D07D7DFC056F98C17B377ECD /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -226,7 +223,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		50B585DA126608F42D5B9C2A /* [CP] Embed Pods Frameworks */ = {
+		D07D7DFC056F98C17B377ECD /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -282,7 +279,6 @@
 				B31D0F0D2729445800BE7CC9 /* ImageViewCell.swift in Sources */,
 				B31D0F11272961B800BE7CC9 /* ImageViewController.swift in Sources */,
 				B38B8979273A775500C2369A /* PreviewDatabase.swift in Sources */,
-				28F645B427206E2E00D818AD /* MobileNet.mlmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

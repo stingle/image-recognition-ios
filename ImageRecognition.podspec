@@ -82,7 +82,7 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files = 'ImageRecognition/Classes/**/*.swift'
+  #  spec.source_files = 'ImageRecognition/Classes/**/*.swift'
   #  spec.source_files  = "Classes", "Classes/**/*.{h,m}"
   #  spec.exclude_files = "Classes/Exclude"
 
@@ -100,10 +100,31 @@ Pod::Spec.new do |spec|
   # spec.resources = "Resources/*.png"
   # spec.preserve_paths = "FilesToSave", "MoreFilesToSave"
 
-  spec.subspec 'Models' do |ss|
-    ss.source_files = 'ImageRecognition/Classes/**/*.{mlmodel}'
-    ss.preserve_paths = 'ImageRecognition/Classes/Models/'
+  spec.subspec 'Common' do |ss|
+    ss.source_files = 'ImageRecognition/Classes/Common/**/*.swift'
   end
+
+  # CoreML spec
+  spec.subspec 'CoreML' do |ss|
+    ss.source_files = 'ImageRecognition/Classes/CoreML/**/*.{swift,mlmodel}'
+    ss.dependency 'ImageRecognition/Common'
+  end
+  # -------------------------------- CoreML -------------------------------------- #
+
+  # TensorFlow spec
+#  spec.subspec 'TensorFlow' do |ss|
+#    ss.source_files = 'ImageRecognition/Classes/TensorFlow/**/*.swift'
+#    ss.dependency 'ImageRecognition/Common'
+#
+#    ss.subspec 'Models' do |ss|
+#      ss.resources = 'ImageRecognition/Classes/TensorFlow/Models/*.{tflite,txt}'
+#    end
+#  end
+#
+#  spec.static_framework = true
+#  spec.dependency "TensorFlowLiteSwift"
+#  spec.dependency "TensorFlowLiteSwift/CoreML"
+  # ------------------------------ TensorFlow ------------------------------------ #
 
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #

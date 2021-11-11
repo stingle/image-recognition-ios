@@ -1,7 +1,10 @@
 PODS:
   - ImageRecognition (0.1.0):
-    - ImageRecognition/Models (= 0.1.0)
-  - ImageRecognition/Models (0.1.0)
+    - ImageRecognition/Common (= 0.1.0)
+    - ImageRecognition/CoreML (= 0.1.0)
+  - ImageRecognition/Common (0.1.0)
+  - ImageRecognition/CoreML (0.1.0):
+    - ImageRecognition/Common
 
 DEPENDENCIES:
   - ImageRecognition (from `../`)
@@ -11,7 +14,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ImageRecognition: a29972b3ecc6d26535cffa75f5b4f1cd5773272f
+  ImageRecognition: f064f538ad90e789aab52414846bfaa5b9eb6b77
 
 PODFILE CHECKSUM: b005280b58be8e7f66a5bbe7858d7f18aa0f1e12
 

@@ -16,7 +16,6 @@
     "git": "https://github.com/stingle/image-recognition-ios.git",
     "tag": "0.1.0"
   },
-  "source_files": "ImageRecognition/Classes/**/*.swift",
   "ios": {
     "frameworks": [
       "Vision",
@@ -25,9 +24,17 @@
   },
   "subspecs": [
     {
-      "name": "Models",
-      "source_files": "ImageRecognition/Classes/**/*.{mlmodel}",
-      "preserve_paths": "ImageRecognition/Classes/Models/"
+      "name": "Common",
+      "source_files": "ImageRecognition/Classes/Common/**/*.swift"
+    },
+    {
+      "name": "CoreML",
+      "source_files": "ImageRecognition/Classes/CoreML/**/*.{swift,mlmodel}",
+      "dependencies": {
+        "ImageRecognition/Common": [
+
+        ]
+      }
     }
   ],
   "swift_version": "5.0"

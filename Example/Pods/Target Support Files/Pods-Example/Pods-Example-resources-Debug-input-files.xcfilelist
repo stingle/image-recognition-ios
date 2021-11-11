@@ -1,0 +1,4 @@
+${PODS_ROOT}/Target Support Files/Pods-Example/Pods-Example-resources.sh
+${PODS_ROOT}/../../ImageRecognition/Classes/TensorFlow/Models/facenet.tflite
+${PODS_ROOT}/../../ImageRecognition/Classes/TensorFlow/Models/labels.txt
+${PODS_ROOT}/../../ImageRecognition/Classes/TensorFlow/Models/objects.tflite

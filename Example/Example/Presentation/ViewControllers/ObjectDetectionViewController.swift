@@ -16,15 +16,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
         self.title = "Object Detection"
     }
 
-    let imagePredictor: ImagePredictor = {
-        let defaultConfig = MLModelConfiguration()
-        let imageClassifierWrapper = try? MobileNet(configuration: defaultConfig)
-        guard let imageClassifier = imageClassifierWrapper else {
-            fatalError("App failed to create an image classifier model instance.")
-        }
-        let predictor = ImagePredictor(model: imageClassifier.model)
-        return predictor
-    }()
+    let imagePredictor: ImagePredictor = ImagePredictor()
 
     let minimumConfidencePercentage : Float = 25
     var topPredictions = [String:String]() as Dictionary
@@ -127,8 +119,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
         }
 
         let formattedPredictions = formatPredictions(predictions)
-
-        let predictionString = formattedPredictions.keys.joined(separator: "\n")
+        let predictionString = formattedPredictions.map({ $0.key + " " + $0.value }).joined(separator: "\n")
         print(predictionString)
         updatePredictionLabel(predictionString)
     }
@@ -147,15 +138,30 @@ class ObjectDetectionViewController: ImagePickerViewController {
         updatePredictionLabel(predictionString)
     }
 
+    private func percentageToString(_ percentage: Float) -> String {
+        switch percentage {
+        case 100.0...:
+            return "100%"
+        case 10.0..<100.0:
+            return String(format: "%2.1f%%", percentage)
+        case 1.0..<10.0:
+            return String(format: "%2.1f%%", percentage)
+        case ..<1.0:
+            return String(format: "%1.2f%%", percentage)
+        default:
+            return String(format: "%2.1f%%", percentage)
+        }
+    }
+
     private func formatPredictions(_ predictions: [ImagePredictor.Prediction]) -> [String:String] {
         for prediction in predictions {
-            if Float(prediction.confidencePercentage)! > minimumConfidencePercentage {
+            if prediction.confidencePercentage > minimumConfidencePercentage {
                 var name = prediction.classification
                 if let firstComma = name.firstIndex(of: ",") {
                     name = String(name.prefix(upTo: firstComma))
                 }
                 if !topPredictions.keys.contains(prediction.classification) {
-                    topPredictions[prediction.classification] = prediction.confidencePercentage
+                    topPredictions[prediction.classification] = self.percentageToString(prediction.confidencePercentage)
                 }
             }
         }
