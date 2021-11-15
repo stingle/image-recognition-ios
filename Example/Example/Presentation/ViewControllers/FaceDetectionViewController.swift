@@ -87,7 +87,7 @@ class FaceDetectionViewController: ImagePickerViewController {
     // MARK: - Actions
 
     @IBAction func addButtonAction(_ sender: Any) {
-        self.presentPhotoPicker()
+        self.openPhotoGallery()
     }
 
     // MARK: - Navigation

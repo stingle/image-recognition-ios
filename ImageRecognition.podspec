@@ -105,25 +105,25 @@ Pod::Spec.new do |spec|
   end
 
   # CoreML spec
-  spec.subspec 'CoreML' do |ss|
-    ss.source_files = 'ImageRecognition/Classes/CoreML/**/*.{swift,mlmodel}'
-    ss.dependency 'ImageRecognition/Common'
-  end
+#  spec.subspec 'CoreML' do |ss|
+#    ss.source_files = 'ImageRecognition/Classes/CoreML/**/*.{swift,mlmodel}'
+#    ss.dependency 'ImageRecognition/Common'
+#  end
   # -------------------------------- CoreML -------------------------------------- #
 
   # TensorFlow spec
-#  spec.subspec 'TensorFlow' do |ss|
-#    ss.source_files = 'ImageRecognition/Classes/TensorFlow/**/*.swift'
-#    ss.dependency 'ImageRecognition/Common'
-#
-#    ss.subspec 'Models' do |ss|
-#      ss.resources = 'ImageRecognition/Classes/TensorFlow/Models/*.{tflite,txt}'
-#    end
-#  end
-#
-#  spec.static_framework = true
-#  spec.dependency "TensorFlowLiteSwift"
-#  spec.dependency "TensorFlowLiteSwift/CoreML"
+  spec.subspec 'TensorFlow' do |ss|
+    ss.source_files = 'ImageRecognition/Classes/TensorFlow/**/*.swift'
+    ss.dependency 'ImageRecognition/Common'
+
+    ss.subspec 'Models' do |ss|
+      ss.resources = 'ImageRecognition/Classes/TensorFlow/Models/*.{tflite,txt}'
+    end
+  end
+
+  spec.static_framework = true
+  spec.dependency "TensorFlowLiteSwift"
+  spec.dependency "TensorFlowLiteSwift/CoreML"
   # ------------------------------ TensorFlow ------------------------------------ #
 
   # ――― Project Linking ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

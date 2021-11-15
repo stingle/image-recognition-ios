@@ -21,57 +21,41 @@
                             <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bTt-3L-lnS">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="b2J-KS-6kx" appends="YES" id="BWL-zV-0pQ"/>
-                                    <outletCollection property="gestureRecognizers" destination="VBP-gJ-NX3" appends="YES" id="DRA-r4-x6s"/>
-                                </connections>
                             </imageView>
-                            <view contentMode="scaleToFill" semanticContentAttribute="playback" translatesAutoresizingMaskIntoConstraints="NO" id="cRm-XZ-KBb" userLabel="Prediction View">
-                                <rect key="frame" x="20" y="566.5" width="332.5" height="60.5"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Tap for image, Two finger tap for video" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2hA-FN-jSh" userLabel="Prediction Label">
-                                        <rect key="frame" x="20" y="20" width="292.5" height="20.5"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="2hA-FN-jSh" secondAttribute="bottom" constant="20" symbolic="YES" id="0bB-K2-FZP"/>
-                                    <constraint firstAttribute="trailing" secondItem="2hA-FN-jSh" secondAttribute="trailing" constant="20" symbolic="YES" id="3py-a1-ZDR"/>
-                                    <constraint firstItem="2hA-FN-jSh" firstAttribute="leading" secondItem="cRm-XZ-KBb" secondAttribute="leading" constant="20" symbolic="YES" id="Z0x-NR-PtG"/>
-                                    <constraint firstItem="2hA-FN-jSh" firstAttribute="top" secondItem="cRm-XZ-KBb" secondAttribute="top" constant="20" symbolic="YES" id="qrM-u2-Sdb"/>
-                                </constraints>
-                            </view>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2hA-FN-jSh" userLabel="Prediction Label">
+                                <rect key="frame" x="5" y="619.5" width="94" height="42.5"/>
+                                <color key="backgroundColor" white="0.79802954613745625" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <string key="text">bannan 13%
+pen 34%</string>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="37Q-yF-tU4"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="bTt-3L-lnS" firstAttribute="centerY" secondItem="gk1-Xa-j1y" secondAttribute="centerY" id="AXz-Ys-uN8"/>
+                            <constraint firstItem="37Q-yF-tU4" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="2hA-FN-jSh" secondAttribute="trailing" constant="5" id="Bx3-vg-2Mv"/>
                             <constraint firstItem="bTt-3L-lnS" firstAttribute="top" secondItem="gk1-Xa-j1y" secondAttribute="top" id="LBg-gc-20S"/>
                             <constraint firstItem="bTt-3L-lnS" firstAttribute="leading" secondItem="gk1-Xa-j1y" secondAttribute="leading" id="V6z-Eh-Zvg"/>
                             <constraint firstItem="bTt-3L-lnS" firstAttribute="trailing" secondItem="gk1-Xa-j1y" secondAttribute="trailing" id="VfD-zT-0cz"/>
-                            <constraint firstItem="cRm-XZ-KBb" firstAttribute="bottom" secondItem="bTt-3L-lnS" secondAttribute="bottom" constant="-40" id="acF-9r-GHI"/>
-                            <constraint firstItem="cRm-XZ-KBb" firstAttribute="leading" secondItem="gk1-Xa-j1y" secondAttribute="leading" constant="20" id="lVn-cZ-yte"/>
+                            <constraint firstItem="37Q-yF-tU4" firstAttribute="bottom" secondItem="2hA-FN-jSh" secondAttribute="bottom" constant="5" id="YCS-0b-k4k"/>
+                            <constraint firstItem="2hA-FN-jSh" firstAttribute="leading" secondItem="37Q-yF-tU4" secondAttribute="leading" constant="5" id="h4M-V3-HlU"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="zVU-8O-R5J"/>
+                    <navigationItem key="navigationItem" id="zVU-8O-R5J">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="BzB-Lb-qHx">
+                            <connections>
+                                <action selector="addButtonAction:" destination="40D-Pj-o0r" id="lOG-qI-MPg"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="imageView" destination="bTt-3L-lnS" id="Nq8-fI-Gtg"/>
                         <outlet property="predictionLabel" destination="2hA-FN-jSh" id="iBE-UF-B3n"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xir-Yb-GCT" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="b2J-KS-6kx" userLabel="Single-Tap Recognizer">
-                    <connections>
-                        <action selector="singleTap" destination="40D-Pj-o0r" id="pJb-Y6-JmL"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer numberOfTouchesRequired="2" id="VBP-gJ-NX3" userLabel="Double-Tap Recognizer">
-                    <connections>
-                        <action selector="doubleTap" destination="40D-Pj-o0r" id="2Tb-bx-hRo"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="828" y="-681"/>
         </scene>
@@ -275,9 +259,6 @@
         </scene>
     </scenes>
     <resources>
-        <systemColor name="secondarySystemBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

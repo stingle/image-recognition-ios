@@ -1,6 +1,0 @@
-framework module ImageRecognition {
-  umbrella header "ImageRecognition-umbrella.h"
-
-  export *
-  module * { export * }
-}

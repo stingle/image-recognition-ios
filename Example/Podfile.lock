@@ -1,20 +1,50 @@
 PODS:
   - ImageRecognition (0.1.0):
     - ImageRecognition/Common (= 0.1.0)
-    - ImageRecognition/CoreML (= 0.1.0)
-  - ImageRecognition/Common (0.1.0)
-  - ImageRecognition/CoreML (0.1.0):
+    - ImageRecognition/TensorFlow (= 0.1.0)
+    - TensorFlowLiteSwift
+    - TensorFlowLiteSwift/CoreML
+  - ImageRecognition/Common (0.1.0):
+    - TensorFlowLiteSwift
+    - TensorFlowLiteSwift/CoreML
+  - ImageRecognition/TensorFlow (0.1.0):
     - ImageRecognition/Common
+    - ImageRecognition/TensorFlow/Models (= 0.1.0)
+    - TensorFlowLiteSwift
+    - TensorFlowLiteSwift/CoreML
+  - ImageRecognition/TensorFlow/Models (0.1.0):
+    - ImageRecognition/Common
+    - TensorFlowLiteSwift
+    - TensorFlowLiteSwift/CoreML
+  - TensorFlowLiteC (2.6.0):
+    - TensorFlowLiteC/Core (= 2.6.0)
+  - TensorFlowLiteC/Core (2.6.0)
+  - TensorFlowLiteC/CoreML (2.6.0):
+    - TensorFlowLiteC/Core
+  - TensorFlowLiteSwift (2.6.0):
+    - TensorFlowLiteSwift/Core (= 2.6.0)
+  - TensorFlowLiteSwift/Core (2.6.0):
+    - TensorFlowLiteC (= 2.6.0)
+  - TensorFlowLiteSwift/CoreML (2.6.0):
+    - TensorFlowLiteC/CoreML (= 2.6.0)
+    - TensorFlowLiteSwift/Core (= 2.6.0)
 
 DEPENDENCIES:
   - ImageRecognition (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - TensorFlowLiteC
+    - TensorFlowLiteSwift
 
 EXTERNAL SOURCES:
   ImageRecognition:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ImageRecognition: f064f538ad90e789aab52414846bfaa5b9eb6b77
+  ImageRecognition: 284c45749de0ab08c6139fa0c33c8b9cf8d992aa
+  TensorFlowLiteC: 869f93708210ed939fc40f40c772a120b7f964d1
+  TensorFlowLiteSwift: 78bc548132d2cae55643f3238359a24a6eb92b88
 
 PODFILE CHECKSUM: b005280b58be8e7f66a5bbe7858d7f18aa0f1e12
 
