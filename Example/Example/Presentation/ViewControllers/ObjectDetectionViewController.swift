@@ -14,7 +14,7 @@ import AVKit
 class ObjectDetectionViewController: ImagePickerViewController {
 
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var predictionLabel: UILabel!
+    @IBOutlet weak var predictionTextView: UITextView!
     @IBOutlet weak var livePhotoView: PHLivePhotoView!
     @IBOutlet weak var playButton: UIButton!
 
@@ -77,8 +77,8 @@ class ObjectDetectionViewController: ImagePickerViewController {
 
     func updatePredictionLabel(_ message: String) {
         DispatchQueue.main.async {
-            self.predictionLabel.text = message
-            self.predictionLabel.isHidden = false
+            self.predictionTextView.text = message
+            self.predictionTextView.isHidden = false
         }
     }
 

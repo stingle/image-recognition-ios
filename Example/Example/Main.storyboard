@@ -26,14 +26,6 @@
                                 <rect key="frame" x="0.0" y="88" width="390" height="722"/>
                                 <gestureRecognizers/>
                             </imageView>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2hA-FN-jSh" userLabel="Prediction Label">
-                                <rect key="frame" x="5" y="762.66666666666663" width="94" height="42.333333333333371"/>
-                                <color key="backgroundColor" white="0.79802954613745625" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <string key="text">bannan 13%
-pen 34%</string>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zdr-7b-DEt">
                                 <rect key="frame" x="160" y="414" width="70" height="70"/>
                                 <constraints>
@@ -46,23 +38,33 @@ pen 34%</string>
                                     <action selector="playButtonAction:" destination="40D-Pj-o0r" eventType="touchUpInside" id="FKm-IB-E7c"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="aOW-aN-ysb">
+                                <rect key="frame" x="0.0" y="660" width="390" height="100"/>
+                                <color key="backgroundColor" white="0.67000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="bWh-wz-0EI"/>
+                                </constraints>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="37Q-yF-tU4"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="37Q-yF-tU4" firstAttribute="trailing" secondItem="aOW-aN-ysb" secondAttribute="trailing" id="7vS-g0-QtJ"/>
                             <constraint firstItem="b9c-4g-y7l" firstAttribute="top" secondItem="37Q-yF-tU4" secondAttribute="top" id="8V4-Yq-kr9"/>
                             <constraint firstItem="37Q-yF-tU4" firstAttribute="bottom" secondItem="b9c-4g-y7l" secondAttribute="bottom" id="9RP-2h-EPS"/>
-                            <constraint firstItem="37Q-yF-tU4" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="2hA-FN-jSh" secondAttribute="trailing" constant="5" id="Bx3-vg-2Mv"/>
                             <constraint firstItem="bTt-3L-lnS" firstAttribute="top" secondItem="37Q-yF-tU4" secondAttribute="top" id="CUZ-nJ-2Xd"/>
                             <constraint firstItem="zdr-7b-DEt" firstAttribute="centerY" secondItem="37Q-yF-tU4" secondAttribute="centerY" id="If4-4o-Kaq"/>
+                            <constraint firstItem="aOW-aN-ysb" firstAttribute="leading" secondItem="37Q-yF-tU4" secondAttribute="leading" id="MO8-iZ-aYa"/>
                             <constraint firstItem="bTt-3L-lnS" firstAttribute="leading" secondItem="gk1-Xa-j1y" secondAttribute="leading" id="V6z-Eh-Zvg"/>
                             <constraint firstItem="bTt-3L-lnS" firstAttribute="trailing" secondItem="gk1-Xa-j1y" secondAttribute="trailing" id="VfD-zT-0cz"/>
-                            <constraint firstItem="37Q-yF-tU4" firstAttribute="bottom" secondItem="2hA-FN-jSh" secondAttribute="bottom" constant="5" id="YCS-0b-k4k"/>
-                            <constraint firstItem="2hA-FN-jSh" firstAttribute="leading" secondItem="37Q-yF-tU4" secondAttribute="leading" constant="5" id="h4M-V3-HlU"/>
                             <constraint firstItem="37Q-yF-tU4" firstAttribute="trailing" secondItem="b9c-4g-y7l" secondAttribute="trailing" id="hSJ-AW-JIp"/>
                             <constraint firstItem="b9c-4g-y7l" firstAttribute="leading" secondItem="37Q-yF-tU4" secondAttribute="leading" id="lkH-OY-zbV"/>
                             <constraint firstItem="37Q-yF-tU4" firstAttribute="bottom" secondItem="bTt-3L-lnS" secondAttribute="bottom" id="m3U-mg-k6p"/>
                             <constraint firstItem="zdr-7b-DEt" firstAttribute="centerX" secondItem="37Q-yF-tU4" secondAttribute="centerX" id="m9t-aL-txs"/>
+                            <constraint firstItem="37Q-yF-tU4" firstAttribute="bottom" secondItem="aOW-aN-ysb" secondAttribute="bottom" constant="50" id="xqS-eV-PDU"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="zVU-8O-R5J">
@@ -76,7 +78,7 @@ pen 34%</string>
                         <outlet property="imageView" destination="bTt-3L-lnS" id="Nq8-fI-Gtg"/>
                         <outlet property="livePhotoView" destination="b9c-4g-y7l" id="sEf-x6-HFe"/>
                         <outlet property="playButton" destination="zdr-7b-DEt" id="M8O-Xs-cwH"/>
-                        <outlet property="predictionLabel" destination="2hA-FN-jSh" id="iBE-UF-B3n"/>
+                        <outlet property="predictionTextView" destination="aOW-aN-ysb" id="vYU-50-v5A"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xir-Yb-GCT" sceneMemberID="firstResponder"/>
@@ -284,6 +286,9 @@ pen 34%</string>
     </scenes>
     <resources>
         <image name="play" width="40" height="40"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
