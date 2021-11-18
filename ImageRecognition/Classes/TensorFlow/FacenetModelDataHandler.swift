@@ -27,8 +27,8 @@ class FacenetModelDataHandler {
 
     let batchSize = 1
     let inputChannels = 3
-    let inputWidth = 224
-    let inputHeight = 224
+    let inputWidth = 160
+    let inputHeight = 160
 
     // MARK: - Private Properties
 

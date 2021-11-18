@@ -42,7 +42,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ImageRecognition: dabb5b40661f52fb26197016d3c4426da4a86930
+  ImageRecognition: 9fc71373a2fe28ec5f5ae3325383c464befb1489
   TensorFlowLiteC: 869f93708210ed939fc40f40c772a120b7f964d1
   TensorFlowLiteSwift: 78bc548132d2cae55643f3238359a24a6eb92b88
 
