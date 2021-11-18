@@ -10,9 +10,11 @@ import Vision
 
 public class FaceDetector {
 
-    private var modelDataHandler = FacenetModelDataHandler()
+    private var modelDataHandler: FacenetModelDataHandler?
 
-    public init() {}
+    public init(modelFileInfo: FileInfo = MobileNet.faceModelInfo, threadCount: Int = 4) {
+        self.modelDataHandler = FacenetModelDataHandler(modelFileInfo: modelFileInfo)
+    }
 
     public func detectFaces(from image: UIImage, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
         self.visionDetectFace(from: image, completion: completion)

@@ -14,7 +14,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var predictionLabel: UILabel!
 
-    let imagePredictor: ImagePredictor = ImagePredictor()
+    let imagePredictor: ObjectDetector = ObjectDetector()
 
     let minimumConfidencePercentage : Float = 25
     var topPredictions = [String: String]()
@@ -69,7 +69,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
 
     // MARK: - Private methods
 
-    private func predictionHandler(_ predictions: [ImagePredictor.Prediction]?) {
+    private func predictionHandler(_ predictions: [ObjectDetector.Prediction]?) {
         guard let predictions = predictions else {
             self.updatePredictionLabel("No predictions. (Check console log.)")
             return
@@ -96,7 +96,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
         }
     }
 
-    private func formatPredictions(_ predictions: [ImagePredictor.Prediction]) -> [String:String] {
+    private func formatPredictions(_ predictions: [ObjectDetector.Prediction]) -> [String:String] {
         for prediction in predictions {
             if prediction.confidencePercentage > self.minimumConfidencePercentage {
                 var name = prediction.classification

@@ -10,12 +10,6 @@ import TensorFlowLite
 import UIKit
 import Accelerate
 
-
-/// Information about the MobileNet model.
-enum MobileNet {
-    static let modelInfo: FileInfo = (name: "facenet", extension: "tflite")
-}
-
 /// This class handles all data preprocessing and makes calls to run inference on a given frame
 /// by invoking the `Interpreter`. It then formats the inferences obtained and returns the top N
 /// results for a successful inference.
@@ -47,15 +41,12 @@ class FacenetModelDataHandler {
     // MARK: - Initialization
 
     /// A failable initializer for `ModelDataHandler`. A new instance is created if the model and
-    /// labels files are successfully loaded from the app's main bundle. Default `threadCount` is 1.
-    init?(modelFileInfo: FileInfo = MobileNet.modelInfo,  threadCount: Int = 4) {
+    /// labels files are successfully loaded from the app's main bundle. Default `threadCount` is 4.
+    init?(modelFileInfo: FileInfo, threadCount: Int = 4) {
         let modelFilename = modelFileInfo.name
 
         // Construct the path to the model file.
-        guard let modelPath = Bundle.main.path(
-            forResource: modelFilename,
-            ofType: modelFileInfo.extension
-        ) else {
+        guard let modelPath = Bundle.main.path(forResource: modelFilename, ofType: modelFileInfo.extension) else {
             print("Failed to load the model file with name: \(modelFilename).")
             return nil
         }
@@ -66,9 +57,9 @@ class FacenetModelDataHandler {
         options.threadCount = threadCount
         do {
             // Create the `Interpreter`.
-            interpreter = try Interpreter(modelPath: modelPath, options: options)
+            self.interpreter = try Interpreter(modelPath: modelPath, options: options)
             // Allocate memory for the model's input `Tensor`s.
-            try interpreter.allocateTensors()
+            try self.interpreter.allocateTensors()
         } catch let error {
             print("Failed to create the interpreter with error: \(error.localizedDescription)")
             return nil
@@ -87,7 +78,7 @@ class FacenetModelDataHandler {
 
 
         let imageChannels = 4
-        assert(imageChannels >= inputChannels)
+        assert(imageChannels >= self.inputChannels)
 
         // Crops the image to the biggest square in the center and scales it down to model dimensions.
         let scaledSize = CGSize(width: inputWidth, height: inputHeight)
@@ -97,26 +88,22 @@ class FacenetModelDataHandler {
 
         let outputTensor: Tensor
         do {
-            let inputTensor = try interpreter.input(at: 0)
+            let inputTensor = try self.interpreter.input(at: 0)
 
             // Remove the alpha component from the image buffer to get the RGB data.
-            guard let rgbData = rgbDataFromBuffer(
-                thumbnailPixelBuffer,
-                byteCount: batchSize * inputWidth * inputHeight * inputChannels,
-                isModelQuantized: inputTensor.dataType == .uInt8
-            ) else {
+            guard let rgbData = self.rgbDataFromBuffer(thumbnailPixelBuffer, byteCount: self.batchSize * self.inputWidth * self.inputHeight * self.inputChannels, isModelQuantized: inputTensor.dataType == .uInt8) else {
                 print("Failed to convert the image buffer to RGB data.")
                 return nil
             }
 
             // Copy the RGB data to the input `Tensor`.
-            try interpreter.copy(rgbData, toInputAt: 0)
+            try self.interpreter.copy(rgbData, toInputAt: 0)
 
             // Run inference by invoking the `Interpreter`.
-            try interpreter.invoke()
+            try self.interpreter.invoke()
 
             // Get the output `Tensor` to process the inference results.
-            outputTensor = try interpreter.output(at: 0)
+            outputTensor = try self.interpreter.output(at: 0)
         } catch let error {
             print("Failed to invoke the interpreter with error: \(error.localizedDescription)")
             return nil
@@ -156,11 +143,7 @@ class FacenetModelDataHandler {
     ///       floating point values).
     /// - Returns: The RGB data representation of the image buffer or `nil` if the buffer could not be
     ///     converted.
-    private func rgbDataFromBuffer(
-        _ buffer: CVPixelBuffer,
-        byteCount: Int,
-        isModelQuantized: Bool
-    ) -> Data? {
+    private func rgbDataFromBuffer(_ buffer: CVPixelBuffer, byteCount: Int, isModelQuantized: Bool) -> Data? {
         CVPixelBufferLockBaseAddress(buffer, .readOnly)
         defer {
             CVPixelBufferUnlockBaseAddress(buffer, .readOnly)
@@ -175,10 +158,7 @@ class FacenetModelDataHandler {
         let destinationChannelCount = 3
         let destinationBytesPerRow = destinationChannelCount * width
 
-        var sourceBuffer = vImage_Buffer(data: sourceData,
-                                         height: vImagePixelCount(height),
-                                         width: vImagePixelCount(width),
-                                         rowBytes: sourceBytesPerRow)
+        var sourceBuffer = vImage_Buffer(data: sourceData, height: vImagePixelCount(height), width: vImagePixelCount(width), rowBytes: sourceBytesPerRow)
 
         guard let destinationData = malloc(height * destinationBytesPerRow) else {
             print("Error: out of memory")
@@ -189,10 +169,7 @@ class FacenetModelDataHandler {
             free(destinationData)
         }
 
-        var destinationBuffer = vImage_Buffer(data: destinationData,
-                                              height: vImagePixelCount(height),
-                                              width: vImagePixelCount(width),
-                                              rowBytes: destinationBytesPerRow)
+        var destinationBuffer = vImage_Buffer(data: destinationData, height: vImagePixelCount(height), width: vImagePixelCount(width), rowBytes: destinationBytesPerRow)
 
         let pixelBufferFormat = CVPixelBufferGetPixelFormatType(buffer)
 

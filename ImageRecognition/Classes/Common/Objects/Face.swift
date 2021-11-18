@@ -14,7 +14,7 @@ public class Face {
     public let image: UIImage
 
     private(set) public var pixelBuffer: [Float32]
-    private(set) public var iteration: Int = 1
+    private var iteration: Int = 1
 
     public var name: String?
 

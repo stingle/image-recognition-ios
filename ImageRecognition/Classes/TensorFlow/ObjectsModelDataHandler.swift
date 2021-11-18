@@ -18,15 +18,6 @@ struct Inference {
     let displayColor: UIColor
 }
 
-/// Information about a model file or labels file.
-typealias FileInfo = (name: String, extension: String)
-
-/// Information about the MobileNet SSD model.
-enum MobileNetSSD {
-    static let modelInfo: FileInfo = (name: "objects", extension: "tflite")
-    static let labelsInfo: FileInfo = (name: "labels", extension: "txt")
-}
-
 /// This class handles all data preprocessing and makes calls to run inference on a given frame
 /// by invoking the `Interpreter`. It then formats the inferences obtained and returns the top N
 /// results for a successful inference.
@@ -75,7 +66,7 @@ class ObjectsModelDataHandler: NSObject {
 
     /// A failable initializer for `ModelDataHandler`. A new instance is created if the model and
     /// labels files are successfully loaded from the app's main bundle. Default `threadCount` is 1.
-    init?(modelFileInfo: FileInfo = MobileNetSSD.modelInfo, labelsFileInfo: FileInfo = MobileNetSSD.labelsInfo, threadCount: Int = 4) {
+    init?(modelFileInfo: FileInfo, labelsFileInfo: FileInfo, threadCount: Int = 4) {
         let modelFilename = modelFileInfo.name
         guard let modelPath = Bundle.main.path(forResource: modelFilename, ofType: modelFileInfo.extension ) else {
             fatalError("Failed to load the model file with name: \(modelFilename).\(modelFileInfo.extension)")
@@ -129,11 +120,7 @@ class ObjectsModelDataHandler: NSObject {
             let inputTensor = try self.interpreter.input(at: 0)
 
             // Remove the alpha component from the image buffer to get the RGB data.
-            guard let rgbData = self.rgbDataFromBuffer(
-                scaledPixelBuffer,
-                byteCount: self.batchSize * self.inputWidth * self.inputHeight * self.inputChannels,
-                isModelQuantized: inputTensor.dataType == .uInt8
-            ) else {
+            guard let rgbData = self.rgbDataFromBuffer(scaledPixelBuffer, byteCount: self.batchSize * self.inputWidth * self.inputHeight * self.inputChannels, isModelQuantized: inputTensor.dataType == .uInt8) else {
                 print("Failed to convert the image buffer to RGB data.")
                 return nil
             }
@@ -200,10 +187,7 @@ class ObjectsModelDataHandler: NSObject {
 
             // Gets the color assigned for the class
             let colorToAssign = self.colorForClass(withIndex: outputClassIndex + 1)
-            let inference = Inference(confidence: score,
-                                      className: outputClass,
-                                      rect: newRect,
-                                      displayColor: colorToAssign)
+            let inference = Inference(confidence: score, className: outputClass, rect: newRect, displayColor: colorToAssign)
             resultsArray.append(inference)
         }
 
@@ -271,10 +255,7 @@ class ObjectsModelDataHandler: NSObject {
             free(destinationData)
         }
 
-        var destinationBuffer = vImage_Buffer(data: destinationData,
-                                              height: vImagePixelCount(height),
-                                              width: vImagePixelCount(width),
-                                              rowBytes: destinationBytesPerRow)
+        var destinationBuffer = vImage_Buffer(data: destinationData, height: vImagePixelCount(height), width: vImagePixelCount(width), rowBytes: destinationBytesPerRow)
 
         if (CVPixelBufferGetPixelFormatType(buffer) == kCVPixelFormatType_32BGRA){
             vImageConvert_BGRA8888toRGB888(&sourceBuffer, &destinationBuffer, UInt32(kvImageNoFlags))
@@ -340,16 +321,7 @@ extension Array {
     /// - Parameter unsafeData: The data containing the bytes to turn into an array.
     init?(unsafeData: Data) {
         guard unsafeData.count % MemoryLayout<Element>.stride == 0 else { return nil }
-#if swift(>=5.0)
         self = unsafeData.withUnsafeBytes { .init($0.bindMemory(to: Element.self)) }
-#else
-        self = unsafeData.withUnsafeBytes {
-            .init(UnsafeBufferPointer<Element>(
-                start: $0,
-                count: unsafeData.count / MemoryLayout<Element>.stride
-            ))
-        }
-#endif  // swift(>=5.0)
     }
 }
 
