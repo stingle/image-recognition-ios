@@ -8,6 +8,7 @@
 import UIKit
 import ARKit
 import ImageRecognition
+import Photos
 
 class FaceDetectionViewController: ImagePickerViewController {
 
@@ -18,7 +19,7 @@ class FaceDetectionViewController: ImagePickerViewController {
 
     private let database = PreviewDatabase.shared
 
-    private var filteredImages: [(UIImage, [FaceObject])]?
+    private var filteredImages: [(AnyObject, [FaceObject])]?
 
     private var selectedFace: Face?
 
@@ -30,6 +31,71 @@ class FaceDetectionViewController: ImagePickerViewController {
         self.filterAndPresentImages()
     }
 
+
+    override func didSelectImage(image: UIImage) {
+        self.selectedFace = nil
+        self.faceDetector.detectFaces(fromImage: image) {[ weak self] result in
+            self?.collectFaces(image: image, result: result)
+        }
+    }
+
+    override func didSelectVideo(videoURL: URL) {
+        self.selectedFace = nil
+        let assetImageGenerator = AssetImageGenerator()
+        let image = assetImageGenerator.generateThumnail(url: videoURL, fromTime: 2.0)
+        self.faceDetector.detectFaces(fromVideo: videoURL) { [weak self] result in
+            self?.collectFaces(image: image ?? UIImage(), result: result)
+        }
+    }
+
+    override func didSelectLivePhoto(livePhoto: PHLivePhoto) {
+        self.selectedFace = nil
+        self.faceDetector.detectFaces(fromLivePhoto: livePhoto) { [weak self] result in
+            self?.collectFaces(image: livePhoto, result: result)
+        }
+    }
+
+    override func didSelectGIF(url: URL) {
+        self.selectedFace = nil
+        let image = UIImage.animatedImageFromGIF(url: url)
+        self.faceDetector.detectFaces(fromGIF: url) { [weak self] result in
+            self?.collectFaces(image: image ?? UIImage(), result: result)
+        }
+    }
+
+    // MARK: - Actions
+
+    @IBAction func addButtonAction(_ sender: Any) {
+        self.requestAuthorization { allowed in
+            if allowed {
+                let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "Choose Photo", style: .default, handler: { _ in
+                    self.openPhotoGallery()
+                }))
+                alert.addAction(UIAlertAction(title: "Choose Video", style: .default, handler: { _ in
+                    self.openVideoGallery()
+                }))
+                alert.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+                self.present(alert, animated: true)
+            }
+        }
+    }
+
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if let viewController = segue.destination as? ImageViewController {
+//            if let selectedIndexPath = self.imagesCollectionView.indexPathsForSelectedItems?.first, let image = self.filteredImages?[selectedIndexPath.row] {
+//                viewController.image = image.0
+//                viewController.faces = image.1
+//                self.imagesCollectionView.deselectItem(at: selectedIndexPath, animated: true)
+//            }
+//        }
+    }
+
+    // MARK: - Private methods
+
     private func filterAndPresentImages() {
         guard let selectedFace = self.selectedFace else {
             self.filteredImages = self.database.images
@@ -40,66 +106,52 @@ class FaceDetectionViewController: ImagePickerViewController {
         self.imagesCollectionView.reloadData()
     }
 
-    override func didSelectImage(image: UIImage) {
-        self.selectedFace = nil
-        self.collecteFaces(from: image)
-    }
-
-    private func collecteFaces(from image: UIImage) {
-        self.faceDetector.detectFaces(from: image) {[ weak self] result in
-            switch result {
-            case .success(let newFaces):
-                DispatchQueue.global().async {
-                    let newFaceObjecs = newFaces.map({ FaceObject(face: $0.0, bounds: $0.1) })
-                    guard let self = self else { return }
-                    DispatchQueue.main.async {
-                        self.database.addFaces(faces: newFaceObjecs)
-                        self.database.addImages(images: [(image, newFaceObjecs)])
-                        self.filteredImages = self.database.images
-                        self.imagesCollectionView.reloadData()
-                        DispatchQueue.global().async {
-                            var uniqueFaces = [FaceObject]()
-                            for i in 0..<self.database.faces.count {
-                                let face1 = self.database.faces[i]
-                                uniqueFaces.append(face1)
-                                for j in (i + 1)..<self.database.faces.count {
-                                    let face2 = self.database.faces[j]
-                                    if face1.face.isSimilar(with: face2.face) {
-                                        uniqueFaces.removeLast()
-                                        break
-                                    }
+    private func collectFaces(image: AnyObject, result: Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) {
+        switch result {
+        case .success(let newFaces):
+            DispatchQueue.global().async {
+                let newFaceObjecs = newFaces.map({ FaceObject(face: $0.0, bounds: $0.1) })
+                DispatchQueue.main.async {
+                    self.database.addFaces(faces: newFaceObjecs)
+                    self.database.addImages(images: [(image, newFaceObjecs)])
+                    self.filteredImages = self.database.images
+                    self.imagesCollectionView.reloadData()
+                    DispatchQueue.global().async {
+                        var uniqueFaces = [FaceObject]()
+                        for i in 0..<self.database.faces.count {
+                            let face1 = self.database.faces[i]
+                            uniqueFaces.append(face1)
+                            for j in (i + 1)..<self.database.faces.count {
+                                let face2 = self.database.faces[j]
+                                if face1.face.isSimilar(with: face2.face) {
+                                    uniqueFaces.removeLast()
+                                    break
                                 }
                             }
-                            self.database.replaceFaces(faces: uniqueFaces)
-                            DispatchQueue.main.async {
-                                self.facesCollectionView.reloadData()
-                            }
+                        }
+                        self.database.replaceFaces(faces: uniqueFaces)
+                        DispatchQueue.main.async {
+                            self.facesCollectionView.reloadData()
                         }
                     }
                 }
-            case .failure(let error):
-                self?.database.addImages(images: [(image, [])])
-                print(error.localizedDescription)
             }
+        case .failure(let error):
+            self.database.addImages(images: [(image, [])])
+            print(error.localizedDescription)
         }
     }
 
-    // MARK: - Actions
-
-    @IBAction func addButtonAction(_ sender: Any) {
-        self.openPhotoGallery()
-    }
-
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let viewController = segue.destination as? ImageViewController {
-            if let selectedIndexPath = self.imagesCollectionView.indexPathsForSelectedItems?.first, let image = self.filteredImages?[selectedIndexPath.row] {
-                viewController.image = image.0
-                viewController.faces = image.1
-                self.imagesCollectionView.deselectItem(at: selectedIndexPath, animated: true)
+    private func requestAuthorization(completion: @escaping (Bool) -> Void) {
+        guard PHPhotoLibrary.authorizationStatus(for: .readWrite) == .authorized else {
+            PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+                DispatchQueue.main.async {
+                    completion(status == .authorized)
+                }
             }
+            return
         }
+        completion(true)
     }
 
 }
@@ -121,7 +173,11 @@ extension FaceDetectionViewController: UICollectionViewDataSource {
             cell.circle = true
         } else {
             let image = self.filteredImages![indexPath.row]
-            cell.image = image.0
+            if let object = image.0 as? UIImage {
+                cell.image = object
+            } else if let object = image.0 as? PHLivePhoto {
+                cell.livePhoto = object
+            }
             cell.circle = false
         }
         return cell
@@ -146,7 +202,7 @@ extension FaceDetectionViewController: UICollectionViewDelegate {
             self.filterAndPresentImages()
             collectionView.deselectItem(at: indexPath, animated: true)
         } else {
-            self.performSegue(withIdentifier: "presentImage", sender: nil)
+//            self.performSegue(withIdentifier: "presentImage", sender: nil)
         }
     }
 

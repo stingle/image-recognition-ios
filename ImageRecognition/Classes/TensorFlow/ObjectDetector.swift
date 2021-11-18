@@ -28,13 +28,13 @@ public class ObjectDetector {
 
     public typealias ImagePredictionHandler = (_ predictions: [Prediction]?) -> Void
 
-    public func makePredictions(for photo: UIImage, completionHandler: @escaping ImagePredictionHandler) {
+    public func makePredictions(forImage image: UIImage, completionHandler: @escaping ImagePredictionHandler) {
         self.dispatchQueue.async {
-            completionHandler(self.predictions(for: photo))
+            completionHandler(self.predictions(for: image))
         }
     }
 
-    public func makePredictions(for video: URL, completionHandler: @escaping ImagePredictionHandler) {
+    public func makePredictions(forVideo video: URL, completionHandler: @escaping ImagePredictionHandler) {
         self.dispatchQueue.async {
             let frames = self.assetImageGenerator.getFramesFromVideo(url: video)
             var allPredictions = [Prediction]()
@@ -46,7 +46,7 @@ public class ObjectDetector {
         }
     }
 
-    public func makePredictions(for livePhoto: PHLivePhoto, completionHandler: @escaping ImagePredictionHandler) {
+    public func makePredictions(forLivePhoto livePhoto: PHLivePhoto, completionHandler: @escaping ImagePredictionHandler) {
         self.dispatchQueue.async {
             self.assetImageGenerator.getImagesFromLivePhoto(livePhoto: livePhoto) { images in
                 var allPredictions = [Prediction]()
@@ -56,6 +56,18 @@ public class ObjectDetector {
                 }
                 completionHandler(allPredictions)
             }
+        }
+    }
+
+    public func makePredictions(forGIF gifURL: URL, completionHandler: @escaping ImagePredictionHandler) {
+        self.dispatchQueue.async {
+            let images = self.assetImageGenerator.getImagesFromGIF(url: gifURL)
+            var allPredictions = [Prediction]()
+            for image in images {
+                guard let predictions = self.predictions(for: image) else { continue }
+                allPredictions.append(contentsOf: predictions)
+            }
+            completionHandler(allPredictions)
         }
     }
 

@@ -7,69 +7,60 @@
 
 import UIKit
 import Vision
+import Photos
 
 public class FaceDetector {
 
     private var modelDataHandler: FacenetModelDataHandler?
 
-    public init(modelFileInfo: FileInfo = MobileNet.faceModelInfo, threadCount: Int = 4) {
+    private let assetImageGenerator = AssetImageGenerator()
+
+    private var dispatchQueue: DispatchQueue
+
+    public init(modelFileInfo: FileInfo = MobileNet.faceModelInfo, threadCount: Int = 4, queue: DispatchQueue? = nil) {
+        self.dispatchQueue = queue ?? DispatchQueue.global(qos: .userInitiated)
         self.modelDataHandler = FacenetModelDataHandler(modelFileInfo: modelFileInfo)
     }
 
-    public func detectFaces(from image: UIImage, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
+    public func detectFaces(fromImage image: UIImage, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
         self.visionDetectFace(from: image, completion: completion)
     }
 
-    public func recognize(face: Face, image: UIImage, completion: @escaping (Result<(face: Face, bounds: CGRect)?, FaceDetectorError>) -> Void) {
-        self.detectFaces(from: image) { result in
-            switch result {
-            case .success(let faces):
-                var previousSimilarity = Float32.infinity
-                var closestFace: (Face, CGRect)?
-                for _face in faces {
-                    let similarity = face.computeSimilarity(with: _face.face)
-                    if similarity <= Face.Constant.similarityThreshold && similarity < previousSimilarity {
-                        closestFace = _face
-                        previousSimilarity = similarity
-                    }
-                }
-                completion(.success(closestFace))
-            case .failure(let error):
-                completion(.failure(error))
-            }
+    public func detectFaces(fromVideo videoURL: URL, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
+        let frames = self.assetImageGenerator.getFramesFromVideo(url: videoURL)
+        self.detectFaces(fromImages: frames, completion: completion)
+    }
+
+    public func detectFaces(fromLivePhoto livePhoto: PHLivePhoto, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
+        self.assetImageGenerator.getImagesFromLivePhoto(livePhoto: livePhoto) { images in
+            self.detectFaces(fromImages: images, completion: completion)
         }
     }
 
-    public func recognize(face: Face, images: [UIImage], progress: @escaping (Float) -> Void, completion: @escaping (Result<[(image: UIImage, face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
-        guard !images.isEmpty else {
-            completion(.success([]))
-            return
-        }
-        var count = images.count
-        var results = [(UIImage, Face, CGRect)]()
-        for image in images {
-            self.recognize(face: face, image: image) { result in
-                switch result {
-                case .success(let recognizedFace):
-                    if let recognizedFace = recognizedFace {
-                        results.append((image, recognizedFace.face, recognizedFace.bounds))
-                    }
-                    count -= 1
-                case .failure(_):
-                    count -= 1
-                }
-                if count == 0 {
-                    progress(100.0)
-                    completion(.success(results))
-                } else {
-                    let percent = Float(images.count - count) / Float(images.count) * 100.0
-                    progress(percent)
-                }
-            }
-        }
+    public func detectFaces(fromGIF gifURL: URL, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
+        let images = self.assetImageGenerator.getImagesFromGIF(url: gifURL)
+        self.detectFaces(fromImages: images, completion: completion)
     }
 
     // MARK: - Private methods
+
+    private func detectFaces(fromImages: [UIImage], completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
+        var allFaces = [(face: Face, bounds: CGRect)]()
+        var count = fromImages.count
+        for image in fromImages {
+            self.visionDetectFace(from: image) { result in
+                switch result {
+                case .success(let faces):
+                    allFaces.append(contentsOf: faces)
+                    count -= 1
+                    if count == 0 { completion(.success(allFaces)) }
+                case .failure(_):
+                    count -= 1
+                    if count == 0 { completion(.success(allFaces)) }
+                }
+            }
+        }
+    }
 
     private func recognize(image: UIImage) throws -> [Float32] {
         guard let pixelBuffer = CVPixelBuffer.buffer(from: image) else {
@@ -107,17 +98,12 @@ public class FaceDetector {
                     boundingBox.origin.y = 1 - boundingBox.maxY
                     detectedFaces.append((face, boundingBox))
                 } catch {
-                    print(error.localizedDescription)
-                    DispatchQueue.main.async {
-                        completion(.failure(.failed))
-                    }
+                    completion(.failure(.failed))
                 }
             }
-            DispatchQueue.main.async {
-                completion(.success(detectedFaces))
-            }
+            completion(.success(detectedFaces))
         }
-        DispatchQueue.global(qos: .userInitiated).async {
+        self.dispatchQueue.async {
             do {
                 try VNSequenceRequestHandler().perform([request], on: ciImage, orientation: CGImagePropertyOrientation(image.imageOrientation))
             } catch {

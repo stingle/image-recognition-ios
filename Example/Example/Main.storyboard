@@ -38,9 +38,9 @@
                                     <action selector="playButtonAction:" destination="40D-Pj-o0r" eventType="touchUpInside" id="FKm-IB-E7c"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="aOW-aN-ysb">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aOW-aN-ysb">
                                 <rect key="frame" x="0.0" y="660" width="390" height="100"/>
-                                <color key="backgroundColor" white="0.67000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.67000000000000004" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="bWh-wz-0EI"/>
                                 </constraints>
@@ -181,9 +181,17 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vOG-u2-jzX">
                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                                 </imageView>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="joF-KK-f5y" customClass="PHLivePhotoView">
+                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="vOG-u2-jzX" firstAttribute="top" secondItem="ZPQ-yI-dh8" secondAttribute="top" id="63H-Od-uBU"/>
+                                                <constraint firstItem="joF-KK-f5y" firstAttribute="top" secondItem="ZPQ-yI-dh8" secondAttribute="top" id="6e0-2F-OyR"/>
+                                                <constraint firstAttribute="bottom" secondItem="joF-KK-f5y" secondAttribute="bottom" id="8FO-c5-GDi"/>
+                                                <constraint firstAttribute="trailing" secondItem="joF-KK-f5y" secondAttribute="trailing" id="Rap-XB-xyU"/>
+                                                <constraint firstItem="joF-KK-f5y" firstAttribute="leading" secondItem="ZPQ-yI-dh8" secondAttribute="leading" id="d6a-fD-5K1"/>
                                                 <constraint firstAttribute="bottom" secondItem="vOG-u2-jzX" secondAttribute="bottom" id="fAp-rz-GPm"/>
                                                 <constraint firstAttribute="trailing" secondItem="vOG-u2-jzX" secondAttribute="trailing" id="nam-N6-oeq"/>
                                                 <constraint firstItem="vOG-u2-jzX" firstAttribute="leading" secondItem="ZPQ-yI-dh8" secondAttribute="leading" id="nkc-2P-efq"/>
@@ -191,6 +199,7 @@
                                         </collectionViewCellContentView>
                                         <connections>
                                             <outlet property="imageView" destination="vOG-u2-jzX" id="wHK-bh-8oM"/>
+                                            <outlet property="livePhotoView" destination="joF-KK-f5y" id="6b9-zF-Aej"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>

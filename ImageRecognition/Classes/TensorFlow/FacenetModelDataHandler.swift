@@ -81,7 +81,7 @@ class FacenetModelDataHandler {
         assert(imageChannels >= self.inputChannels)
 
         // Crops the image to the biggest square in the center and scales it down to model dimensions.
-        let scaledSize = CGSize(width: inputWidth, height: inputHeight)
+        let scaledSize = CGSize(width: self.inputWidth, height: self.inputHeight)
         guard let thumbnailPixelBuffer = pixelBuffer.centerThumbnail(ofSize: scaledSize) else {
             return nil
         }

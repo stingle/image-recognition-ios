@@ -60,6 +60,11 @@ public class AssetImageGenerator {
         }
     }
 
+    func getImagesFromGIF(url: URL) -> [UIImage] {
+        let images = UIImage.gif(url: url)
+        return images?.images ?? []
+    }
+
     /*
      func getNumberOfFrames(url: URL) -> Int {
      let asset = AVURLAsset(url: url, options: nil)

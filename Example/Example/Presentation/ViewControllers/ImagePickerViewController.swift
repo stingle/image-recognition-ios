@@ -24,7 +24,7 @@ class ImagePickerViewController: UIViewController {
     
     func didSelectVideo(videoURL: URL) {}
 
-    func displayProgress(_ progress: Progress?) {}
+    func didSelectGIF(url: URL) {}
 
     // MARK: - Private methods
 
@@ -46,9 +46,8 @@ extension ImagePickerViewController: PHPickerViewControllerDelegate {
         guard let result = results.first else {
             return
         }
-        let progress: Progress?
         if result.itemProvider.canLoadObject(ofClass: PHLivePhoto.self) {
-            progress = result.itemProvider.loadObject(ofClass: PHLivePhoto.self) { [weak self] livePhoto, error in
+            result.itemProvider.loadObject(ofClass: PHLivePhoto.self) { [weak self] livePhoto, error in
                 guard let livePhoto = livePhoto as? PHLivePhoto else {
                     return
                 }
@@ -56,8 +55,24 @@ extension ImagePickerViewController: PHPickerViewControllerDelegate {
                     self?.didSelectLivePhoto(livePhoto: livePhoto)
                 }
             }
+        } else if result.itemProvider.hasItemConformingToTypeIdentifier(UTType.gif.identifier) {
+            result.itemProvider.loadFileRepresentation(forTypeIdentifier: UTType.gif.identifier) { [weak self] url, error in
+                do {
+                    guard let url = url, error == nil else {
+                        return
+                    }
+                    let localURL = FileManager.default.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
+                    try? FileManager.default.removeItem(at: localURL)
+                    try FileManager.default.copyItem(at: url, to: localURL)
+                    DispatchQueue.main.async {
+                        self?.didSelectGIF(url: localURL)
+                    }
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
         } else if result.itemProvider.canLoadObject(ofClass: UIImage.self) {
-            progress = result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+            result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
                 guard let image = image as? UIImage else {
                     return
                 }
@@ -66,13 +81,13 @@ extension ImagePickerViewController: PHPickerViewControllerDelegate {
                 }
             }
         } else if result.itemProvider.hasItemConformingToTypeIdentifier(UTType.movie.identifier) {
-            progress = result.itemProvider.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier) { [weak self] url, error in
+            result.itemProvider.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier) { [weak self] url, error in
                 do {
                     guard let url = url, error == nil else {
                         return
                     }
                     let localURL = FileManager.default.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
-                    try FileManager.default.removeItem(at: localURL)
+                    try? FileManager.default.removeItem(at: localURL)
                     try FileManager.default.copyItem(at: url, to: localURL)
                     DispatchQueue.main.async {
                         self?.didSelectVideo(videoURL: localURL)
@@ -81,12 +96,7 @@ extension ImagePickerViewController: PHPickerViewControllerDelegate {
                     print(error.localizedDescription)
                 }
             }
-        } else if result.itemProvider.hasItemConformingToTypeIdentifier(UTType.gif.identifier) {
-            progress = nil
-        } else {
-            progress = nil
         }
-        self.displayProgress(progress)
     }
 
 }

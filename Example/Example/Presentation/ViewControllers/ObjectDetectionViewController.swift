@@ -27,6 +27,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.livePhotoView.contentMode = .scaleAspectFit
         self.title = "Object Detection"
     }
 
@@ -35,7 +36,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
         self.updateImage(image)
         self.updatePredictionLabel("Making predictions for the image...")
 
-        self.objectDetector.makePredictions(for: image, completionHandler: self.predictionHandler)
+        self.objectDetector.makePredictions(forImage: image, completionHandler: self.predictionHandler)
     }
 
     override func didSelectLivePhoto(livePhoto: PHLivePhoto) {
@@ -46,7 +47,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
         self.livePhotoView.startPlayback(with: .full)
         self.updatePredictionLabel("Making predictions for the live photo...")
 
-        self.objectDetector.makePredictions(for: livePhoto, completionHandler: self.predictionHandler)
+        self.objectDetector.makePredictions(forLivePhoto: livePhoto, completionHandler: self.predictionHandler)
     }
 
     override func didSelectVideo(videoURL: URL) {
@@ -62,26 +63,21 @@ class ObjectDetectionViewController: ImagePickerViewController {
         self.topPredictions.removeAll()
         self.updatePredictionLabel("Making predictions for the video...")
 
-        self.objectDetector.makePredictions(for: videoURL, completionHandler: self.predictionHandler)
+        self.objectDetector.makePredictions(forVideo: videoURL, completionHandler: self.predictionHandler)
     }
 
-    func updateImage(_ image: UIImage) {
-        DispatchQueue.main.async {
-            self.livePhotoView.livePhoto = nil
-            self.imageView.isHidden = false
-            self.livePhotoView.isHidden = true
-            self.playButton.isHidden = true
-            self.imageView.image = image
-        }
-    }
+    override func didSelectGIF(url: URL) {
+        self.livePhotoView.isHidden = true
+        self.imageView.isHidden = false
+        self.playButton.isHidden = true
+        self.livePhotoView.livePhoto = nil
+        self.imageView.image = UIImage.animatedImageFromGIF(url: url)
 
-    func updatePredictionLabel(_ message: String) {
-        DispatchQueue.main.async {
-            self.predictionTextView.text = message
-            self.predictionTextView.isHidden = false
-        }
-    }
+        self.topPredictions.removeAll()
+        self.updatePredictionLabel("Making predictions for the gif...")
 
+        self.objectDetector.makePredictions(forGIF: url, completionHandler: self.predictionHandler)
+    }
 
     // MARK: - Action
 
@@ -180,6 +176,23 @@ class ObjectDetectionViewController: ImagePickerViewController {
         }
         
         return self.topPredictions
+    }
+
+    private func updateImage(_ image: UIImage) {
+        DispatchQueue.main.async {
+            self.livePhotoView.livePhoto = nil
+            self.imageView.isHidden = false
+            self.livePhotoView.isHidden = true
+            self.playButton.isHidden = true
+            self.imageView.image = image
+        }
+    }
+
+    private func updatePredictionLabel(_ message: String) {
+        DispatchQueue.main.async {
+            self.predictionTextView.text = message
+            self.predictionTextView.isHidden = false
+        }
     }
 
 }
