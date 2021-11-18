@@ -8,16 +8,22 @@
 import UIKit
 import Vision
 import ImageRecognition
+import PhotosUI
+import AVKit
 
 class ObjectDetectionViewController: ImagePickerViewController {
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var predictionLabel: UILabel!
+    @IBOutlet weak var livePhotoView: PHLivePhotoView!
+    @IBOutlet weak var playButton: UIButton!
 
-    let imagePredictor: ObjectDetector = ObjectDetector()
+    private let objectDetector: ObjectDetector = ObjectDetector()
 
     let minimumConfidencePercentage : Float = 25
     var topPredictions = [String: String]()
+
+    private var videoURL: URL?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,20 +35,42 @@ class ObjectDetectionViewController: ImagePickerViewController {
         self.updateImage(image)
         self.updatePredictionLabel("Making predictions for the image...")
 
-        self.imagePredictor.makePredictions(for: image, completionHandler: self.predictionHandler)
+        self.objectDetector.makePredictions(for: image, completionHandler: self.predictionHandler)
+    }
+
+    override func didSelectLivePhoto(livePhoto: PHLivePhoto) {
+        self.imageView.isHidden = true
+        self.playButton.isHidden = false
+        self.livePhotoView.isHidden = false
+        self.livePhotoView.livePhoto = livePhoto
+        self.livePhotoView.startPlayback(with: .full)
+        self.updatePredictionLabel("Making predictions for the live photo...")
+
+        self.objectDetector.makePredictions(for: livePhoto, completionHandler: self.predictionHandler)
     }
 
     override func didSelectVideo(videoURL: URL) {
+        self.videoURL = videoURL
+        let assetImageGenerator = AssetImageGenerator()
+        let image = assetImageGenerator.generateThumnail(url: videoURL, fromTime: 2.0)
+        self.imageView.image = image
+        self.livePhotoView.isHidden = true
+        self.imageView.isHidden = false
+        self.playButton.isHidden = false
+        self.livePhotoView.livePhoto = nil
+
         self.topPredictions.removeAll()
         self.updatePredictionLabel("Making predictions for the video...")
 
-        self.imagePredictor.makePredictions(for: videoURL, completionHandler: self.predictionHandler)
+        self.objectDetector.makePredictions(for: videoURL, completionHandler: self.predictionHandler)
     }
-
-    // MARK: Main storyboard updates
 
     func updateImage(_ image: UIImage) {
         DispatchQueue.main.async {
+            self.livePhotoView.livePhoto = nil
+            self.imageView.isHidden = false
+            self.livePhotoView.isHidden = true
+            self.playButton.isHidden = true
             self.imageView.image = image
         }
     }
@@ -54,31 +82,65 @@ class ObjectDetectionViewController: ImagePickerViewController {
         }
     }
 
+
+    // MARK: - Action
+
     @IBAction func addButtonAction(_ sender: Any) {
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Choose photo", style: .default, handler: { _ in
-            self.openPhotoGallery()
-        }))
-        alert.addAction(UIAlertAction(title: "Choose video", style: .default, handler: { _ in
-            self.openVideoGallery()
-        }))
-        alert.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
-        self.present(alert, animated: true)
+        self.requestAuthorization { allowed in
+            if allowed {
+                let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "Choose Photo", style: .default, handler: { _ in
+                    self.openPhotoGallery()
+                }))
+                alert.addAction(UIAlertAction(title: "Choose Video", style: .default, handler: { _ in
+                    self.openVideoGallery()
+                }))
+                alert.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+                self.present(alert, animated: true)
+            }
+        }
+    }
+
+    @IBAction func playButtonAction(_ sender: Any) {
+        if let videoURL = self.videoURL {
+            let player = AVPlayer(url: videoURL)
+            let playerViewController = AVPlayerViewController()
+            playerViewController.player = player
+            self.present(playerViewController, animated: true) {
+                playerViewController.player?.play()
+            }
+        } else if self.livePhotoView.livePhoto != nil {
+            self.livePhotoView.startPlayback(with: .full)
+        }
     }
 
     // MARK: - Private methods
 
-    private func predictionHandler(_ predictions: [ObjectDetector.Prediction]?) {
-        guard let predictions = predictions else {
-            self.updatePredictionLabel("No predictions. (Check console log.)")
+    private func requestAuthorization(completion: @escaping (Bool) -> Void) {
+        guard PHPhotoLibrary.authorizationStatus(for: .readWrite) == .authorized else {
+            PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+                DispatchQueue.main.async {
+                    completion(status == .authorized)
+                }
+            }
             return
         }
+        completion(true)
+    }
 
-        let formattedPredictions = formatPredictions(predictions)
-        let predictionString = formattedPredictions.map({ $0.key + " " + $0.value }).joined(separator: "\n")
-        print(predictionString)
-        self.updatePredictionLabel(predictionString)
+    private func predictionHandler(_ predictions: [ObjectDetector.Prediction]?) {
+        DispatchQueue.main.async {
+            guard let predictions = predictions else {
+                self.updatePredictionLabel("No predictions. (Check console log.)")
+                return
+            }
+
+            let formattedPredictions = self.formatPredictions(predictions)
+            let predictionString = formattedPredictions.map({ $0.key + " " + $0.value }).joined(separator: "\n")
+            print(predictionString)
+            self.updatePredictionLabel(predictionString)
+        }
     }
 
     private func percentageToString(_ percentage: Float) -> String {

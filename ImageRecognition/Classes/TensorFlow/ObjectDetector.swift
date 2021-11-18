@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Photos
 
 public class ObjectDetector {
 
@@ -18,40 +19,54 @@ public class ObjectDetector {
 
     private let assetImageGenerator = AssetImageGenerator()
 
-    public init(modelFileInfo: FileInfo = MobileNet.objectModelInfo, labelsFileInfo: FileInfo = MobileNet.objectsLabelsInfo) {
+    private var dispatchQueue: DispatchQueue
+
+    public init(modelFileInfo: FileInfo = MobileNet.objectModelInfo, labelsFileInfo: FileInfo = MobileNet.objectsLabelsInfo, queue: DispatchQueue? = nil) {
+        self.dispatchQueue = queue ?? DispatchQueue.global(qos: .userInitiated)
         self.imageClassifier = ObjectsModelDataHandler(modelFileInfo: modelFileInfo, labelsFileInfo: labelsFileInfo)
     }
 
     public typealias ImagePredictionHandler = (_ predictions: [Prediction]?) -> Void
 
     public func makePredictions(for photo: UIImage, completionHandler: @escaping ImagePredictionHandler) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            guard let pixelBuffer = CVPixelBuffer.buffer(from: photo) else {
-                return
-            }
-            let result = self.imageClassifier?.runModel(onFrame: pixelBuffer)
-            let predictions = result?.map({ Prediction(classification: $0.className, confidencePercentage: $0.confidence * 100) })
-            DispatchQueue.main.async {
-                completionHandler(predictions)
-            }
+        self.dispatchQueue.async {
+            completionHandler(self.predictions(for: photo))
         }
     }
 
     public func makePredictions(for video: URL, completionHandler: @escaping ImagePredictionHandler) {
-        DispatchQueue.global(qos: .userInitiated).async {
+        self.dispatchQueue.async {
             let frames = self.assetImageGenerator.getFramesFromVideo(url: video)
             var allPredictions = [Prediction]()
             for frame in frames {
-                self.makePredictions(for: frame) { predictions in
-                    if let predictions = predictions {
-                        allPredictions.append(contentsOf: predictions)
-                    }
-                }
+                guard let predictions = self.predictions(for: frame) else { continue }
+                allPredictions.append(contentsOf: predictions)
             }
-            DispatchQueue.main.async {
+            completionHandler(allPredictions)
+        }
+    }
+
+    public func makePredictions(for livePhoto: PHLivePhoto, completionHandler: @escaping ImagePredictionHandler) {
+        self.dispatchQueue.async {
+            self.assetImageGenerator.getImagesFromLivePhoto(livePhoto: livePhoto) { images in
+                var allPredictions = [Prediction]()
+                for image in images {
+                    guard let predictions = self.predictions(for: image) else { continue }
+                    allPredictions.append(contentsOf: predictions)
+                }
                 completionHandler(allPredictions)
             }
         }
     }
-    
+
+    // MARK: - Private methods
+
+    private func predictions(for photo: UIImage) -> [Prediction]? {
+        guard let pixelBuffer = CVPixelBuffer.buffer(from: photo) else {
+            return nil
+        }
+        let result = self.imageClassifier?.runModel(onFrame: pixelBuffer)
+        return result?.map({ Prediction(classification: $0.className, confidencePercentage: $0.confidence * 100) })
+    }
+
 }
