@@ -53,7 +53,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
     override func didSelectVideo(videoURL: URL) {
         self.videoURL = videoURL
         let assetImageGenerator = AssetImageGenerator()
-        let image = assetImageGenerator.generateThumnail(url: videoURL, fromTime: 2.0)
+        let image = assetImageGenerator.generateThumnail(url: videoURL, fromTime: 0.0)
         self.imageView.image = image
         self.livePhotoView.isHidden = true
         self.imageView.isHidden = false
@@ -63,7 +63,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
         self.topPredictions.removeAll()
         self.updatePredictionLabel("Making predictions for the video...")
 
-        self.objectDetector.makePredictions(forVideo: videoURL, completionHandler: self.predictionHandler)
+        self.objectDetector.makePredictions(forVideo: videoURL, completionHandler: self.videoPredictionHandler)
     }
 
     override func didSelectGIF(url: URL) {
@@ -135,6 +135,19 @@ class ObjectDetectionViewController: ImagePickerViewController {
             let formattedPredictions = self.formatPredictions(predictions)
             let predictionString = formattedPredictions.map({ $0.key + " " + $0.value }).joined(separator: "\n")
             print(predictionString)
+            self.updatePredictionLabel(predictionString)
+        }
+    }
+
+    private func videoPredictionHandler(_ predictions: [ObjectDetector.Prediction]?) {
+        DispatchQueue.main.async {
+            guard let predictions = predictions else {
+                self.updatePredictionLabel("No predictions. (Check console log.)")
+                return
+            }
+
+            let formattedPredictions = self.formatPredictions(predictions)
+            let predictionString = formattedPredictions.map({ $0.key + " " + $0.value }).joined(separator: "\n")
             self.updatePredictionLabel(predictionString)
         }
     }

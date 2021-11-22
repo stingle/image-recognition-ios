@@ -28,8 +28,7 @@ public class AssetImageGenerator {
         }
     }
 
-    func getFramesFromVideo(url: URL) -> [UIImage] { //todo right now I'm getting frames from every second, you can check it in for loop and also in generateThumnail function (preferredTimescale = 600). Checking every frame is painfull and super-slow, I can't imagine that someone will need it. For future - need to add functionality of comparing frames only by key pixels
-//        let framesNumber = getNumberOfFrames(url: url) //for test
+    func getFramesFromVideo(url: URL) -> [UIImage] {
         let asset = AVURLAsset(url: url)
         let durationInSeconds = asset.duration.seconds
         var frames = [UIImage]()
@@ -39,6 +38,12 @@ public class AssetImageGenerator {
             }
         }
         return frames
+    }
+    
+    func getFrameFromVideoForTime(url: URL, time: Float64) -> UIImage {
+        let image = self.generateThumnail(url: url, fromTime: time)
+        
+        return image!
     }
 
     func getImagesFromLivePhoto(livePhoto: PHLivePhoto, completion: @escaping ([UIImage]) -> Void) {
@@ -64,35 +69,4 @@ public class AssetImageGenerator {
         let images = UIImage.gif(url: url)
         return images?.images ?? []
     }
-
-    /*
-     func getNumberOfFrames(url: URL) -> Int {
-     let asset = AVURLAsset(url: url, options: nil)
-     do {
-     let reader = try AVAssetReader(asset: asset)
-     //AVAssetReader(asset: asset, error: nil)
-     let videoTrack = asset.tracks(withMediaType: AVMediaType.video)[0]
-
-     let readerOutput = AVAssetReaderTrackOutput(track: videoTrack, outputSettings: nil) // NB: nil, should give you raw frames
-     reader.add(readerOutput)
-     reader.startReading()
-
-     var nFrames = 0
-
-     while true {
-     let sampleBuffer = readerOutput.copyNextSampleBuffer()
-     if sampleBuffer == nil {
-     break
-     }
-     nFrames = nFrames+1
-     }
-
-     print("Num frames: \(nFrames)")
-     return nFrames
-     }catch {
-     print("Error: \(error)")
-     }
-     return 0
-     }
-     */
 }
