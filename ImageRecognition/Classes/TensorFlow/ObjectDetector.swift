@@ -101,7 +101,7 @@ public class ObjectDetector {
     // MARK: - Private methods
 
     private func predictions(for photo: UIImage) -> [Prediction]? {
-        guard let pixelBuffer = CVPixelBuffer.buffer(from: photo) else {
+        guard let pixelBuffer = CVPixelBuffer.pixelBuffer(from: photo) else {
             return nil
         }
         let result = self.imageClassifier?.runModel(onFrame: pixelBuffer)

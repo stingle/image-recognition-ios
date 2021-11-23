@@ -63,7 +63,7 @@ public class FaceDetector {
     }
 
     private func recognize(image: UIImage) throws -> [Float32] {
-        guard let pixelBuffer = CVPixelBuffer.buffer(from: image) else {
+        guard let pixelBuffer = CVPixelBuffer.pixelBuffer(from: image) else {
             return []
         }
         let result = self.modelDataHandler?.runModel(onFrame: pixelBuffer)
