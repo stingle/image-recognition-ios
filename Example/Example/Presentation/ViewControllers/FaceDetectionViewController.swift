@@ -23,16 +23,15 @@ class FaceDetectionViewController: ImagePickerViewController {
 
     private var selectedFace: Face?
   
-    var accuracyOfPrediction = 1.0 //0-1, 1 means - 100% allowed duration of prediction usage
-    
-    private var maximumDurationOfPredictions = 8000.0 // in milliseconds
+    private var maximumDurationOfPredictions = 5000.0 // in milliseconds
 
     private var videoURL: URL?
     
+    var lastVideoMomentDetected = 0.0
+    
     var testFrameTook: Double? {
         didSet {
-            self.faceDetectionFromVideoInProgress = true
-            self.startFaseDetectionFromVideo()
+            self.faseDetectionFromVideo()
         }
     }
     
@@ -56,46 +55,40 @@ class FaceDetectionViewController: ImagePickerViewController {
     override func didSelectVideo(videoURL: URL) {
         self.selectedFace = nil
         let assetImageGenerator = AssetImageGenerator()
-        let startOfTest = Date().timeIntervalSince1970 * 1000
-        UserDefaults.standard.set(startOfTest, forKey: "startOfTest")
-
+        let currentTS = Date().timeIntervalSince1970 * 1000
+        UserDefaults.standard.set(currentTS, forKey: "startOfTest")
+        UserDefaults.standard.set(currentTS, forKey: "frameDetectionStarted")
+        faceDetectionFromVideoInProgress = true
         let image = assetImageGenerator.generateThumnail(url: videoURL, fromTime: 0.0)
+        self.lastVideoMomentDetected = 0.0
         self.videoURL = videoURL
-        print("self.videoURL seted")
         self.faceDetector.detectFaces(fromImage: image!) {[ weak self] result in
             self?.collectFaces(image: image ?? UIImage(), result: result)
         }
     }
-    var timer = Timer()
 
-    func startFaseDetectionFromVideo() {
-
-        let allowedDurationOfPrediction = self.maximumDurationOfPredictions * self.accuracyOfPrediction
-        var framesCanGet = allowedDurationOfPrediction / (testFrameTook!*1.3)//todo was 1.3 in case with objects
-        framesCanGet.round(.down)
-        print(framesCanGet)
-
-        let asset = AVURLAsset(url: self.videoURL!)
-        let durationInSeconds = asset.duration.seconds
-        let stepForFrame = durationInSeconds/Double(framesCanGet)
-        let assetImageGenerator = AssetImageGenerator()
-
-        
-        if (framesCanGet > 1) {
-            var k = 1
-            self.timer = Timer.scheduledTimer(withTimeInterval: stepForFrame, repeats: true, block: { _ in
-                if k < Int(framesCanGet) {
-                    print(k)
-                    let tsForFrame = Double(k) * stepForFrame
-                    let image = assetImageGenerator.generateThumnail(url: self.videoURL!, fromTime: tsForFrame)
-                    self.faceDetector.detectFaces(fromImage: image!) {[ weak self] result in
-                        self?.collectFaces(image: image ?? UIImage(), result: result)
-                    }
-                    k = k+1
-                }
-            })
+    
+    func faseDetectionFromVideo() {
+        let frameDetectionStarted = Date().timeIntervalSince1970 * 1000
+        let alreadySpentOnDetection = frameDetectionStarted - UserDefaults.standard.double(forKey: "startOfTest")
+        let timeLeftForDetection = self.maximumDurationOfPredictions - alreadySpentOnDetection
+        if timeLeftForDetection > self.testFrameTook! {
+            UserDefaults.standard.set(frameDetectionStarted, forKey: "frameDetectionStarted")
+            let framesCanGet = timeLeftForDetection / self.testFrameTook!
+            let asset = AVURLAsset(url: self.videoURL!)
+            let durationInSeconds = asset.duration.seconds
+            let leftToCheckVideoDutaion = durationInSeconds - self.lastVideoMomentDetected
+            let stepForFrame = leftToCheckVideoDutaion/Double(framesCanGet)
+            self.lastVideoMomentDetected = self.lastVideoMomentDetected + stepForFrame
+            let assetImageGenerator = AssetImageGenerator()
+            let image = assetImageGenerator.generateThumnail(url: self.videoURL!, fromTime: self.lastVideoMomentDetected)
+            self.faceDetector.detectFaces(fromImage: image!) {[ weak self] result in
+                self?.collectFaces(image: image ?? UIImage(), result: result)
+            }
+        } else {
+            lastVideoMomentDetected = 0.0
+            faceDetectionFromVideoInProgress = false
         }
-
     }
     
     override func didSelectLivePhoto(livePhoto: PHLivePhoto) {
@@ -182,19 +175,11 @@ class FaceDetectionViewController: ImagePickerViewController {
                         self.database.replaceFaces(faces: uniqueFaces)
                         DispatchQueue.main.async {
                             self.facesCollectionView.reloadData()
-                            self.facesCollectionView.performBatchUpdates(nil, completion: {
-                                (result) in
-                                let startOfTest = UserDefaults.standard.double(forKey: "startOfTest")
-                                let endOfTest = Date().timeIntervalSince1970 * 1000
-                                print(endOfTest - startOfTest, " test took 1")
-                                if !self.faceDetectionFromVideoInProgress {
-                                    self.testFrameTook = endOfTest - startOfTest
-                                    print("testFrameTook setted ", self.testFrameTook)
+                            self.facesCollectionView.performBatchUpdates(nil, completion: { (result) in
+                                if self.faceDetectionFromVideoInProgress {
+                                    self.initiateNextFrameDetection()
                                 }
-
                             })
-
-                            //after here go go go commented part and loop it
                         }
                     }
                 }
@@ -203,6 +188,12 @@ class FaceDetectionViewController: ImagePickerViewController {
             self.database.addImages(images: [(image, [])])
             print(error.localizedDescription)
         }
+    }
+    
+    private func initiateNextFrameDetection() {
+        let frameDetectionStarted = UserDefaults.standard.double(forKey: "frameDetectionStarted")
+        let frameDetectionEnded = Date().timeIntervalSince1970 * 1000
+        self.testFrameTook = frameDetectionEnded - frameDetectionStarted
     }
 
     private func requestAuthorization(completion: @escaping (Bool) -> Void) {
