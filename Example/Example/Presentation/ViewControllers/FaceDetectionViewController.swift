@@ -22,7 +22,22 @@ class FaceDetectionViewController: ImagePickerViewController {
     private var filteredImages: [(AnyObject, [FaceObject])]?
 
     private var selectedFace: Face?
+  
+    var accuracyOfPrediction = 1.0 //0-1, 1 means - 100% allowed duration of prediction usage
+    
+    private var maximumDurationOfPredictions = 8000.0 // in milliseconds
 
+    private var videoURL: URL?
+    
+    var testFrameTook: Double? {
+        didSet {
+            self.faceDetectionFromVideoInProgress = true
+            self.startFaseDetectionFromVideo()
+        }
+    }
+    
+    var faceDetectionFromVideoInProgress = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.facesCollectionView.allowsMultipleSelection = false
@@ -30,7 +45,6 @@ class FaceDetectionViewController: ImagePickerViewController {
         self.title = "Face Detection"
         self.filterAndPresentImages()
     }
-
 
     override func didSelectImage(image: UIImage) {
         self.selectedFace = nil
@@ -42,12 +56,48 @@ class FaceDetectionViewController: ImagePickerViewController {
     override func didSelectVideo(videoURL: URL) {
         self.selectedFace = nil
         let assetImageGenerator = AssetImageGenerator()
-        let image = assetImageGenerator.generateThumnail(url: videoURL, fromTime: 2.0)
-        self.faceDetector.detectFaces(fromVideo: videoURL) { [weak self] result in
+        let startOfTest = Date().timeIntervalSince1970 * 1000
+        UserDefaults.standard.set(startOfTest, forKey: "startOfTest")
+
+        let image = assetImageGenerator.generateThumnail(url: videoURL, fromTime: 0.0)
+        self.videoURL = videoURL
+        print("self.videoURL seted")
+        self.faceDetector.detectFaces(fromImage: image!) {[ weak self] result in
             self?.collectFaces(image: image ?? UIImage(), result: result)
         }
     }
+    var timer = Timer()
 
+    func startFaseDetectionFromVideo() {
+
+        let allowedDurationOfPrediction = self.maximumDurationOfPredictions * self.accuracyOfPrediction
+        var framesCanGet = allowedDurationOfPrediction / (testFrameTook!*1.3)//todo was 1.3 in case with objects
+        framesCanGet.round(.down)
+        print(framesCanGet)
+
+        let asset = AVURLAsset(url: self.videoURL!)
+        let durationInSeconds = asset.duration.seconds
+        let stepForFrame = durationInSeconds/Double(framesCanGet)
+        let assetImageGenerator = AssetImageGenerator()
+
+        
+        if (framesCanGet > 1) {
+            var k = 1
+            self.timer = Timer.scheduledTimer(withTimeInterval: stepForFrame, repeats: true, block: { _ in
+                if k < Int(framesCanGet) {
+                    print(k)
+                    let tsForFrame = Double(k) * stepForFrame
+                    let image = assetImageGenerator.generateThumnail(url: self.videoURL!, fromTime: tsForFrame)
+                    self.faceDetector.detectFaces(fromImage: image!) {[ weak self] result in
+                        self?.collectFaces(image: image ?? UIImage(), result: result)
+                    }
+                    k = k+1
+                }
+            })
+        }
+
+    }
+    
     override func didSelectLivePhoto(livePhoto: PHLivePhoto) {
         self.selectedFace = nil
         self.faceDetector.detectFaces(fromLivePhoto: livePhoto) { [weak self] result in
@@ -132,6 +182,19 @@ class FaceDetectionViewController: ImagePickerViewController {
                         self.database.replaceFaces(faces: uniqueFaces)
                         DispatchQueue.main.async {
                             self.facesCollectionView.reloadData()
+                            self.facesCollectionView.performBatchUpdates(nil, completion: {
+                                (result) in
+                                let startOfTest = UserDefaults.standard.double(forKey: "startOfTest")
+                                let endOfTest = Date().timeIntervalSince1970 * 1000
+                                print(endOfTest - startOfTest, " test took 1")
+                                if !self.faceDetectionFromVideoInProgress {
+                                    self.testFrameTook = endOfTest - startOfTest
+                                    print("testFrameTook setted ", self.testFrameTook)
+                                }
+
+                            })
+
+                            //after here go go go commented part and loop it
                         }
                     }
                 }

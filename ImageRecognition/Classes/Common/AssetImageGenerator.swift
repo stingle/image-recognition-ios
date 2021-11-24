@@ -46,6 +46,13 @@ public class AssetImageGenerator {
         return image!
     }
 
+    func getFrameFromSourceForTime(url: URL, time: Float64) -> UIImage {
+        let image = self.generateThumnail(url: url, fromTime: time)
+        
+        return image!
+    }
+
+    
     func getImagesFromLivePhoto(livePhoto: PHLivePhoto, completion: @escaping ([UIImage]) -> Void) {
         let assetResource = PHAssetResource.assetResources(for: livePhoto)
         var images = [UIImage]()
