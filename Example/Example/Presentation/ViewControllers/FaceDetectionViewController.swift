@@ -23,7 +23,7 @@ class FaceDetectionViewController: ImagePickerViewController {
 
     private var selectedFace: Face?
   
-    private var maximumDurationOfPredictions = 5000.0 // in milliseconds
+    private var maximumDurationOfPredictionsForVideo = 5000.0 // in milliseconds
 
     private var videoURL: URL?
     
@@ -85,7 +85,7 @@ class FaceDetectionViewController: ImagePickerViewController {
     func faseDetectionFromSource() {
         let frameDetectionStarted = Date().timeIntervalSince1970 * 1000
         let alreadySpentOnDetection = frameDetectionStarted - UserDefaults.standard.double(forKey: "startOfTestForFace")
-        let timeLeftForDetection = self.maximumDurationOfPredictions - alreadySpentOnDetection
+        let timeLeftForDetection = self.maximumDurationOfPredictionsForVideo - alreadySpentOnDetection
         let framesCanGet = timeLeftForDetection / self.testFrameTook!
         let asset = AVURLAsset(url: self.videoURL!)
         let durationInSeconds = asset.duration.seconds

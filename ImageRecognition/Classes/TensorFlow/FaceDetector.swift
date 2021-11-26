@@ -17,6 +17,25 @@ public class FaceDetector {
 
     private var dispatchQueue: DispatchQueue
 
+    var testFrameTook = 0.0 {
+        didSet {
+            if testFrameTook == 0.0 {
+                return
+            }
+            self.checkNextFrame()
+        }
+    }
+    
+    private var lastFrameChecked = 0
+    
+    private var detectionStarted = 0.0
+    
+    private var maximumDurationOfPredictionsForGifLive = 1000.0 // in milliseconds
+
+    var imagesForDetection = [UIImage]()
+
+    var allFaces = [(face: Face, bounds: CGRect)]()
+
     public init(modelFileInfo: FileInfo = MobileNet.faceModelInfo, threadCount: Int = 4, queue: DispatchQueue? = nil) {
         self.dispatchQueue = queue ?? DispatchQueue.global(qos: .userInitiated)
         self.modelDataHandler = FacenetModelDataHandler(modelFileInfo: modelFileInfo)
@@ -43,23 +62,58 @@ public class FaceDetector {
     }
 
     // MARK: - Private methods
-
-    private func detectFaces(fromImages: [UIImage], completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
-        var allFaces = [(face: Face, bounds: CGRect)]()
-        var count = fromImages.count
-        for image in fromImages {
-            self.visionDetectFace(from: image) { result in
-                switch result {
-                case .success(let faces):
-                    allFaces.append(contentsOf: faces)
-                    count -= 1
-                    if count == 0 { completion(.success(allFaces)) }
-                case .failure(_):
-                    count -= 1
-                    if count == 0 { completion(.success(allFaces)) }
-                }
+    func checkDetectionDurationAndDetect() {
+        detectionStarted = Date().timeIntervalSince1970 * 1000
+        let image = imagesForDetection[lastFrameChecked]
+        
+        self.visionDetectFace(from: image) { result in
+            switch result {
+            case .success(let faces):
+                self.allFaces.append(contentsOf: faces)
+                print("success")
+                self.testFrameTook = Date().timeIntervalSince1970 * 1000 - self.detectionStarted
+            case .failure(_):
+                print("fail")
+                self.testFrameTook = Date().timeIntervalSince1970 * 1000 - self.detectionStarted
             }
         }
+    }
+    
+    func checkNextFrame() {
+        if (Date().timeIntervalSince1970 * 1000 - detectionStarted  + testFrameTook) < maximumDurationOfPredictionsForGifLive {
+            let startOfCurrentDetection = Date().timeIntervalSince1970 * 1000
+            let timeLeft = maximumDurationOfPredictionsForGifLive - (startOfCurrentDetection - detectionStarted)
+            var checksLeft = (timeLeft/testFrameTook)
+            checksLeft.round(.down)
+            let step = (imagesForDetection.count - lastFrameChecked) / Int(checksLeft)
+            if lastFrameChecked + step > imagesForDetection.count - 1 {
+                print("finish here ", self.allFaces.count)
+                lastFrameChecked = 0
+                detectionStarted = 0.0
+                testFrameTook = 0.0
+                imagesForDetection = [UIImage]()
+                allFaces = [(face: Face, bounds: CGRect)]()
+                return
+            }
+
+            let nextImage = imagesForDetection[lastFrameChecked + step]
+            lastFrameChecked = lastFrameChecked + step
+            self.visionDetectFace(from: nextImage) { result in
+                switch result {
+                case .success(let faces):
+                    self.allFaces.append(contentsOf: faces)
+                    self.testFrameTook = Date().timeIntervalSince1970 * 1000 - startOfCurrentDetection
+                case .failure(_):
+                    self.testFrameTook = Date().timeIntervalSince1970 * 1000 - startOfCurrentDetection
+                }
+            }
+
+        }
+    }
+
+    private func detectFaces(fromImages: [UIImage], completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
+        self.imagesForDetection = fromImages
+        checkDetectionDurationAndDetect()
     }
 
     private func recognize(image: UIImage) throws -> [Float32] {
