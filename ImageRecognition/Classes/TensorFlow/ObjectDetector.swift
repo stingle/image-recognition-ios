@@ -22,9 +22,7 @@ public class ObjectDetector {
 
     private var dispatchQueue: DispatchQueue
 
-    var accuracyOfPrediction = 1.0 //0-1, 1 means - 100% allowed duration of prediction usage
-    
-    private var maximumDurationOfPredictions = 20000.0 // in milliseconds
+    private var isDetectionInProgress = false
     
     public init(modelFileInfo: FileInfo = MobileNet.objectModelInfo, labelsFileInfo: FileInfo = MobileNet.objectsLabelsInfo, queue: DispatchQueue? = nil) {
         self.dispatchQueue = queue ?? DispatchQueue.global(qos: .userInitiated)
@@ -41,65 +39,100 @@ public class ObjectDetector {
         }
     }
 
-    public func makePredictions(forVideo video: URL, completionHandler: @escaping VideoPredictionHandler) {
+    public func makePredictions(forVideo videoURL: URL, configuration: Configuration = Configuration(), completionHandler: @escaping VideoPredictionHandler) {
         self.dispatchQueue.async {
-            let framesCanGet = self.framesCanGetFromVideo(video: video, completionHandler: completionHandler)
-            let asset = AVURLAsset(url: video)
-            let durationInSeconds = asset.duration.seconds
-            let stepForFrame = durationInSeconds/Double(framesCanGet)
-            if (framesCanGet > 1) {
-                for i in 1...Int(framesCanGet)-1 {
-                    let tsForFrame = Double(i) * stepForFrame
-                    let frame = self.assetImageGenerator.getFrameFromVideoForTime(url: video, time: tsForFrame)
-                    guard let predictionsForFrame = self.predictions(for: frame) else { continue }
-                    completionHandler(predictionsForFrame)
+            guard !self.isDetectionInProgress else { return }
+            self.isDetectionInProgress = true
+            self.configureAssetGeneration(fromVideo: videoURL, configuration: configuration) {
+                var results = [Prediction]()
+                self.predictionsRecursively(fromVideo: videoURL) { predictions, isFinished in
+                    if let predictions = predictions {
+                        results.append(contentsOf: predictions)
+                    }
+                    if isFinished {
+                        self.isDetectionInProgress = isFinished
+                        completionHandler(results)
+                    }
                 }
             }
         }
     }
 
-    func framesCanGetFromVideo(video: URL, completionHandler: @escaping VideoPredictionHandler)->Double {
-        let startOfTest = Date().timeIntervalSince1970 * 1000
-        let firstFrame = self.assetImageGenerator.getFrameFromVideoForTime(url: video, time: 0)
-        let predictionForFirstFrame = self.predictions(for: firstFrame)
-        completionHandler(predictionForFirstFrame)
-        let endOfTest = Date().timeIntervalSince1970 * 1000
-        let testFramePredictionDuration = endOfTest - startOfTest
-        
-        let allowedDurationOfPrediction = self.maximumDurationOfPredictions * self.accuracyOfPrediction
-        var framesCanGet = allowedDurationOfPrediction / (testFramePredictionDuration*1.3)
-        framesCanGet.round(.down)
-        
-        return framesCanGet
-    }
-    
-    public func makePredictions(forLivePhoto livePhoto: PHLivePhoto, completionHandler: @escaping ImagePredictionHandler) {
+    public func makePredictions(forLivePhoto livePhoto: PHLivePhoto, maxProcessingImagesCount: Int = 5, completionHandler: @escaping ImagePredictionHandler) {
         self.dispatchQueue.async {
+            guard !self.isDetectionInProgress else { return }
+            self.isDetectionInProgress = true
+
             self.assetImageGenerator.getImagesFromLivePhoto(livePhoto: livePhoto) { images in
-                var allPredictions = [Prediction]()
-                for image in images {
-                    guard let predictions = self.predictions(for: image) else { continue }
-                    allPredictions.append(contentsOf: predictions)
+                guard !images.isEmpty else {
+                    self.isDetectionInProgress = false
+                    return
                 }
-                completionHandler(allPredictions)
+                let presictions = self.predictions(fromImages: images, maxProcessingImagesCount: maxProcessingImagesCount)
+                completionHandler(presictions)
             }
         }
     }
 
-    public func makePredictions(forGIF gifURL: URL, completionHandler: @escaping ImagePredictionHandler) {
+    public func makePredictions(forGIF gifURL: URL, maxProcessingImagesCount: Int = 5, completionHandler: @escaping ImagePredictionHandler) {
         self.dispatchQueue.async {
+            guard !self.isDetectionInProgress else { return }
+            self.isDetectionInProgress = true
+
             let images = self.assetImageGenerator.getImagesFromGIF(url: gifURL)
-            var allPredictions = [Prediction]()
-            for image in images {
-                guard let predictions = self.predictions(for: image) else { continue }
-                allPredictions.append(contentsOf: predictions)
+            guard !images.isEmpty else {
+                self.isDetectionInProgress = false
+                return
             }
-            completionHandler(allPredictions)
+            let presictions = self.predictions(fromImages: images, maxProcessingImagesCount: maxProcessingImagesCount)
+            completionHandler(presictions)
         }
     }
 
     // MARK: - Private methods
 
+    private func configureAssetGeneration(fromVideo videoURL: URL, configuration: Configuration, completion: @escaping () -> Void) {
+        self.assetImageGenerator.configure(videoURL: videoURL, configuration: configuration)
+        if let image = try? self.assetImageGenerator.generateThumnail(url: videoURL, fromTime: 0.0) {
+            self.predictions(for: image)
+            let frameDetectionStarted = self.assetImageGenerator.frameDetectionStartedForFace
+            let frameDetectionEnded = Date().timeIntervalSince1970 * 1000
+            self.assetImageGenerator.oneFramePredictionTime = frameDetectionEnded - frameDetectionStarted
+            completion()
+        } else {
+            self.assetImageGenerator.oneFramePredictionTime = 720.0
+            completion()
+        }
+    }
+
+    private func predictionsRecursively(fromVideo videoURL: URL, completion: @escaping ([Prediction]?, Bool) -> Void) {
+        do {
+            if let image = try self.assetImageGenerator.faceDetectionFromSource(videoURL: videoURL) {
+                let predictions = self.predictions(for: image)
+                let frameDetectionEnded = Date().timeIntervalSince1970 * 1000
+                self.assetImageGenerator.oneFramePredictionTime = frameDetectionEnded - self.assetImageGenerator.frameDetectionStartedForFace
+                completion(predictions, false)
+                self.predictionsRecursively(fromVideo: videoURL, completion: completion)
+            } else {
+                completion(nil, true)
+            }
+        } catch {
+            self.predictionsRecursively(fromVideo: videoURL, completion: completion)
+        }
+    }
+
+    private func predictions(fromImages: [UIImage], maxProcessingImagesCount: Int) -> [Prediction] {
+        let by = fromImages.count / min(maxProcessingImagesCount, fromImages.count)
+        var results = [Prediction]()
+        for i in stride(from: 0, to: fromImages.count, by: by) {
+            let image = fromImages[i]
+            guard let predictions = self.predictions(for: image) else { continue }
+            results.append(contentsOf: predictions)
+        }
+        return results
+    }
+
+    @discardableResult
     private func predictions(for photo: UIImage) -> [Prediction]? {
         guard let pixelBuffer = CVPixelBuffer.pixelBuffer(from: photo) else {
             return nil

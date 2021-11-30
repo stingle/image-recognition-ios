@@ -29,43 +29,49 @@ public class FaceDetector {
     }
 
     public func detectFaces(fromVideo videoURL: URL, configuration: Configuration = Configuration(), completion: @escaping ([(face: Face, bounds: CGRect)]) -> Void) {
-        guard !self.isDetectionInProgress else { return }
-        self.isDetectionInProgress = true
-        self.configureAssetGeneration(fromVideo: videoURL, configuration: configuration) {
-            var results = [(face: Face, bounds: CGRect)]()
-            self.detectFacesRecursively(fromVideo: videoURL) { images, isFinished in
-                if let images = images {
-                    results.append(contentsOf: images)
-                }
-                if isFinished {
-                    self.isDetectionInProgress = isFinished
-                    completion(results)
+        self.dispatchQueue.async {
+            guard !self.isDetectionInProgress else { return }
+            self.isDetectionInProgress = true
+            self.configureAssetGeneration(fromVideo: videoURL, configuration: configuration) {
+                var results = [(face: Face, bounds: CGRect)]()
+                self.detectFacesRecursively(fromVideo: videoURL) { images, isFinished in
+                    if let images = images {
+                        results.append(contentsOf: images)
+                    }
+                    if isFinished {
+                        self.isDetectionInProgress = isFinished
+                        completion(results)
+                    }
                 }
             }
         }
     }
 
     public func detectFaces(fromLivePhoto livePhoto: PHLivePhoto, maxProcessingImagesCount: Int = 5, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
-        guard !self.isDetectionInProgress else { return }
-        self.isDetectionInProgress = true
-        self.assetImageGenerator.getImagesFromLivePhoto(livePhoto: livePhoto) { images in
+        self.dispatchQueue.async {
+            guard !self.isDetectionInProgress else { return }
+            self.isDetectionInProgress = true
+            self.assetImageGenerator.getImagesFromLivePhoto(livePhoto: livePhoto) { images in
+                guard !images.isEmpty else {
+                    self.isDetectionInProgress = false
+                    return
+                }
+                self.detectFaces(fromImages: images, maxProcessingImagesCount: maxProcessingImagesCount, completion: completion)
+            }
+        }
+    }
+
+    public func detectFaces(fromGIF gifURL: URL, maxProcessingImagesCount: Int = 5, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
+        self.dispatchQueue.async {
+            guard !self.isDetectionInProgress else { return }
+            self.isDetectionInProgress = true
+            let images = self.assetImageGenerator.getImagesFromGIF(url: gifURL)
             guard !images.isEmpty else {
                 self.isDetectionInProgress = false
                 return
             }
             self.detectFaces(fromImages: images, maxProcessingImagesCount: maxProcessingImagesCount, completion: completion)
         }
-    }
-
-    public func detectFaces(fromGIF gifURL: URL, maxProcessingImagesCount: Int = 5, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
-        guard !self.isDetectionInProgress else { return }
-        self.isDetectionInProgress = true
-        let images = self.assetImageGenerator.getImagesFromGIF(url: gifURL)
-        guard !images.isEmpty else {
-            self.isDetectionInProgress = false
-            return
-        }
-        self.detectFaces(fromImages: images, maxProcessingImagesCount: maxProcessingImagesCount, completion: completion)
     }
 
     // MARK: - Private methods

@@ -23,19 +23,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
     let minimumConfidencePercentage : Float = 25
     var topPredictions = [String: String]()
 
-    private var maximumDurationOfPredictions = 5000.0 // in milliseconds
-    
-    var lastVideoMomentDetected = 0.0
-
     private var videoURL: URL?
-    
-    var testFrameTook: Double? {
-        didSet {
-            self.objectDetectionFromSource() //todo uncomment
-        }
-    }
-   
-    var objectDetectionFromSourceInProgress = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,29 +38,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
 
         self.objectDetector.makePredictions(forImage: image, completionHandler: self.predictionHandler)
     }
-    
-    func objectDetectionFromSource() {
-        let frameDetectionStarted = Date().timeIntervalSince1970 * 1000
-        let alreadySpentOnDetection = frameDetectionStarted - UserDefaults.standard.double(forKey: "startOfTestForObject")
-        let timeLeftForDetection = self.maximumDurationOfPredictions - alreadySpentOnDetection
-        let framesCanGet = timeLeftForDetection / self.testFrameTook!
-        let asset = AVURLAsset(url: self.videoURL!)
-        let durationInSeconds = asset.duration.seconds
-        let leftToCheckVideoDutaion = durationInSeconds - self.lastVideoMomentDetected
-        let stepForFrame = leftToCheckVideoDutaion/Double(framesCanGet)
-        if timeLeftForDetection > self.testFrameTook! && (self.lastVideoMomentDetected + stepForFrame) < durationInSeconds {
-            UserDefaults.standard.set(frameDetectionStarted, forKey: "frameDetectionStartedForObject")
-            self.lastVideoMomentDetected = self.lastVideoMomentDetected + stepForFrame
-            let assetImageGenerator = AssetImageGenerator()
-            if let image = try? assetImageGenerator.generateThumnail(url: self.videoURL!, fromTime: self.lastVideoMomentDetected) {
-                self.objectDetector.makePredictions(forImage: image, completionHandler: self.videoPredictionHandler)
-            }
-        } else {
-            lastVideoMomentDetected = 0.0
-            objectDetectionFromSourceInProgress = false
-        }
-    }
-    
+
     override func didSelectLivePhoto(livePhoto: PHLivePhoto) {
         self.imageView.isHidden = true
         self.playButton.isHidden = false
@@ -87,14 +53,9 @@ class ObjectDetectionViewController: ImagePickerViewController {
     override func didSelectVideo(videoURL: URL) {
         self.videoURL = videoURL
         let assetImageGenerator = AssetImageGenerator()
-        let currentTS = Date().timeIntervalSince1970 * 1000
-        UserDefaults.standard.set(currentTS, forKey: "startOfTestForObject")
-        UserDefaults.standard.set(currentTS, forKey: "frameDetectionStartedForObject")
-        objectDetectionFromSourceInProgress = true
         guard let image = try? assetImageGenerator.generateThumnail(url: videoURL, fromTime: 0.0) else {
             return
         }
-        self.lastVideoMomentDetected = 0.0
         self.imageView.image = image
         self.livePhotoView.isHidden = true
         self.imageView.isHidden = false
@@ -244,17 +205,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
         DispatchQueue.main.async {
             self.predictionTextView.text = message
             self.predictionTextView.isHidden = false
-            if self.objectDetectionFromSourceInProgress {
-                self.initiateNextFrameDetection()
-            }
         }
     }
-    
-    private func initiateNextFrameDetection() {
-        let frameDetectionStarted = UserDefaults.standard.double(forKey: "frameDetectionStartedForObject")
-        let frameDetectionEnded = Date().timeIntervalSince1970 * 1000
-        self.testFrameTook = frameDetectionEnded - frameDetectionStarted
-    }
-
 
 }
