@@ -17,24 +17,7 @@ public class FaceDetector {
 
     private var dispatchQueue: DispatchQueue
 
-    var testFrameTook = 0.0 {
-        didSet {
-            if testFrameTook == 0.0 {
-                return
-            }
-            self.checkNextFrame()
-        }
-    }
-    
-    private var lastFrameChecked = 0
-    
-    private var detectionStarted = 0.0
-    
-    private var maximumDurationOfPredictionsForGifLive = 1000.0 // in milliseconds
-
-    var imagesForDetection = [UIImage]()
-
-    var allFaces = [(face: Face, bounds: CGRect)]()
+    private var isDetectionInProgress = false
 
     public init(modelFileInfo: FileInfo = MobileNet.faceModelInfo, threadCount: Int = 4, queue: DispatchQueue? = nil) {
         self.dispatchQueue = queue ?? DispatchQueue.global(qos: .userInitiated)
@@ -45,75 +28,106 @@ public class FaceDetector {
         self.visionDetectFace(from: image, completion: completion)
     }
 
-    public func detectFaces(fromVideo videoURL: URL, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
-        let frames = self.assetImageGenerator.getFramesFromVideo(url: videoURL)
-        self.detectFaces(fromImages: frames, completion: completion)
-    }
-
-    public func detectFaces(fromLivePhoto livePhoto: PHLivePhoto, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
-        self.assetImageGenerator.getImagesFromLivePhoto(livePhoto: livePhoto) { images in
-            self.detectFaces(fromImages: images, completion: completion)
+    public func detectFaces(fromVideo videoURL: URL, configuration: Configuration = Configuration(), completion: @escaping ([(face: Face, bounds: CGRect)]) -> Void) {
+        guard !self.isDetectionInProgress else { return }
+        self.isDetectionInProgress = true
+        self.configureAssetGeneration(fromVideo: videoURL, configuration: configuration) {
+            var results = [(face: Face, bounds: CGRect)]()
+            self.detectFacesRecursively(fromVideo: videoURL) { images, isFinished in
+                if let images = images {
+                    results.append(contentsOf: images)
+                }
+                if isFinished {
+                    self.isDetectionInProgress = isFinished
+                    completion(results)
+                }
+            }
         }
     }
 
-    public func detectFaces(fromGIF gifURL: URL, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
+    public func detectFaces(fromLivePhoto livePhoto: PHLivePhoto, maxProcessingImagesCount: Int = 5, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
+        guard !self.isDetectionInProgress else { return }
+        self.isDetectionInProgress = true
+        self.assetImageGenerator.getImagesFromLivePhoto(livePhoto: livePhoto) { images in
+            guard !images.isEmpty else {
+                self.isDetectionInProgress = false
+                return
+            }
+            self.detectFaces(fromImages: images, maxProcessingImagesCount: maxProcessingImagesCount, completion: completion)
+        }
+    }
+
+    public func detectFaces(fromGIF gifURL: URL, maxProcessingImagesCount: Int = 5, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
+        guard !self.isDetectionInProgress else { return }
+        self.isDetectionInProgress = true
         let images = self.assetImageGenerator.getImagesFromGIF(url: gifURL)
-        self.detectFaces(fromImages: images, completion: completion)
+        guard !images.isEmpty else {
+            self.isDetectionInProgress = false
+            return
+        }
+        self.detectFaces(fromImages: images, maxProcessingImagesCount: maxProcessingImagesCount, completion: completion)
     }
 
     // MARK: - Private methods
-    func checkDetectionDurationAndDetect() {
-        detectionStarted = Date().timeIntervalSince1970 * 1000
-        let image = imagesForDetection[lastFrameChecked]
-        
-        self.visionDetectFace(from: image) { result in
-            switch result {
-            case .success(let faces):
-                self.allFaces.append(contentsOf: faces)
-                print("success")
-                self.testFrameTook = Date().timeIntervalSince1970 * 1000 - self.detectionStarted
-            case .failure(_):
-                print("fail")
-                self.testFrameTook = Date().timeIntervalSince1970 * 1000 - self.detectionStarted
+
+    private func configureAssetGeneration(fromVideo videoURL: URL, configuration: Configuration, completion: @escaping () -> Void) {
+        self.assetImageGenerator.configure(videoURL: videoURL, configuration: configuration)
+        if let image = try? self.assetImageGenerator.generateThumnail(url: videoURL, fromTime: 0.0) {
+            self.visionDetectFace(from: image) { _ in
+                let frameDetectionStarted = self.assetImageGenerator.frameDetectionStartedForFace
+                let frameDetectionEnded = Date().timeIntervalSince1970 * 1000
+                self.assetImageGenerator.oneFramePredictionTime = frameDetectionEnded - frameDetectionStarted
+                completion()
             }
+        } else {
+            self.assetImageGenerator.oneFramePredictionTime = 720.0
+            completion()
         }
     }
-    
-    func checkNextFrame() {
-        if (Date().timeIntervalSince1970 * 1000 - detectionStarted  + testFrameTook) < maximumDurationOfPredictionsForGifLive {
-            let startOfCurrentDetection = Date().timeIntervalSince1970 * 1000
-            let timeLeft = maximumDurationOfPredictionsForGifLive - (startOfCurrentDetection - detectionStarted)
-            var checksLeft = (timeLeft/testFrameTook)
-            checksLeft.round(.down)
-            let step = (imagesForDetection.count - lastFrameChecked) / Int(checksLeft)
-            if lastFrameChecked + step > imagesForDetection.count - 1 {
-                print("finish here ", self.allFaces.count)
-                lastFrameChecked = 0
-                detectionStarted = 0.0
-                testFrameTook = 0.0
-                imagesForDetection = [UIImage]()
-                allFaces = [(face: Face, bounds: CGRect)]()
-                return
-            }
 
-            let nextImage = imagesForDetection[lastFrameChecked + step]
-            lastFrameChecked = lastFrameChecked + step
-            self.visionDetectFace(from: nextImage) { result in
+    private func detectFacesRecursively(fromVideo videoURL: URL, completion: @escaping ([(face: Face, bounds: CGRect)]?, Bool) -> Void) {
+        do {
+            if let image = try self.assetImageGenerator.faceDetectionFromSource(videoURL: videoURL) {
+                self.visionDetectFace(from: image) { result in
+                    let frameDetectionEnded = Date().timeIntervalSince1970 * 1000
+                    self.assetImageGenerator.oneFramePredictionTime = frameDetectionEnded - self.assetImageGenerator.frameDetectionStartedForFace
+                    switch result {
+                    case .success(let value):
+                        completion(value, false)
+                        self.detectFacesRecursively(fromVideo: videoURL, completion: completion)
+                    case .failure(_):
+                        completion(nil, false)
+                        self.detectFacesRecursively(fromVideo: videoURL, completion: completion)
+                    }
+                }
+            } else {
+                completion(nil, true)
+            }
+        } catch {
+            self.detectFacesRecursively(fromVideo: videoURL, completion: completion)
+        }
+    }
+
+    private func detectFaces(fromImages: [UIImage], maxProcessingImagesCount: Int, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
+        let by = fromImages.count / min(maxProcessingImagesCount, fromImages.count)
+        var results = [(face: Face, bounds: CGRect)]()
+        var inProgressCount = 0
+        for i in stride(from: 0, to: fromImages.count, by: by) {
+            let image = fromImages[i]
+            inProgressCount += 1
+            self.visionDetectFace(from: image) { result in
+                inProgressCount -= 1
                 switch result {
-                case .success(let faces):
-                    self.allFaces.append(contentsOf: faces)
-                    self.testFrameTook = Date().timeIntervalSince1970 * 1000 - startOfCurrentDetection
-                case .failure(_):
-                    self.testFrameTook = Date().timeIntervalSince1970 * 1000 - startOfCurrentDetection
+                case .success(let value):
+                    results.append(contentsOf: value)
+                case .failure(_): break
+                }
+                if inProgressCount == 0 {
+                    self.isDetectionInProgress = false
+                    completion(.success(results))
                 }
             }
-
         }
-    }
-
-    private func detectFaces(fromImages: [UIImage], completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
-        self.imagesForDetection = fromImages
-        checkDetectionDurationAndDetect()
     }
 
     private func recognize(image: UIImage) throws -> [Float32] {
@@ -139,12 +153,13 @@ public class FaceDetector {
             completion(.failure(.badImage))
             return
         }
-        let request = VNDetectFaceRectanglesRequest { [weak self] request, error in
+        let request = VNDetectFaceCaptureQualityRequest { [weak self] request, error in
             guard let faces = request.results as? [VNFaceObservation] else { return }
             var detectedFaces = [(Face, CGRect)]()
             for face in faces {
-                let rect = VNImageRectForNormalizedRect(face.boundingBox, Int(image.size.width), Int(image.size.height))
+                guard  face.faceCaptureQuality ?? 0.0 > 0.3 else { continue }
                 do {
+                    let rect = VNImageRectForNormalizedRect(face.boundingBox, Int(image.size.width), Int(image.size.height))
                     guard let face = try self?.face(from: ciImage, bounds: rect) else {
                         return
                     }

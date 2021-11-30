@@ -22,21 +22,7 @@ class FaceDetectionViewController: ImagePickerViewController {
     private var filteredImages: [(AnyObject, [FaceObject])]?
 
     private var selectedFace: Face?
-  
-    private var maximumDurationOfPredictionsForVideo = 5000.0 // in milliseconds
 
-    private var videoURL: URL?
-    
-    var lastVideoMomentDetected = 0.0
-    
-    var testFrameTook: Double? {
-        didSet {
-            self.faseDetectionFromSource()
-        }
-    }
-    
-    var faceDetectionFromSourceInProgress = false
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.facesCollectionView.allowsMultipleSelection = false
@@ -55,15 +41,9 @@ class FaceDetectionViewController: ImagePickerViewController {
     override func didSelectVideo(videoURL: URL) {
         self.selectedFace = nil
         let assetImageGenerator = AssetImageGenerator()
-        let currentTS = Date().timeIntervalSince1970 * 1000
-        UserDefaults.standard.set(currentTS, forKey: "startOfTestForFace")
-        UserDefaults.standard.set(currentTS, forKey: "frameDetectionStartedForFace")
-        faceDetectionFromSourceInProgress = true
-        let image = assetImageGenerator.generateThumnail(url: videoURL, fromTime: 0.0)
-        self.lastVideoMomentDetected = 0.0
-        self.videoURL = videoURL
-        self.faceDetector.detectFaces(fromImage: image!) {[ weak self] result in
-            self?.collectFaces(image: image ?? UIImage(), result: result)
+        let image = (try? assetImageGenerator.generateThumnail(url: videoURL, fromTime: 0.0)) ?? UIImage()
+        self.faceDetector.detectFaces(fromVideo: videoURL) { faces in
+            self.collectFaces(image: image, result: .success(faces))
         }
     }
 
@@ -79,29 +59,6 @@ class FaceDetectionViewController: ImagePickerViewController {
         let image = UIImage.animatedImageFromGIF(url: url)
         self.faceDetector.detectFaces(fromGIF: url) { [weak self] result in
             self?.collectFaces(image: image ?? UIImage(), result: result)
-        }
-    }
-    
-    func faseDetectionFromSource() {
-        let frameDetectionStarted = Date().timeIntervalSince1970 * 1000
-        let alreadySpentOnDetection = frameDetectionStarted - UserDefaults.standard.double(forKey: "startOfTestForFace")
-        let timeLeftForDetection = self.maximumDurationOfPredictionsForVideo - alreadySpentOnDetection
-        let framesCanGet = timeLeftForDetection / self.testFrameTook!
-        let asset = AVURLAsset(url: self.videoURL!)
-        let durationInSeconds = asset.duration.seconds
-        let leftToCheckVideoDutaion = durationInSeconds - self.lastVideoMomentDetected
-        let stepForFrame = leftToCheckVideoDutaion/Double(framesCanGet)
-        if timeLeftForDetection > self.testFrameTook! && (self.lastVideoMomentDetected + stepForFrame) < durationInSeconds {
-            UserDefaults.standard.set(frameDetectionStarted, forKey: "frameDetectionStartedForFace")
-            self.lastVideoMomentDetected = self.lastVideoMomentDetected + stepForFrame
-            let assetImageGenerator = AssetImageGenerator()
-            let image = assetImageGenerator.generateThumnail(url: self.videoURL!, fromTime: self.lastVideoMomentDetected)
-            self.faceDetector.detectFaces(fromImage: image!) {[ weak self] result in
-                self?.collectFaces(image: image ?? UIImage(), result: result)
-            }
-        } else {
-            lastVideoMomentDetected = 0.0
-            faceDetectionFromSourceInProgress = false
         }
     }
 
@@ -174,11 +131,6 @@ class FaceDetectionViewController: ImagePickerViewController {
                         self.database.replaceFaces(faces: uniqueFaces)
                         DispatchQueue.main.async {
                             self.facesCollectionView.reloadData()
-                            self.facesCollectionView.performBatchUpdates(nil, completion: { (result) in
-                                if self.faceDetectionFromSourceInProgress {
-                                    self.initiateNextFrameDetection()
-                                }
-                            })
                         }
                     }
                 }
@@ -187,12 +139,6 @@ class FaceDetectionViewController: ImagePickerViewController {
             self.database.addImages(images: [(image, [])])
             print(error.localizedDescription)
         }
-    }
-    
-    private func initiateNextFrameDetection() {
-        let frameDetectionStarted = UserDefaults.standard.double(forKey: "frameDetectionStartedForFace")
-        let frameDetectionEnded = Date().timeIntervalSince1970 * 1000
-        self.testFrameTook = frameDetectionEnded - frameDetectionStarted
     }
 
     private func requestAuthorization(completion: @escaping (Bool) -> Void) {

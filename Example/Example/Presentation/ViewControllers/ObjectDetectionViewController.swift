@@ -64,8 +64,9 @@ class ObjectDetectionViewController: ImagePickerViewController {
             UserDefaults.standard.set(frameDetectionStarted, forKey: "frameDetectionStartedForObject")
             self.lastVideoMomentDetected = self.lastVideoMomentDetected + stepForFrame
             let assetImageGenerator = AssetImageGenerator()
-            let image = assetImageGenerator.generateThumnail(url: self.videoURL!, fromTime: self.lastVideoMomentDetected)
-            self.objectDetector.makePredictions(forImage: image!, completionHandler: self.videoPredictionHandler)
+            if let image = try? assetImageGenerator.generateThumnail(url: self.videoURL!, fromTime: self.lastVideoMomentDetected) {
+                self.objectDetector.makePredictions(forImage: image, completionHandler: self.videoPredictionHandler)
+            }
         } else {
             lastVideoMomentDetected = 0.0
             objectDetectionFromSourceInProgress = false
@@ -90,7 +91,9 @@ class ObjectDetectionViewController: ImagePickerViewController {
         UserDefaults.standard.set(currentTS, forKey: "startOfTestForObject")
         UserDefaults.standard.set(currentTS, forKey: "frameDetectionStartedForObject")
         objectDetectionFromSourceInProgress = true
-        let image = assetImageGenerator.generateThumnail(url: videoURL, fromTime: 0.0)
+        guard let image = try? assetImageGenerator.generateThumnail(url: videoURL, fromTime: 0.0) else {
+            return
+        }
         self.lastVideoMomentDetected = 0.0
         self.imageView.image = image
         self.livePhotoView.isHidden = true
@@ -99,7 +102,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
         self.livePhotoView.livePhoto = nil
         self.topPredictions.removeAll()
         self.updatePredictionLabel("Making predictions for the video...")
-        self.objectDetector.makePredictions(forImage: image!, completionHandler: self.videoPredictionHandler)
+        self.objectDetector.makePredictions(forImage: image, completionHandler: self.videoPredictionHandler)
     }
 
     override func didSelectGIF(url: URL) {
