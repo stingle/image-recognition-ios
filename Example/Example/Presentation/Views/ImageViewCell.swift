@@ -10,6 +10,7 @@ import PhotosUI
 
 class ImageViewCell: UICollectionViewCell {
     @IBOutlet weak private var imageView: UIImageView!
+    @IBOutlet weak private var playImageView: UIImageView!
     @IBOutlet weak private var livePhotoView: PHLivePhotoView!
 
     override func awakeFromNib() {
@@ -46,4 +47,15 @@ class ImageViewCell: UICollectionViewCell {
             self.livePhotoView?.livePhoto = newValue
         }
     }
+
+    var isPlayable: Bool = false {
+        didSet {
+            self.playImageView?.isHidden = !self.isPlayable
+        }
+    }
+
+    func playLivePhoto() {
+        self.livePhotoView.startPlayback(with: .full)
+    }
+
 }

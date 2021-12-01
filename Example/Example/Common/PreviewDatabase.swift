@@ -14,11 +14,11 @@ class PreviewDatabase {
     static let shared = PreviewDatabase()
 
     private(set) var faces = [FaceObject]()
-    private(set) var images = [(AnyObject, [FaceObject])]()
+    private(set) var images = [(Object, [FaceObject])]()
 
     private init() {}
 
-    func addImages(images: [(AnyObject, [FaceObject])]) {
+    func addImages(images: [(Object, [FaceObject])]) {
         self.images.append(contentsOf: images)
     }
 

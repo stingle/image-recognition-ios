@@ -15,6 +15,7 @@
 		B31D0F172729950100BE7CC9 /* UIImageView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31D0F162729950100BE7CC9 /* UIImageView+Ext.swift */; };
 		B32276B72722A8EA005C2C51 /* FeaturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32276B62722A8EA005C2C51 /* FeaturesViewController.swift */; };
 		B32276B92722AA93005C2C51 /* FaceDetectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32276B82722AA93005C2C51 /* FaceDetectionViewController.swift */; };
+		B33BD23627577D3B00E82536 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33BD23527577D3B00E82536 /* Object.swift */; };
 		B38B8979273A775500C2369A /* PreviewDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38B8978273A775500C2369A /* PreviewDatabase.swift */; };
 		B38B897B273AA89A00C2369A /* FaceObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38B897A273AA89A00C2369A /* FaceObject.swift */; };
 		B3C0B9BF2720137200CD7647 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3C0B9BE2720137200CD7647 /* Assets.xcassets */; };
@@ -37,6 +38,7 @@
 		B31D0F162729950100BE7CC9 /* UIImageView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Ext.swift"; sourceTree = "<group>"; };
 		B32276B62722A8EA005C2C51 /* FeaturesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturesViewController.swift; sourceTree = "<group>"; };
 		B32276B82722AA93005C2C51 /* FaceDetectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceDetectionViewController.swift; sourceTree = "<group>"; };
+		B33BD23527577D3B00E82536 /* Object.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
 		B38B8978273A775500C2369A /* PreviewDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDatabase.swift; sourceTree = "<group>"; };
 		B38B897A273AA89A00C2369A /* FaceObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceObject.swift; sourceTree = "<group>"; };
 		B3C0B9BE2720137200CD7647 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 			children = (
 				B38B8978273A775500C2369A /* PreviewDatabase.swift */,
 				B38B897A273AA89A00C2369A /* FaceObject.swift */,
+				B33BD23527577D3B00E82536 /* Object.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -275,6 +278,7 @@
 				28DE1D5B27181D39000A9A62 /* AppDelegate.swift in Sources */,
 				B31D0F172729950100BE7CC9 /* UIImageView+Ext.swift in Sources */,
 				B32276B72722A8EA005C2C51 /* FeaturesViewController.swift in Sources */,
+				B33BD23627577D3B00E82536 /* Object.swift in Sources */,
 				B32276B92722AA93005C2C51 /* FaceDetectionViewController.swift in Sources */,
 				B31D0F0D2729445800BE7CC9 /* ImageViewCell.swift in Sources */,
 				B31D0F11272961B800BE7CC9 /* ImageViewController.swift in Sources */,

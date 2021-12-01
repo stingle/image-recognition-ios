@@ -9,6 +9,7 @@ import UIKit
 import ARKit
 import ImageRecognition
 import Photos
+import AVKit
 
 class FaceDetectionViewController: ImagePickerViewController {
 
@@ -19,7 +20,7 @@ class FaceDetectionViewController: ImagePickerViewController {
 
     private let database = PreviewDatabase.shared
 
-    private var filteredImages: [(AnyObject, [FaceObject])]?
+    private var filteredImages: [(Object, [FaceObject])]?
 
     private var selectedFace: Face?
 
@@ -34,7 +35,7 @@ class FaceDetectionViewController: ImagePickerViewController {
     override func didSelectImage(image: UIImage) {
         self.selectedFace = nil
         self.faceDetector.detectFaces(fromImage: image) {[ weak self] result in
-            self?.collectFaces(image: image, result: result)
+            self?.collectFaces(object: Object(thumbnail: image, type: .image), result: result)
         }
     }
 
@@ -43,14 +44,14 @@ class FaceDetectionViewController: ImagePickerViewController {
         let assetImageGenerator = AssetImageGenerator()
         let image = (try? assetImageGenerator.generateThumnail(url: videoURL, fromTime: 0.0)) ?? UIImage()
         self.faceDetector.detectFaces(fromVideo: videoURL) { faces in
-            self.collectFaces(image: image, result: .success(faces))
+            self.collectFaces(object: Object(thumbnail: image, videoURL: videoURL, type: .video), result: .success(faces))
         }
     }
 
     override func didSelectLivePhoto(livePhoto: PHLivePhoto) {
         self.selectedFace = nil
         self.faceDetector.detectFaces(fromLivePhoto: livePhoto) { [weak self] result in
-            self?.collectFaces(image: livePhoto, result: result)
+            self?.collectFaces(object: Object(livePhoto: livePhoto, type: .livePhoto), result: result)
         }
     }
 
@@ -58,7 +59,7 @@ class FaceDetectionViewController: ImagePickerViewController {
         self.selectedFace = nil
         let image = UIImage.animatedImageFromGIF(url: url)
         self.faceDetector.detectFaces(fromGIF: url) { [weak self] result in
-            self?.collectFaces(image: image ?? UIImage(), result: result)
+            self?.collectFaces(object: Object(thumbnail: image ?? UIImage(), type: .gif), result: result)
         }
     }
 
@@ -84,13 +85,13 @@ class FaceDetectionViewController: ImagePickerViewController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if let viewController = segue.destination as? ImageViewController {
-//            if let selectedIndexPath = self.imagesCollectionView.indexPathsForSelectedItems?.first, let image = self.filteredImages?[selectedIndexPath.row] {
-//                viewController.image = image.0
-//                viewController.faces = image.1
-//                self.imagesCollectionView.deselectItem(at: selectedIndexPath, animated: true)
-//            }
-//        }
+        if let viewController = segue.destination as? ImageViewController {
+            if let selectedIndexPath = self.imagesCollectionView.indexPathsForSelectedItems?.first, let image = self.filteredImages?[selectedIndexPath.row] {
+                viewController.image = image.0.thumbnail
+                viewController.faces = image.1
+                self.imagesCollectionView.deselectItem(at: selectedIndexPath, animated: true)
+            }
+        }
     }
 
     // MARK: - Private methods
@@ -105,14 +106,14 @@ class FaceDetectionViewController: ImagePickerViewController {
         self.imagesCollectionView.reloadData()
     }
 
-    private func collectFaces(image: AnyObject, result: Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) {
+    private func collectFaces(object: Object, result: Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) {
         switch result {
         case .success(let newFaces):
             DispatchQueue.global().async {
                 let newFaceObjecs = newFaces.map({ FaceObject(face: $0.0, bounds: $0.1) })
                 DispatchQueue.main.async {
                     self.database.addFaces(faces: newFaceObjecs)
-                    self.database.addImages(images: [(image, newFaceObjecs)])
+                    self.database.addImages(images: [(object, newFaceObjecs)])
                     self.filteredImages = self.database.images
                     self.imagesCollectionView.reloadData()
                     DispatchQueue.global().async {
@@ -137,7 +138,7 @@ class FaceDetectionViewController: ImagePickerViewController {
                 }
             }
         case .failure(let error):
-            self.database.addImages(images: [(image, [])])
+            self.database.addImages(images: [(object, [])])
             print(error.localizedDescription)
         }
     }
@@ -173,10 +174,13 @@ extension FaceDetectionViewController: UICollectionViewDataSource {
             cell.circle = true
         } else {
             let image = self.filteredImages![indexPath.row]
-            if let object = image.0 as? UIImage {
-                cell.image = object
-            } else if let object = image.0 as? PHLivePhoto {
-                cell.livePhoto = object
+            switch image.0.type {
+            case .image, .video, .gif:
+                cell.image = image.0.thumbnail
+                cell.isPlayable = image.0.type == .video
+            case .livePhoto:
+                cell.livePhoto = image.0.livePhoto
+                cell.isPlayable = true
             }
             cell.circle = false
         }
@@ -201,8 +205,24 @@ extension FaceDetectionViewController: UICollectionViewDelegate {
             }
             self.filterAndPresentImages()
             collectionView.deselectItem(at: indexPath, animated: true)
-        } else {
-//            self.performSegue(withIdentifier: "presentImage", sender: nil)
+        } else if let image = self.filteredImages?[indexPath.row] {
+            switch image.0.type {
+            case .image:
+                self.performSegue(withIdentifier: "presentImage", sender: nil)
+            case .video:
+                guard let videoURL = image.0.videoURL else { return }
+                let player = AVPlayer(url: videoURL)
+                let playerViewController = AVPlayerViewController()
+                playerViewController.player = player
+                self.present(playerViewController, animated: true) {
+                    playerViewController.player?.play()
+                }
+            case .livePhoto:
+                let cell = collectionView.cellForItem(at: indexPath) as? ImageViewCell
+                cell?.playLivePhoto()
+            case .gif: break
+            }
+
         }
     }
 

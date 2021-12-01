@@ -185,6 +185,13 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 </view>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play" translatesAutoresizingMaskIntoConstraints="NO" id="BcQ-92-4hB">
+                                                    <rect key="frame" x="40" y="40" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="20" id="7VF-89-cNR"/>
+                                                        <constraint firstAttribute="height" constant="20" id="YuR-uL-3ZH"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="vOG-u2-jzX" firstAttribute="top" secondItem="ZPQ-yI-dh8" secondAttribute="top" id="63H-Od-uBU"/>
@@ -193,13 +200,16 @@
                                                 <constraint firstAttribute="trailing" secondItem="joF-KK-f5y" secondAttribute="trailing" id="Rap-XB-xyU"/>
                                                 <constraint firstItem="joF-KK-f5y" firstAttribute="leading" secondItem="ZPQ-yI-dh8" secondAttribute="leading" id="d6a-fD-5K1"/>
                                                 <constraint firstAttribute="bottom" secondItem="vOG-u2-jzX" secondAttribute="bottom" id="fAp-rz-GPm"/>
+                                                <constraint firstItem="BcQ-92-4hB" firstAttribute="centerX" secondItem="ZPQ-yI-dh8" secondAttribute="centerX" id="fRn-qW-pVX"/>
                                                 <constraint firstAttribute="trailing" secondItem="vOG-u2-jzX" secondAttribute="trailing" id="nam-N6-oeq"/>
                                                 <constraint firstItem="vOG-u2-jzX" firstAttribute="leading" secondItem="ZPQ-yI-dh8" secondAttribute="leading" id="nkc-2P-efq"/>
+                                                <constraint firstItem="BcQ-92-4hB" firstAttribute="centerY" secondItem="ZPQ-yI-dh8" secondAttribute="centerY" id="vYR-P7-nku"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <connections>
                                             <outlet property="imageView" destination="vOG-u2-jzX" id="wHK-bh-8oM"/>
                                             <outlet property="livePhotoView" destination="joF-KK-f5y" id="6b9-zF-Aej"/>
+                                            <outlet property="playImageView" destination="BcQ-92-4hB" id="ynV-ZE-TcA"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
