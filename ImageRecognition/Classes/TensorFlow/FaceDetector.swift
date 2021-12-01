@@ -28,6 +28,24 @@ public class FaceDetector {
         self.visionDetectFace(from: image, completion: completion)
     }
 
+    private func removeDuplacatedFaces(faces: [(face: Face, bounds: CGRect)]) -> [(face: Face, bounds: CGRect)] {
+        var uniqueFaces = [(face: Face, bounds: CGRect)]()
+        for i in 0..<faces.count {
+            var face1 = faces[i]
+            uniqueFaces.append(face1)
+            for j in (i + 1)..<faces.count {
+                let face2 = faces[j]
+                if face1.face.isSimilar(with: face2.face) {
+                    face2.face.blend(face: face1.face)
+                    uniqueFaces.removeLast()
+                    uniqueFaces.append(face2)
+                    face1 = face2
+                }
+            }
+        }
+        return uniqueFaces
+    }
+
     public func detectFaces(fromVideo videoURL: URL, configuration: Configuration = Configuration(), completion: @escaping ([(face: Face, bounds: CGRect)]) -> Void) {
         self.dispatchQueue.async {
             guard !self.isDetectionInProgress else { return }
@@ -39,8 +57,9 @@ public class FaceDetector {
                         results.append(contentsOf: images)
                     }
                     if isFinished {
-                        self.isDetectionInProgress = isFinished
-                        completion(results)
+                        let uniqueFaces = self.removeDuplacatedFaces(faces: results)
+                        self.isDetectionInProgress = !isFinished
+                        completion(uniqueFaces)
                     }
                 }
             }
@@ -115,24 +134,32 @@ public class FaceDetector {
     }
 
     private func detectFaces(fromImages: [UIImage], maxProcessingImagesCount: Int, completion: @escaping (Result<[(face: Face, bounds: CGRect)], FaceDetectorError>) -> Void) {
-        let by = fromImages.count / min(maxProcessingImagesCount, fromImages.count)
         var results = [(face: Face, bounds: CGRect)]()
-        var inProgressCount = 0
-        for i in stride(from: 0, to: fromImages.count, by: by) {
-            let image = fromImages[i]
-            inProgressCount += 1
-            self.visionDetectFace(from: image) { result in
-                inProgressCount -= 1
-                switch result {
-                case .success(let value):
-                    results.append(contentsOf: value)
-                case .failure(_): break
-                }
-                if inProgressCount == 0 {
-                    self.isDetectionInProgress = false
-                    completion(.success(results))
-                }
+        self.detectFacesRecursively(fromImages: fromImages, maxProcessingImagesCount: maxProcessingImagesCount, nextIndex: 0) { faces, isFinished in
+            results.append(contentsOf: faces)
+            if isFinished {
+                let uniqueFaces = self.removeDuplacatedFaces(faces: results)
+                self.isDetectionInProgress = !isFinished
+                completion(.success(uniqueFaces))
             }
+        }
+    }
+
+    private func detectFacesRecursively(fromImages: [UIImage], maxProcessingImagesCount: Int, nextIndex: Int, completion: @escaping ([(face: Face, bounds: CGRect)], Bool) -> Void) {
+        guard fromImages.count > nextIndex else {
+            completion([], true)
+            return
+        }
+        let image = fromImages[nextIndex]
+        self.visionDetectFace(from: image) { result in
+            switch result {
+            case .success(let value):
+                completion(value, false)
+            case .failure(_): break
+            }
+            let step = fromImages.count / min(maxProcessingImagesCount, fromImages.count)
+            let index = nextIndex + step
+            self.detectFacesRecursively(fromImages: fromImages, maxProcessingImagesCount: maxProcessingImagesCount, nextIndex: index, completion: completion)
         }
     }
 
@@ -163,7 +190,7 @@ public class FaceDetector {
             guard let faces = request.results as? [VNFaceObservation] else { return }
             var detectedFaces = [(Face, CGRect)]()
             for face in faces {
-                guard  face.faceCaptureQuality ?? 0.0 > 0.3 else { continue }
+                guard face.faceCaptureQuality ?? 0.0 >= 0.22 else { continue }
                 do {
                     let rect = VNImageRectForNormalizedRect(face.boundingBox, Int(image.size.width), Int(image.size.height))
                     guard let face = try self?.face(from: ciImage, bounds: rect) else {

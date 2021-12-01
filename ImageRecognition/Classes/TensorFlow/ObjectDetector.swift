@@ -35,7 +35,11 @@ public class ObjectDetector {
 
     public func makePredictions(forImage image: UIImage, completionHandler: @escaping ImagePredictionHandler) {
         self.dispatchQueue.async {
-            completionHandler(self.predictions(for: image))
+            guard !self.isDetectionInProgress else { return }
+            self.isDetectionInProgress = true
+            let predictions = self.predictions(for: image)
+            self.isDetectionInProgress = false
+            completionHandler(predictions)
         }
     }
 
@@ -66,9 +70,11 @@ public class ObjectDetector {
             self.assetImageGenerator.getImagesFromLivePhoto(livePhoto: livePhoto) { images in
                 guard !images.isEmpty else {
                     self.isDetectionInProgress = false
+                    completionHandler(nil)
                     return
                 }
                 let presictions = self.predictions(fromImages: images, maxProcessingImagesCount: maxProcessingImagesCount)
+                self.isDetectionInProgress = false
                 completionHandler(presictions)
             }
         }
@@ -81,10 +87,12 @@ public class ObjectDetector {
 
             let images = self.assetImageGenerator.getImagesFromGIF(url: gifURL)
             guard !images.isEmpty else {
+                completionHandler(nil)
                 self.isDetectionInProgress = false
                 return
             }
             let presictions = self.predictions(fromImages: images, maxProcessingImagesCount: maxProcessingImagesCount)
+            self.isDetectionInProgress = false
             completionHandler(presictions)
         }
     }

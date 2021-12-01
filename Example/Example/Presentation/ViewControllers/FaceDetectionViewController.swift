@@ -123,6 +123,7 @@ class FaceDetectionViewController: ImagePickerViewController {
                             for j in (i + 1)..<self.database.faces.count {
                                 let face2 = self.database.faces[j]
                                 if face1.face.isSimilar(with: face2.face) {
+                                    face2.face.blend(face: face1.face)
                                     uniqueFaces.removeLast()
                                     break
                                 }

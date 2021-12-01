@@ -44,7 +44,7 @@ public class AssetImageGenerator {
 
         let duration = self.videoAsset?.duration.seconds ?? 0.0
         self.lastVideoMomentDetected = min(duration, configuration.startTime)
-        self.maximumDurationOfPredictionsForVideo = min(configuration.maxProcessingDuration, duration - self.lastVideoMomentDetected)
+        self.maximumDurationOfPredictionsForVideo = configuration.maxProcessingDuration
     }
 
     func getImagesFromLivePhoto(livePhoto: PHLivePhoto, completion: @escaping ([UIImage]) -> Void) {
@@ -69,18 +69,6 @@ public class AssetImageGenerator {
     func getImagesFromGIF(url: URL) -> [UIImage] {
         let images = UIImage.gif(url: url)
         return images?.images ?? []
-    }
-    
-    func getFrameFromVideoForTime(url: URL, time: Float64) -> UIImage {
-        let image = try? self.generateThumnail(url: url, fromTime: time)
-        
-        return image!
-    }
-
-    func getFrameFromSourceForTime(url: URL, time: Float64) -> UIImage {
-        let image = try? self.generateThumnail(url: url, fromTime: time)
-        
-        return image!
     }
 
     func faceDetectionFromSource(videoURL: URL) throws -> UIImage? {
