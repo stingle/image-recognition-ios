@@ -222,7 +222,6 @@ extension FaceDetectionViewController: UICollectionViewDelegate {
                 cell?.playLivePhoto()
             case .gif: break
             }
-
         }
     }
 

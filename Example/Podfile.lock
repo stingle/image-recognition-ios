@@ -2,32 +2,32 @@ PODS:
   - ImageRecognition (0.1.0):
     - ImageRecognition/Common (= 0.1.0)
     - ImageRecognition/TensorFlow (= 0.1.0)
-    - TensorFlowLiteSwift
-    - TensorFlowLiteSwift/CoreML
+    - TensorFlowLiteSwift (~> 2.7.0)
+    - TensorFlowLiteSwift/CoreML (~> 2.7.0)
   - ImageRecognition/Common (0.1.0):
-    - TensorFlowLiteSwift
-    - TensorFlowLiteSwift/CoreML
+    - TensorFlowLiteSwift (~> 2.7.0)
+    - TensorFlowLiteSwift/CoreML (~> 2.7.0)
   - ImageRecognition/TensorFlow (0.1.0):
     - ImageRecognition/Common
     - ImageRecognition/TensorFlow/Models (= 0.1.0)
-    - TensorFlowLiteSwift
-    - TensorFlowLiteSwift/CoreML
+    - TensorFlowLiteSwift (~> 2.7.0)
+    - TensorFlowLiteSwift/CoreML (~> 2.7.0)
   - ImageRecognition/TensorFlow/Models (0.1.0):
     - ImageRecognition/Common
-    - TensorFlowLiteSwift
-    - TensorFlowLiteSwift/CoreML
-  - TensorFlowLiteC (2.6.0):
-    - TensorFlowLiteC/Core (= 2.6.0)
-  - TensorFlowLiteC/Core (2.6.0)
-  - TensorFlowLiteC/CoreML (2.6.0):
+    - TensorFlowLiteSwift (~> 2.7.0)
+    - TensorFlowLiteSwift/CoreML (~> 2.7.0)
+  - TensorFlowLiteC (2.7.0):
+    - TensorFlowLiteC/Core (= 2.7.0)
+  - TensorFlowLiteC/Core (2.7.0)
+  - TensorFlowLiteC/CoreML (2.7.0):
     - TensorFlowLiteC/Core
-  - TensorFlowLiteSwift (2.6.0):
-    - TensorFlowLiteSwift/Core (= 2.6.0)
-  - TensorFlowLiteSwift/Core (2.6.0):
-    - TensorFlowLiteC (= 2.6.0)
-  - TensorFlowLiteSwift/CoreML (2.6.0):
-    - TensorFlowLiteC/CoreML (= 2.6.0)
-    - TensorFlowLiteSwift/Core (= 2.6.0)
+  - TensorFlowLiteSwift (2.7.0):
+    - TensorFlowLiteSwift/Core (= 2.7.0)
+  - TensorFlowLiteSwift/Core (2.7.0):
+    - TensorFlowLiteC (= 2.7.0)
+  - TensorFlowLiteSwift/CoreML (2.7.0):
+    - TensorFlowLiteC/CoreML (= 2.7.0)
+    - TensorFlowLiteSwift/Core (= 2.7.0)
 
 DEPENDENCIES:
   - ImageRecognition (from `../`)
@@ -42,9 +42,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ImageRecognition: 9fc71373a2fe28ec5f5ae3325383c464befb1489
-  TensorFlowLiteC: 869f93708210ed939fc40f40c772a120b7f964d1
-  TensorFlowLiteSwift: 78bc548132d2cae55643f3238359a24a6eb92b88
+  ImageRecognition: 674c025f817600c9063eabe591c9615eb35424cf
+  TensorFlowLiteC: 50d75ed3640c15dcfbaf88ca4326297b445e00a1
+  TensorFlowLiteSwift: fe99748dc3d58ae08bd2ff38658e3ade7038670f
 
 PODFILE CHECKSUM: d3ad2297ffab57c21e0ba99530c9c0e4385c111b
 
