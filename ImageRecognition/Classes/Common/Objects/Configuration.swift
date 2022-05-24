@@ -8,8 +8,11 @@
 import Foundation
 
 public struct Configuration {
-    var startTime: TimeInterval = 0.0
-    var maxProcessingDuration: TimeInterval = 5000.0 // miliseconds
+    public let startTime: TimeInterval
+    public let maxProcessingDuration: TimeInterval // miliseconds
 
-    public init() {}
+    public init(startTime: TimeInterval = 0.0, maxProcessingDuration: TimeInterval = 5000.0) {
+        self.startTime = startTime
+        self.maxProcessingDuration = maxProcessingDuration
+    }
 }

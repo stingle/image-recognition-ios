@@ -63,7 +63,8 @@ class ObjectDetectionViewController: ImagePickerViewController {
         self.livePhotoView.livePhoto = nil
         self.topPredictions.removeAll()
         self.updatePredictionLabel("Making predictions for the video...")
-        self.objectDetector.makePredictions(forImage: image, completionHandler: self.videoPredictionHandler)
+
+        self.objectDetector.makePredictions(forVideo: videoURL, completionHandler: self.videoPredictionHandler)
     }
 
     override func didSelectGIF(url: URL) {

@@ -2,32 +2,32 @@ PODS:
   - ImageRecognition (0.1.0):
     - ImageRecognition/Common (= 0.1.0)
     - ImageRecognition/TensorFlow (= 0.1.0)
-    - TensorFlowLiteSwift (~> 2.7.0)
-    - TensorFlowLiteSwift/CoreML (~> 2.7.0)
+    - TensorFlowLiteSwift (~> 2.9.1)
+    - TensorFlowLiteSwift/CoreML (~> 2.9.1)
   - ImageRecognition/Common (0.1.0):
-    - TensorFlowLiteSwift (~> 2.7.0)
-    - TensorFlowLiteSwift/CoreML (~> 2.7.0)
+    - TensorFlowLiteSwift (~> 2.9.1)
+    - TensorFlowLiteSwift/CoreML (~> 2.9.1)
   - ImageRecognition/TensorFlow (0.1.0):
     - ImageRecognition/Common
     - ImageRecognition/TensorFlow/Models (= 0.1.0)
-    - TensorFlowLiteSwift (~> 2.7.0)
-    - TensorFlowLiteSwift/CoreML (~> 2.7.0)
+    - TensorFlowLiteSwift (~> 2.9.1)
+    - TensorFlowLiteSwift/CoreML (~> 2.9.1)
   - ImageRecognition/TensorFlow/Models (0.1.0):
     - ImageRecognition/Common
-    - TensorFlowLiteSwift (~> 2.7.0)
-    - TensorFlowLiteSwift/CoreML (~> 2.7.0)
-  - TensorFlowLiteC (2.7.0):
-    - TensorFlowLiteC/Core (= 2.7.0)
-  - TensorFlowLiteC/Core (2.7.0)
-  - TensorFlowLiteC/CoreML (2.7.0):
+    - TensorFlowLiteSwift (~> 2.9.1)
+    - TensorFlowLiteSwift/CoreML (~> 2.9.1)
+  - TensorFlowLiteC (2.9.1):
+    - TensorFlowLiteC/Core (= 2.9.1)
+  - TensorFlowLiteC/Core (2.9.1)
+  - TensorFlowLiteC/CoreML (2.9.1):
     - TensorFlowLiteC/Core
-  - TensorFlowLiteSwift (2.7.0):
-    - TensorFlowLiteSwift/Core (= 2.7.0)
-  - TensorFlowLiteSwift/Core (2.7.0):
-    - TensorFlowLiteC (= 2.7.0)
-  - TensorFlowLiteSwift/CoreML (2.7.0):
-    - TensorFlowLiteC/CoreML (= 2.7.0)
-    - TensorFlowLiteSwift/Core (= 2.7.0)
+  - TensorFlowLiteSwift (2.9.1):
+    - TensorFlowLiteSwift/Core (= 2.9.1)
+  - TensorFlowLiteSwift/Core (2.9.1):
+    - TensorFlowLiteC (= 2.9.1)
+  - TensorFlowLiteSwift/CoreML (2.9.1):
+    - TensorFlowLiteC/CoreML (= 2.9.1)
+    - TensorFlowLiteSwift/Core (= 2.9.1)
 
 DEPENDENCIES:
   - ImageRecognition (from `../`)
@@ -42,10 +42,10 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ImageRecognition: 674c025f817600c9063eabe591c9615eb35424cf
-  TensorFlowLiteC: 50d75ed3640c15dcfbaf88ca4326297b445e00a1
-  TensorFlowLiteSwift: fe99748dc3d58ae08bd2ff38658e3ade7038670f
+  ImageRecognition: 7e2821328ecafd308b70ddeab51097ac8cdfe2da
+  TensorFlowLiteC: 0a765860195fae345ca7398e33b07c80104c4b61
+  TensorFlowLiteSwift: 0b584ad1fac27c0015609056a5ab4e7692bd1af3
 
 PODFILE CHECKSUM: d3ad2297ffab57c21e0ba99530c9c0e4385c111b
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
