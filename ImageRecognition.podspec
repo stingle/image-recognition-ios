@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |spec|
   spec.name         = "ImageRecognition"
-  spec.version      = "0.1.0"
+  spec.version      = "0.1.1"
   spec.summary      = "A library to recognize objects and faces from image"
 
   spec.homepage     = 'https://github.com/stingle/image-recognition-ios'
