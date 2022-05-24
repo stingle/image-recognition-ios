@@ -35,13 +35,10 @@ Pod::Spec.new do |spec|
   end
 
   spec.static_framework = true
-  spec.dependency "TensorFlowLiteSwift", "~> 2.7.0"
-  spec.dependency "TensorFlowLiteSwift/CoreML", "~> 2.7.0"
+  spec.dependency "TensorFlowLiteSwift", "~> 2.9.1"
+  spec.dependency "TensorFlowLiteSwift/CoreML", "~> 2.9.1"
   # ------------------------------ TensorFlow ------------------------------------ #
 
   spec.ios.frameworks = 'Vision', 'UIKit', 'Photos'
-
-  spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
-  spec.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
 end
