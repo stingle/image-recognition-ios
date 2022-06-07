@@ -18,15 +18,14 @@ public class AssetImageGenerator {
     private (set) var frameDetectionStartedForFace: Double = 0.0
     private var faceDetectionStarted: Double = 0.0
 
-    private var videoAsset: AVURLAsset!
+    private var videoAsset: AVAsset!
 
     var oneFramePredictionTime: Double = 0.0
 
     public init() {}
 
-    public func generateThumnail(url : URL, fromTime: Float64) throws -> UIImage? {
-        let asset: AVAsset = AVAsset(url: url)
-        let assetImgGenerate: AVAssetImageGenerator = AVAssetImageGenerator(asset: asset)
+    public func generateThumnail(videoAsset: AVAsset, fromTime: Float64) throws -> UIImage? {
+        let assetImgGenerate: AVAssetImageGenerator = AVAssetImageGenerator(asset: videoAsset)
         assetImgGenerate.appliesPreferredTrackTransform = true
         assetImgGenerate.requestedTimeToleranceAfter = CMTime.zero
         assetImgGenerate.requestedTimeToleranceBefore = CMTime.zero
@@ -35,10 +34,15 @@ public class AssetImageGenerator {
         return UIImage(cgImage: img)
     }
 
+    public func generateThumnail(videoURL: URL, fromTime: Float64) throws -> UIImage? {
+        let asset = AVAsset(url: videoURL)
+        return try self.generateThumnail(videoAsset: asset, fromTime: fromTime)
+    }
+
     // MARK: - Internal methods
 
-    func configure(videoURL: URL, configuration: Configuration) {
-        self.videoAsset = AVURLAsset(url: videoURL)
+    func configure(asset: AVAsset, configuration: Configuration) {
+        self.videoAsset = asset
         self.faceDetectionStarted = Date().timeIntervalSince1970 * 1000
         self.frameDetectionStartedForFace = Date().timeIntervalSince1970 * 1000
 
@@ -71,7 +75,7 @@ public class AssetImageGenerator {
         return images?.images ?? []
     }
 
-    func faceDetectionFromSource(videoURL: URL) throws -> UIImage? {
+    func faceDetectionFromSource() throws -> UIImage? {
         guard self.videoAsset != nil else {
             return nil
         }
@@ -79,14 +83,13 @@ public class AssetImageGenerator {
         let alreadySpentOnDetection = frameDetectionStarted - self.faceDetectionStarted
         let timeLeftForDetection = self.maximumDurationOfPredictionsForVideo - alreadySpentOnDetection
         let framesCanGet = timeLeftForDetection / self.oneFramePredictionTime
-        let asset = AVURLAsset(url: videoURL)
-        let durationInSeconds = asset.duration.seconds
+        let durationInSeconds = self.videoAsset.duration.seconds
         let leftToCheckVideoDutaion = durationInSeconds - self.lastVideoMomentDetected
         let stepForFrame = leftToCheckVideoDutaion / Double(framesCanGet)
         if timeLeftForDetection > self.oneFramePredictionTime && (self.lastVideoMomentDetected + stepForFrame) < durationInSeconds {
             self.frameDetectionStartedForFace = frameDetectionStarted
             self.lastVideoMomentDetected += stepForFrame
-            return try self.generateThumnail(url: videoURL, fromTime: self.lastVideoMomentDetected)
+            return try self.generateThumnail(videoAsset: self.videoAsset, fromTime: self.lastVideoMomentDetected)
         } else {
             return nil
         }

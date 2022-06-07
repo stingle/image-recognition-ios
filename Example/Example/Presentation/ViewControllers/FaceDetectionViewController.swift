@@ -42,7 +42,7 @@ class FaceDetectionViewController: ImagePickerViewController {
     override func didSelectVideo(videoURL: URL) {
         self.selectedFace = nil
         let assetImageGenerator = AssetImageGenerator()
-        let image = (try? assetImageGenerator.generateThumnail(url: videoURL, fromTime: 0.0)) ?? UIImage()
+        let image = (try? assetImageGenerator.generateThumnail(videoURL: videoURL, fromTime: 0.0)) ?? UIImage()
         self.faceDetector.detectFaces(fromVideo: videoURL) { faces in
             self.collectFaces(object: Object(thumbnail: image, videoURL: videoURL, type: .video), result: .success(faces))
         }
