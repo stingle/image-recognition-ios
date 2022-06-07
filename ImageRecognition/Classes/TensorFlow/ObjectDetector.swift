@@ -47,9 +47,29 @@ public class ObjectDetector {
         self.dispatchQueue.async {
             guard !self.isDetectionInProgress else { return }
             self.isDetectionInProgress = true
-            self.configureAssetGeneration(fromVideo: videoURL, configuration: configuration) {
+            let asset = AVAsset(url: videoURL)
+            self.configureAssetGeneration(videoAsset: asset, configuration: configuration) {
                 var results = [Prediction]()
-                self.predictionsRecursively(fromVideo: videoURL) { predictions, isFinished in
+                self.predictionsRecursively(videoAsset: asset) { predictions, isFinished in
+                    if let predictions = predictions {
+                        results.append(contentsOf: predictions)
+                    }
+                    if isFinished {
+                        self.isDetectionInProgress = isFinished
+                        completionHandler(results)
+                    }
+                }
+            }
+        }
+    }
+
+    public func makePredictions(forVideoAsset asset: AVAsset, configuration: Configuration = Configuration(), completionHandler: @escaping VideoPredictionHandler) {
+        self.dispatchQueue.async {
+            guard !self.isDetectionInProgress else { return }
+            self.isDetectionInProgress = true
+            self.configureAssetGeneration(videoAsset: asset, configuration: configuration) {
+                var results = [Prediction]()
+                self.predictionsRecursively(videoAsset: asset) { predictions, isFinished in
                     if let predictions = predictions {
                         results.append(contentsOf: predictions)
                     }
@@ -99,9 +119,9 @@ public class ObjectDetector {
 
     // MARK: - Private methods
 
-    private func configureAssetGeneration(fromVideo videoURL: URL, configuration: Configuration, completion: @escaping () -> Void) {
-        self.assetImageGenerator.configure(videoURL: videoURL, configuration: configuration)
-        if let image = try? self.assetImageGenerator.generateThumnail(url: videoURL, fromTime: 0.0) {
+    private func configureAssetGeneration(videoAsset asset: AVAsset, configuration: Configuration, completion: @escaping () -> Void) {
+        self.assetImageGenerator.configure(asset: asset, configuration: configuration)
+        if let image = try? self.assetImageGenerator.generateThumnail(videoAsset: asset, fromTime: 0.0) {
             self.predictions(for: image)
             let frameDetectionStarted = self.assetImageGenerator.frameDetectionStartedForFace
             let frameDetectionEnded = Date().timeIntervalSince1970 * 1000
@@ -113,19 +133,19 @@ public class ObjectDetector {
         }
     }
 
-    private func predictionsRecursively(fromVideo videoURL: URL, completion: @escaping ([Prediction]?, Bool) -> Void) {
+    private func predictionsRecursively(videoAsset asset: AVAsset, completion: @escaping ([Prediction]?, Bool) -> Void) {
         do {
-            if let image = try self.assetImageGenerator.faceDetectionFromSource(videoURL: videoURL) {
+            if let image = try self.assetImageGenerator.faceDetectionFromSource() {
                 let predictions = self.predictions(for: image)
                 let frameDetectionEnded = Date().timeIntervalSince1970 * 1000
                 self.assetImageGenerator.oneFramePredictionTime = frameDetectionEnded - self.assetImageGenerator.frameDetectionStartedForFace
                 completion(predictions, false)
-                self.predictionsRecursively(fromVideo: videoURL, completion: completion)
+                self.predictionsRecursively(videoAsset: asset, completion: completion)
             } else {
                 completion(nil, true)
             }
         } catch {
-            self.predictionsRecursively(fromVideo: videoURL, completion: completion)
+            self.predictionsRecursively(videoAsset: asset, completion: completion)
         }
     }
 

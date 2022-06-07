@@ -50,9 +50,30 @@ public class FaceDetector {
         self.dispatchQueue.async {
             guard !self.isDetectionInProgress else { return }
             self.isDetectionInProgress = true
-            self.configureAssetGeneration(fromVideo: videoURL, configuration: configuration) {
+            let asset = AVAsset(url: videoURL)
+            self.configureAssetGeneration(videoAsset: asset, configuration: configuration) {
                 var results = [(face: Face, bounds: CGRect)]()
-                self.detectFacesRecursively(fromVideo: videoURL) { images, isFinished in
+                self.detectFacesRecursively(videoAsset: asset) { images, isFinished in
+                    if let images = images {
+                        results.append(contentsOf: images)
+                    }
+                    if isFinished {
+                        let uniqueFaces = self.removeDuplacatedFaces(faces: results)
+                        self.isDetectionInProgress = !isFinished
+                        completion(uniqueFaces)
+                    }
+                }
+            }
+        }
+    }
+
+    public func detectFaces(videoAsset asset: AVAsset, configuration: Configuration = Configuration(), completion: @escaping ([(face: Face, bounds: CGRect)]) -> Void) {
+        self.dispatchQueue.async {
+            guard !self.isDetectionInProgress else { return }
+            self.isDetectionInProgress = true
+            self.configureAssetGeneration(videoAsset: asset, configuration: configuration) {
+                var results = [(face: Face, bounds: CGRect)]()
+                self.detectFacesRecursively(videoAsset: asset) { images, isFinished in
                     if let images = images {
                         results.append(contentsOf: images)
                     }
@@ -95,9 +116,9 @@ public class FaceDetector {
 
     // MARK: - Private methods
 
-    private func configureAssetGeneration(fromVideo videoURL: URL, configuration: Configuration, completion: @escaping () -> Void) {
-        self.assetImageGenerator.configure(videoURL: videoURL, configuration: configuration)
-        if let image = try? self.assetImageGenerator.generateThumnail(url: videoURL, fromTime: 0.0) {
+    private func configureAssetGeneration(videoAsset asset: AVAsset, configuration: Configuration, completion: @escaping () -> Void) {
+        self.assetImageGenerator.configure(asset: asset, configuration: configuration)
+        if let image = try? self.assetImageGenerator.generateThumnail(videoAsset: asset, fromTime: 0.0) {
             self.visionDetectFace(from: image) { _ in
                 let frameDetectionStarted = self.assetImageGenerator.frameDetectionStartedForFace
                 let frameDetectionEnded = Date().timeIntervalSince1970 * 1000
@@ -110,26 +131,26 @@ public class FaceDetector {
         }
     }
 
-    private func detectFacesRecursively(fromVideo videoURL: URL, completion: @escaping ([(face: Face, bounds: CGRect)]?, Bool) -> Void) {
+    private func detectFacesRecursively(videoAsset asset: AVAsset, completion: @escaping ([(face: Face, bounds: CGRect)]?, Bool) -> Void) {
         do {
-            if let image = try self.assetImageGenerator.faceDetectionFromSource(videoURL: videoURL) {
+            if let image = try self.assetImageGenerator.faceDetectionFromSource() {
                 self.visionDetectFace(from: image) { result in
                     let frameDetectionEnded = Date().timeIntervalSince1970 * 1000
                     self.assetImageGenerator.oneFramePredictionTime = frameDetectionEnded - self.assetImageGenerator.frameDetectionStartedForFace
                     switch result {
                     case .success(let value):
                         completion(value, false)
-                        self.detectFacesRecursively(fromVideo: videoURL, completion: completion)
+                        self.detectFacesRecursively(videoAsset: asset, completion: completion)
                     case .failure(_):
                         completion(nil, false)
-                        self.detectFacesRecursively(fromVideo: videoURL, completion: completion)
+                        self.detectFacesRecursively(videoAsset: asset, completion: completion)
                     }
                 }
             } else {
                 completion(nil, true)
             }
         } catch {
-            self.detectFacesRecursively(fromVideo: videoURL, completion: completion)
+            self.detectFacesRecursively(videoAsset: asset, completion: completion)
         }
     }
 

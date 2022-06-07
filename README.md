@@ -47,6 +47,12 @@ let configuration = Configuration(startTime: 0.0, maxProcessingDuration: 1000.0)
 self.objectDetector.makePredictions(forVideo: videoURL, configuration: configuration) { predictions in
     // ...
 }
+
+OR
+
+self.objectDetector.makePredictions(forVideoAsset: asset, configuration: configuration) { predictions in
+    // ...
+}
 ```
 
 Face detection examples:
@@ -72,6 +78,12 @@ self.faceDetector.detectFaces(fromGIF: url) { result in
 // runnning object detection on video
 let configuration = Configuration(startTime: 0.0, maxProcessingDuration: 1000.0)
 self.faceDetector.detectFaces(fromVideo: videoURL, configuration: configuration) { faces in
+    // ...
+}
+
+OR
+
+self.faceDetector.detectFaces(videoAsset: asset, configuration: configuration) { faces in
     // ...
 }
 ```

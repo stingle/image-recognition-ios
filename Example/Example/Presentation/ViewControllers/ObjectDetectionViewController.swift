@@ -53,7 +53,7 @@ class ObjectDetectionViewController: ImagePickerViewController {
     override func didSelectVideo(videoURL: URL) {
         self.videoURL = videoURL
         let assetImageGenerator = AssetImageGenerator()
-        guard let image = try? assetImageGenerator.generateThumnail(url: videoURL, fromTime: 0.0) else {
+        guard let image = try? assetImageGenerator.generateThumnail(videoURL: videoURL, fromTime: 0.0) else {
             return
         }
         self.imageView.image = image
