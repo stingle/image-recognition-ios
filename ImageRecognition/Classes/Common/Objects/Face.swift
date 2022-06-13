@@ -14,17 +14,18 @@ public class Face {
     public let image: UIImage
 
     private(set) public var pixelBuffer: [Float32]
-    private var iteration: Int = 1
+    private(set) public var iteration: Int
 
     public var name: String?
 
-    internal init(image: UIImage, pixelBuffer: [Float32]) {
+    public init(image: UIImage, pixelBuffer: [Float32], iteration: Int = 1) {
         self.image = image
         self.pixelBuffer = pixelBuffer
+        self.iteration = iteration
     }
 
-    public func isSimilar(with face: Face) -> Bool {
-        return self.pixelBuffer.computeCosineSimilarity(array: face.pixelBuffer) <= Constant.similarityThreshold
+    public func isSimilar(with face: Face, similarityThreshold: Float32 = Face.Constant.similarityThreshold) -> Bool {
+        return self.pixelBuffer.computeCosineSimilarity(array: face.pixelBuffer) <= similarityThreshold
     }
 
     public func computeSimilarity(with face: Face) -> Float32 {
